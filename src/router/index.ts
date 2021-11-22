@@ -8,7 +8,7 @@ const routes: Array<RouteConfig> = [
     path: "/registerUser",
     component: () => import("../views/RegisterUser.vue"),
   },
-  // パスが登録されていない場合はログイン画面へ
+  // パスが登録されていない場合はログイン画面
   {
     path: "*",
     component: () => import("../views/Login.vue"),
