@@ -1,16 +1,22 @@
+
 import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
 import axios from "axios";
+import { User } from "@/types/user";
+
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+strict: true,
   state: {
     //商品数
     totalItemCount: 0,
     //商品情報
     items: new Array<Item>(),
+
+    user: new User(0, "", "", "", "", "", "") 
   },
   mutations: {
     /**
@@ -44,6 +50,18 @@ export default new Vuex.Store({
         return a._priceM < b._priceM ? -1 : 1;
       });
     },
+      setLoginUser(state, payload) {
+        state.user = new User(
+          payload.id,
+          payload.name,
+          payload.email,
+          payload.password,
+          payload.zipcode,
+          payload.address,
+          payload.telephone
+        );
+      },
+  
   },
   actions: {
     /**
@@ -87,6 +105,5 @@ export default new Vuex.Store({
       };
     },
   },
-
   modules: {},
 });
