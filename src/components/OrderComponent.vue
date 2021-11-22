@@ -177,7 +177,7 @@ const axiosJsonpAdapter = require("axios-jsonp");
 import { format } from "date-fns";
 
 @Component
-export default class ShippingInformation extends Vue {
+export default class OrderComponent extends Vue {
   // 名前
   private distinationName = "";
   // メールアドレス
