@@ -56,28 +56,37 @@ import Component from "vue-class-component";
 import axios from "axios";
 @Component
 export default class Login extends Vue {
+  // 入力されたメールアドレス
   private mailAddress = "";
+  // 入力されたパスワード
   private password = "";
+  //   メールアドレスが未入力のときのエラー表示
   private mailAddressError = "";
+  //   パスワードが未入力のときのエラー表示
   private passwordError = "";
+  //   パスワードとメールアドレスが不一致ときのエラー表示
   private mismatchError = "";
+  //   エラーがあるかどうかの確認
   private isLoginError = false;
-
+  /**
+   * ログインをする.
+   */
   async LoginAdmin(): Promise<void> {
     this.mailAddressError = "";
     this.passwordError = "";
     this.mismatchError = "";
     this.isLoginError = false;
-    
+    // メールアドレスが未入力時の処理
     if (this.mailAddress === "") {
       this.mailAddressError = "メールアドレスを入力してください";
       this.isLoginError = true;
     }
+    // パスワードが未入力時の処理
     if (this.password === "") {
       this.passwordError = "パスワードを入力してください";
       this.isLoginError = true;
     }
-
+    // エラーが1つでもあったら返す
     if (this.isLoginError === true) {
       return;
     }
@@ -89,8 +98,18 @@ export default class Login extends Vue {
         password: this.password,
       }
     );
-
     if (response.data.status === "success") {
+      this["$store"].commit("setLoginUser", {
+        user: {
+          id: response.data.id,
+          name: response.data.name,
+          email: response.data.email,
+          password: response.data.password,
+          zipcode: response.data.zipcode,
+          address: response.data.address,
+          telephone: response.data.telephone,
+        },
+      });
       this["$router"].push("/itemList");
     } else if (response.data.status === "error") {
       this.mismatchError = response.data.message;
