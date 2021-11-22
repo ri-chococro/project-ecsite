@@ -21,8 +21,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
+/**
+ * 注文完了画面のクラスコンポーネント.
+ */
 @Component
 export default class OrderFinished extends Vue {
+  /**
+   * トップ画面へ戻る
+   */
   onClickToTop(): void {
     this.$router.push("/itemList");
   }
