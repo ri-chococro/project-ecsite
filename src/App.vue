@@ -1,32 +1,48 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <Header />
+    <div class="top-wrapper">
+      <router-view />
     </div>
-    <router-view/>
+    <Footer />
   </div>
 </template>
 
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+
+@Component({
+  components: {
+    Header,
+    Footer,
+  },
+})
+export default class App extends Vue {}
+</script>
+
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  /* width: 800px; */
+  width: 100%;
+  margin: auto;
   color: #2c3e50;
+  /* margin-top: 60px; */
 }
 
-#nav {
-  padding: 30px;
+/* 全てのページに対して上記メニューバー分の100pxを空ける */
+.top-wrapper {
+  padding-top: 100px;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+/* エラーメッセージを赤字に設定 */
+.error {
+  color: red;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+nav {
+  margin-bottom: 20px;
 }
 </style>
