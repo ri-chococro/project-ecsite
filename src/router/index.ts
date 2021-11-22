@@ -10,7 +10,7 @@ const routes: Array<RouteConfig> = [
   },
   // パスが登録されていない場合はログイン画面
   {
-    path: "*",
+    path: "",
     component: () => import("../views/Login.vue"),
   },
   {
@@ -20,6 +20,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/logout",
     component: () => import("../views/Logout.vue"),
+  },
+  {
+    path: "*",
+    component: () => import("../views/RegisterUser.vue"),
   },
 ];
 

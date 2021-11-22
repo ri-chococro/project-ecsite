@@ -92,8 +92,11 @@
           </div>
         </div>
         <div class="row register-admin-btn">
-          <button class="btn" type="button" v-on:click="registerUser">
+          <button class="btn" type="button" v-on:click="registerUser" id="registerUser">
             <span>登録<i class="material-icons right">done</i></span>
+          </button>
+          <button class="btn" type="button" v-on:click="reset">
+            <span>リセット<i class="material-icons right">done</i></span>
           </button>
         </div>
       </div>
@@ -223,10 +226,33 @@ export default class RegisterUser extends Vue {
 
     return hasError;
   }
+  /**
+   * 入力内容を全てリセットする.
+   */
+  reset(): void {
+    this.firstName = "";
+    this.lastName = "";
+    this.emailAddress = "";
+    this.zipCode = "";
+    this.address = "";
+    this.telephone = "";
+    this.password = "";
+    this.confirmationPassword = "";
+    this.nameOfError = "";
+    this.emailOfError = "";
+    this.zipCodeOfError = "";
+    this.addressOfError = "";
+    this.telephoneOfError = "";
+    this.passwordOfError = "";
+    this.confirmationOfError = "";
+  }
 }
 </script>
 
 <style scoped>
+#registerUser{
+  margin-right: 100px;
+}
 .register-page {
   width: 600px;
 }
