@@ -8,10 +8,10 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
 
   // パスが登録されていない場合はログイン画面へ
-  // {
-  //   path: "*",
-  //   component: () => import("../views/Login.vue"),
-  // },
+  {
+    path: "*",
+    component: () => import("../views/Login.vue"),
+  },
 ]
 
 
