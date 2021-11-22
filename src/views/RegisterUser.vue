@@ -40,11 +40,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="error">{{ zipCodeOfError }}</div>
+          <div class="error">
+            {{ zipCodeOfError }}<br>
+            {{ searchAddressError }}
+          </div>
           <div class="input-field col s12">
             <input id="zipcode" type="text" maxlength="7" v-model="zipCode" />
             <label for="zipcode">郵便番号(ハイフンなし)</label>
-            <button class="btn" type="button">
+            <button class="btn" type="button" v-on:click="seartchAddress()">
               <span>住所検索</span>
             </button>
           </div>
@@ -92,7 +95,12 @@
           </div>
         </div>
         <div class="row register-admin-btn">
-          <button class="btn" type="button" v-on:click="registerUser" id="registerUser">
+          <button
+            class="btn"
+            type="button"
+            v-on:click="registerUser"
+            id="registerUser"
+          >
             <span>登録<i class="material-icons right">done</i></span>
           </button>
           <button class="btn" type="button" v-on:click="reset">
@@ -142,6 +150,8 @@ export default class RegisterUser extends Vue {
   private confirmationOfError = "";
   // 登録失敗時のエラーメッセージ
   private registerOfError = "";
+  // 郵便番号で住所検索失敗時のエラーメッセージ
+  private searchAddressError = "";
 
   /**
    * 会員情報を登録する.
@@ -246,11 +256,30 @@ export default class RegisterUser extends Vue {
     this.passwordOfError = "";
     this.confirmationOfError = "";
   }
+  /**
+   * 郵便番号から住所を自動で入力する.
+   */
+  async seartchAddress(): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const axiosJsonpAdapter = require("axios-jsonp");
+    const response = await axios.get("https://zipcoda.net/api", {
+      adapter: axiosJsonpAdapter,
+      params: {
+        zipcode: this.zipCode,
+      },
+    });
+    // 結果が複数取れてしまったらエラーメッセージ表示
+    if (response.data.items.length !== 1) {
+      this.searchAddressError = "存在しない郵便番号です";
+      return;
+    }
+    this.address = response.data.items[0].pref + response.data.items[0].address;
+  }
 }
 </script>
 
 <style scoped>
-#registerUser{
+#registerUser {
   margin-right: 100px;
 }
 .register-page {
