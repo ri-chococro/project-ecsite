@@ -56,9 +56,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="10時"
-            checked="checked"
-            v-model="deliveryTime"
+            value="10"
+            v-model.number="deliveryTime"
           />
           <span>10時</span>
         </label>
@@ -66,8 +65,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="11時"
-            v-model="deliveryTime"
+            value="11"
+            v-model.number="deliveryTime"
           />
           <span>11時</span>
         </label>
@@ -75,8 +74,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="12時"
-            v-model="deliveryTime"
+            value="12"
+            v-model.number="deliveryTime"
           />
           <span>12時</span>
         </label>
@@ -84,8 +83,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="13時"
-            v-model="deliveryTime"
+            value="13"
+            v-model.number="deliveryTime"
           />
           <span>13時</span>
         </label>
@@ -93,8 +92,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="14時"
-            v-model="deliveryTime"
+            value="14"
+            v-model.number="deliveryTime"
           />
           <span>14時</span>
         </label>
@@ -102,8 +101,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="15時"
-            v-model="deliveryTime"
+            value="15"
+            v-model.number="deliveryTime"
           />
           <span>15時</span>
         </label>
@@ -111,8 +110,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="16時"
-            v-model="deliveryTime"
+            value="16"
+            v-model.number="deliveryTime"
           />
           <span>16時</span>
         </label>
@@ -120,8 +119,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="17時"
-            v-model="deliveryTime"
+            value="17"
+            v-model.number="deliveryTime"
           />
           <span>17時</span>
         </label>
@@ -129,8 +128,8 @@
           <input
             name="deliveryTime"
             type="radio"
-            value="18時"
-            v-model="deliveryTime"
+            value="18"
+            v-model.number="deliveryTime"
           />
           <span>18時</span>
         </label>
@@ -175,6 +174,7 @@ import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axiosJsonpAdapter = require("axios-jsonp");
+import { format } from "date-fns";
 
 @Component
 export default class ShippingInformation extends Vue {
@@ -191,9 +191,9 @@ export default class ShippingInformation extends Vue {
   // 配達日時 文字列で入ってくるtype="date"インプット
   private deliveryDate = ""; // 2021-11-16
   // 配達時間
-  private deliveryTime = "";
+  private deliveryTime = ""; // 10時
   // 支払い方法
-  private paymentMethod = "";
+  private paymentMethod = 0;
   // 商品リスト
   private orderItemList = [];
   // 名前のエラーメッセージ
@@ -208,33 +208,46 @@ export default class ShippingInformation extends Vue {
   private telErrorMessage = "";
   // 配達日時のエラーメッセージ
   private deliveryDateErrorMessage = "";
+  
   /**
    * 注文する.
    */
   async onDoOrder(): Promise<void> {
-    console.log("注文する");
     // エラーがあれば注文に進まない
     if (this.hasInputErrors()) {
       return;
     }
 
-    // const URL = "http://153.127.48.168:8080/ecsite-api/order";
+    const URL = "http://153.127.48.168:8080/ecsite-api/order";
 
-    // const response = await axios.post(URL, {
-    //   userId: "1",
-    //   status: 1,
-    //   totalPrice: 0,
-    //   destinationName: this.distinationName,
-    //   destinationEmail: this.distinationEmail,
-    //   destinationZipcode: this.distinationZipcode,
-    //   destinationAddress: this.distinationAddress,
-    //   destinationTel: this.distinationTel,
-    //   deliveryTime: this.deliveryTime,
-    //   paymentMethod: this.paymentMethod,
-    //   orderItemFormList: this.orderItemList,
-    // });
+    // 代金引換の場合:1 / クレジットカード決済の場合:2
+    let status;
+    if (this.paymentMethod === 1) {
+      status = 1;
+    } else if (this.paymentMethod === 2) {
+      status = 2;
+    }
 
-    // console.dir("response:" + JSON.stringify(response));
+    // 送信する配達日時をフォーマット
+    let deliveryDate = new Date(this.deliveryDate);
+    let formattedDate = format(deliveryDate, "yyyy/MM/dd");
+    let formattedTime = `${this.deliveryTime}:00:00`;
+
+    const response = await axios.post(URL, {
+      userId: "1",
+      status: status,
+      totalPrice: 0,
+      destinationName: this.distinationName,
+      destinationEmail: this.distinationEmail,
+      destinationZipcode: this.distinationZipcode,
+      destinationAddress: this.distinationAddress,
+      destinationTel: this.distinationTel,
+      deliveryTime: `${formattedDate} ${formattedTime}`,
+      paymentMethod: this.paymentMethod,
+      orderItemFormList: this.orderItemList,
+    });
+
+    console.dir("response:" + JSON.stringify(response));
 
     this.$router.push("/orderFinished");
   }
