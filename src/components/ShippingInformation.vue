@@ -123,3 +123,28 @@ import { Component, Vue } from "vue-property-decorator";
 export default class ShippingInformation extends Vue {}
 </script>
 
+<style scoped>
+.order-confirm-delivery-info {
+  margin: 0 200px 0 200px;
+}
+
+.order-confirm-delivery-datetime {
+  text-align: center;
+}
+
+.order-confirm-delivery-time {
+  margin-right: 10px;
+}
+
+.order-confirm-payment-method {
+  text-align: center;
+}
+
+.order-confirm-payment-method-radio {
+  margin-right: 10px;
+}
+
+.order-confirm-btn {
+  text-align: center;
+}
+</style>
