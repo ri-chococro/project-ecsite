@@ -57,11 +57,12 @@ export default class ItemList extends Vue {
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから従業員一覧を取得する.
+   * @remarks
    * Vueインスタンスが生成されたタイミングで
-   * Vuexストア内のアクションを呼ぶ(ディスパッチする).
-   * ライフサイクルフックのcreatedイベント利用.
+   * Vuexストア内のアクションを呼ぶ(ディスパッチする)。
+   * ライフサイクルフックのcreatedイベント利用。
    *
-   * 取得してからゲットするため、async awaitを利用している.
+   * 取得してからゲットするため、async awaitを利用している。
    */
   async created(): Promise<void> {
     await this["$store"].dispatch("getItemList");

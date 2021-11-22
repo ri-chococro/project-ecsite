@@ -1,26 +1,24 @@
-
 import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
 
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-strict: true,
+  strict: true,
   state: {
     //商品数
     totalItemCount: 0,
     //商品情報
     items: new Array<Item>(),
 
-    user: new User(0, "", "", "", "", "", "") 
+    user: new User(0, "", "", "", "", "", ""),
   },
   mutations: {
     /**
-     *商品一覧を取得してstateに格納する
+     *商品一覧を取得してstateに格納する.
      * @param state  - ステート
      * @param payload - WebAPIから取得した商品情報
      */
@@ -50,22 +48,21 @@ strict: true,
         return a._priceM < b._priceM ? -1 : 1;
       });
     },
-      setLoginUser(state, payload) {
-        state.user = new User(
-          payload.id,
-          payload.name,
-          payload.email,
-          payload.password,
-          payload.zipcode,
-          payload.address,
-          payload.telephone
-        );
-      },
-  
+    setLoginUser(state, payload) {
+      state.user = new User(
+        payload.id,
+        payload.name,
+        payload.email,
+        payload.password,
+        payload.zipcode,
+        payload.address,
+        payload.telephone
+      );
+    },
   },
   actions: {
     /**
-     *外部APIから商品情報を取得する
+     *外部APIから商品情報を取得する.
      * @param context - コンテクスト
      */
     async getItemList(context) {
@@ -79,7 +76,7 @@ strict: true,
   },
   getters: {
     /**
-     *商品情報を取得して返す
+     *商品情報を取得して返す.
      * @param state - ステート
      * @returns - 商品情報
      */
@@ -87,7 +84,7 @@ strict: true,
       return state.items;
     },
     /**
-     *商品数を取得して返す
+     *商品数を取得して返す.
      * @param state - ステート
      * @returns - 商品数
      */
@@ -95,7 +92,7 @@ strict: true,
       return state.totalItemCount;
     },
     /**
-     *商品を名前で部分一致検索する
+     *商品を名前で部分一致検索する.
      * @param state - ステート
      * @returns - 商品情報
      */
