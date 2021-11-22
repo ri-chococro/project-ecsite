@@ -11,7 +11,7 @@ export class OrderItem {
     public _orderId: number, //注文ID
     public _quantity: number, //数量
     public _size: string, //サイズ
-    public _item: Array<Item>, //商品
+    public _item: Item, //商品
     public _orderToppingList: Array<OrderTopping> //注文トッピングリスト
   ) {}
 
@@ -55,11 +55,11 @@ export class OrderItem {
     this._size = size;
   }
 
-  public get item(): Array<Item> {
+  public get item(): Item {
     return this._item;
   }
 
-  public set item(item: Array<Item>) {
+  public set item(item: Item) {
     this._item = item;
   }
 

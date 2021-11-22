@@ -4,9 +4,18 @@
     <div class="search-wrapper">
       <div class="container">
         <form method="post" class="search-form">
-          <input type="text" name="name" class="search-name-input" />
-
-          <button class="btn search-btn" type="button">
+          {{ searchNameMessage }}
+          <input
+            type="text"
+            name="name"
+            class="search-name-input"
+            v-model="searchName"
+          />
+          <button
+            class="btn search-btn"
+            type="button"
+            v-on:click="onSearchClick"
+          >
             <span>検索</span>
           </button>
         </form>
@@ -17,130 +26,16 @@
     <div class="item-wrapper">
       <div class="container">
         <div class="items">
-          <div class="item">
+          <div class="item" v-for="item of itemList" v-bind:key="item.id">
             <div class="item-icon">
-              <img src="img/1.jpg" />
+              <img v-bind:src="item.imagePath" />
             </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/2.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/3.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/4.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/5.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/6.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/7.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/8.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/9.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/10.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/11.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/12.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/13.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
-          </div>
-
-          <div class="item">
-            <div class="item-icon">
-              <img src="img/14.jpg" />
-            </div>
-            <a href="item_detail.html">ハワイアンパラダイス</a><br />
-            <span class="price">Ｍ</span>1,380円(税抜)<br />
-            <span class="price">Ｌ</span>2,380円(税抜)<br />
+            <router-link :to="'/itemDetail/' + item.id">{{
+              item.name
+            }}</router-link>
+            <br />
+            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
+            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
           </div>
         </div>
       </div>
@@ -148,8 +43,51 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import { Item } from "../types/item";
+@Component
+export default class ItemList extends Vue {
+  //商品一覧
+  public itemList: Array<Item> = [];
+  //検索文字列
+  public searchName = "";
+  //検索エラーメッセージ
+  public searchNameMessage = "";
+
+  /**
+   * Vuexストアのアクション経由で非同期でWebAPIから従業員一覧を取得する.
+   * @remarks
+   * Vueインスタンスが生成されたタイミングで
+   * Vuexストア内のアクションを呼ぶ(ディスパッチする)。
+   * ライフサイクルフックのcreatedイベント利用。
+   *
+   * 取得してからゲットするため、async awaitを利用している。
+   */
+  async created(): Promise<void> {
+    await this["$store"].dispatch("getItemList");
+
+    this.itemList = this["$store"].getters.getAllItems;
+  }
+  /**
+   * 商品一覧の数を返す.
+   */
+  get getItemCount(): number {
+    return this.itemList.length;
+  }
+  /**
+   * 曖昧検索をする.
+   */
+  onSearchClick(): void {
+    this.itemList = this["$store"].getters.getSearchByName(this.searchName);
+    // 検索されない場合は、メッセージを出して全件検索を行う
+    if (this.itemList.length === 0 || this.searchName === "") {
+      this.searchNameMessage = "1件もありませんでしたので、全件表示します";
+      this.itemList = this["$store"].getters.getAllItems;
+      this.searchName = "";
+    }
+  }
+}
 </script>
 
 <style scoped>

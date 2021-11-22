@@ -17,7 +17,7 @@ export class Order {
     public _distinationTel: string, //宛先電話番号
     public _deliveryTime: Date, //配達日時
     public _paymentMethod: number, //支払い方法
-    public _user: Array<User>, //ユーザー
+    public _user: User, //ユーザー
     public _orderItemList: Array<OrderItem> //注文商品リスト
   ) {}
 
@@ -117,11 +117,11 @@ export class Order {
     this._paymentMethod = paymentMethod;
   }
 
-  public get user(): Array<User> {
+  public get user(): User {
     return this._user;
   }
 
-  public set user(user: Array<User>) {
+  public set user(user:User) {
     this._user = user;
   }
 
