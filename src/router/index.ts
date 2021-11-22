@@ -10,10 +10,6 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/itemList.vue"),
   },
   {
-    path: "/orderFinished",
-    component: () => import("../views/OrderFinished.vue"),
-  },
-  {
     path: "/itemList",
     component: () => import("../views/itemList.vue"),
   },
@@ -28,6 +24,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/logout",
     component: () => import("../views/Logout.vue"),
+  },
+  {
+    path: "/orderFinished",
+    component: () => import("../views/OrderFinished.vue"),
   },
 ];
 
