@@ -106,6 +106,47 @@ export default class RegisterUser extends Vue {
   private passwordOfError = "";
   private confirmationOfError = "";
   private registerOfError = "";
+
+  private hasError(): boolean {
+    let hasError = false;
+    this.nameOfError = "";
+    this.emailOfError = "";
+    this.zipCodeOfError = "";
+    this.addressOfError = "";
+    this.telephoneOfError = "";
+    this.passwordOfError = "";
+    this.confirmationOfError = "";
+
+    if (this.lastName === "" || this.firstName === "") {
+      this.nameOfError = "姓または名が入力されていません";
+      hasError = true;
+    }
+    if (this.emailAddress === "") {
+      this.emailOfError = "メールアドレスが入力されていません";
+      hasError = true;
+    }
+    if (this.zipCode === "") {
+      this.zipCodeOfError = "郵便番号が入力されていません";
+      hasError = true;
+    }
+    if (this.address === "") {
+      this.addressOfError = "住所が入力されていません";
+      hasError = true;
+    }
+    if (this.password === "") {
+      this.passwordOfError = "パスワードが入力されていません";
+      hasError = true;
+    }
+    if (this.confirmationPassword === "") {
+      this.confirmationOfError = "確認用パスワードが入力されていません";
+      hasError = true;
+    } else if (this.confirmationPassword !== this.password) {
+      this.confirmationOfError = "パスワードが不一致です";
+      hasError = true;
+    }
+
+    return hasError;
+  }
 }
 </script>
 
