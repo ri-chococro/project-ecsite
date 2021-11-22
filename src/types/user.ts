@@ -1,15 +1,22 @@
 /**
- * ユーザーを表すクラスです.
+ * ユーザー情報を表すUserクラスです.
  */
 export class User {
   constructor(
-    public _id: number, //Id
-    public _name: string, //名前
-    public _email: string, //Eメール
-    public _password: string, //パスワード
-    public _zipcode: string, //郵便番号
-    public _address: string, //住所
-    public _telephone: string //電話番号
+    // ID
+    private _id: number,
+    // 名前
+    private _name: string,
+    // メールアドレス
+    private _email: string,
+    // パスワード
+    private _password: string,
+    // 郵便番号
+    private _zipcode: string,
+    //住所
+    private _address: string,
+    //電話番号
+    private _telephone: string
   ) {}
 
   public get id(): number {
