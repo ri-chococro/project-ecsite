@@ -82,7 +82,23 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class RegisterUser extends Vue {}
+export default class RegisterUser extends Vue {
+  private firstName = "";
+  private lastName = "";
+  private emailAddress = "";
+  private zipCode = "";
+  private address = "";
+  private telephone = "";
+  private password = "";
+  private confirmationPassword = "";
+  private nameOfError = "";
+  private emailOfError = "";
+  private zipCodeOfError = "";
+  private addressOfError = "";
+  private telephoneOfError = "";
+  private passwordOfError = "";
+  private confirmationOfError = "";
+}
 </script>
 
 <style scoped>
