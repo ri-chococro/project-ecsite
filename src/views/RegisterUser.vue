@@ -87,6 +87,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import axios from "axios";
 
 @Component
 export default class RegisterUser extends Vue {
@@ -106,6 +107,31 @@ export default class RegisterUser extends Vue {
   private passwordOfError = "";
   private confirmationOfError = "";
   private registerOfError = "";
+
+  async registerUser(): Promise<void> {
+    if (this.hasError() === true) {
+      return;
+    }
+
+    const response = await axios.post(
+      `http://153.127.48.168:8080/ecsite-api/user`,
+      {
+        name: this.lastName + " " + this.firstName,
+        email: this.emailAddress,
+        password: this.password,
+        zipcode: this.zipCode,
+        address: this.address,
+        telephone: this.telephone,
+      }
+    );
+    console.dir("response:" + JSON.stringify(response));
+    if (response.data.status === "success") {
+      this.$router.push("/login");
+    } else {
+      this.registerOfError =
+        "登録できませんでした（" + response.data.message + ")";
+    }
+  }
 
   private hasError(): boolean {
     let hasError = false;
