@@ -25,7 +25,7 @@
             v-model="distinationZipcode"
           />
           <label for="zipcode">郵便番号(ハイフンなし)</label>
-          <button class="btn" type="button">
+          <button class="btn" type="button" v-on:click="searchAddress">
             <span>住所検索</span>
           </button>
           <div class="error">{{ zipcodeErrorMessage }}</div>
@@ -282,6 +282,26 @@ export default class ShippingInformation extends Vue {
     return hasError;
   }
 
+  /**
+   * 郵便番号から住所を取得する.
+   */
+  async searchAddress(): Promise<void> {
+    try {
+      const url = "https://zipcoda.net/api";
+      const response = await axios.get(url, {
+        adapter: axiosJsonpAdapter,
+        params: {
+          zipcode: this.distinationZipcode,
+        },
+      });
+      console.dir("response:" + JSON.stringify(response.data.items[0].address));
+      this.distinationAddress = response.data.items[0].address;
+    } catch (error) {
+      console.log(error);
+      this.zipcodeErrorMessage = "存在しない郵便番号です";
+    }
+  }
+}
 </script>
 
 <style scoped>
