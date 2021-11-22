@@ -11,9 +11,23 @@ export class OrderItem {
     public _orderId: number, //注文ID
     public _quantity: number, //数量
     public _size: string, //サイズ
-    public _item: Array<Item>, //商品
+    public _item: Item, //商品
     public _orderToppingList: Array<OrderTopping> //注文トッピングリスト
   ) {}
+
+  get calcSubTotalPrice(): number {
+    if (this.size === "M") {
+      const itemSubTotal = this.item.priceM * this.quantity;
+      const toppingSubTotal =
+        this.orderToppingList[0].Topping.priceM * this.orderToppingList.length;
+      return itemSubTotal + toppingSubTotal;
+    } else {
+      const itemSubTotal = this.item.priceL * this.quantity;
+      const toppingSubTotal =
+        this.orderToppingList[0].Topping.priceL * this.orderToppingList.length;
+      return itemSubTotal + toppingSubTotal;
+    }
+  }
 
   public get id(): number {
     return this._id;
@@ -55,11 +69,11 @@ export class OrderItem {
     this._size = size;
   }
 
-  public get item(): Array<Item> {
+  public get item(): Item {
     return this._item;
   }
 
-  public set item(item: Array<Item>) {
+  public set item(item: Item) {
     this._item = item;
   }
 
