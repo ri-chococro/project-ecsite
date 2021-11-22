@@ -111,7 +111,7 @@
               type="button"
               onclick="location.href='cart_list.html'"
             >
-              <span>カートに入れる</span>
+              <span>カートに入れよう</span>
             </button>
           </div>
         </div>
