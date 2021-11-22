@@ -2,21 +2,21 @@
   <div class="container">
     <div class="header">
       <div class="header-left">
-        <a href="top.html">
+        <router-link to="/itemList">
           <img class="logo" src="img/header_logo.png" />
-        </a>
+        </router-link>
       </div>
       <div class="header-right">
-        <a href="item_list.html">商品一覧</a>
-        <a href="register_admin.html">会員登録</a>
-        <a href="cart_list.html">
+        <router-link to="/itemList">商品一覧</router-link>
+        <router-link to="/registerUser">会員登録</router-link>
+        <router-link to="/cartList">
           <i class="fas fa-shopping-cart"> </i>カート
-        </a>
-        <a href="login.html" class="login">
+        </router-link>
+        <router-link to="/login" class="login">
           <i class="fas fa-sign-in-alt"></i>ログイン
-        </a>
+        </router-link>
 
-        <a href="order_history.html">注文履歴</a>
+        <router-link to="/orderHistory">注文履歴</router-link>
       </div>
     </div>
   </div>
