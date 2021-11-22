@@ -107,28 +107,51 @@ import axios from "axios";
 
 @Component
 export default class RegisterUser extends Vue {
+  // 名
   private firstName = "";
+  // 姓
   private lastName = "";
+  // メールアドレス
   private emailAddress = "";
+  // 郵便番号
   private zipCode = "";
+  // 住所
   private address = "";
+  // 電話番号
   private telephone = "";
+  // パスワード
   private password = "";
+  // 確認用パスワード
   private confirmationPassword = "";
+  // 姓名エラーメッセージ
   private nameOfError = "";
+  // メールアドレスエラーメッセージ
   private emailOfError = "";
+  // 郵便番号エラーメッセージ
   private zipCodeOfError = "";
+  // 住所エラーメッセージ
   private addressOfError = "";
+  // 電話番号エラーメッセージ
   private telephoneOfError = "";
+  // パスワードエラーメッセージ
   private passwordOfError = "";
+  // 確認用パスワードエラーメッセージ
   private confirmationOfError = "";
+  // 登録失敗時のエラーメッセージ
   private registerOfError = "";
 
+  /**
+   * 会員情報を登録する.
+   *
+   * @returns Promiseオブジェクト
+   */
   async registerUser(): Promise<void> {
+    // まずhasErrorメソッドを呼び、エラーが一つ以上あれば処理を止める
     if (this.hasError() === true) {
       return;
     }
 
+    // 会員情報登録処理
     const response = await axios.post(
       `http://153.127.48.168:8080/ecsite-api/user`,
       {
@@ -142,13 +165,20 @@ export default class RegisterUser extends Vue {
     );
     console.dir("response:" + JSON.stringify(response));
     if (response.data.status === "success") {
+      // 成功ならログイン画面に遷移する
       this.$router.push("/login");
     } else {
+      // 失敗ならエラーメッセージを表示する
       this.registerOfError =
         "登録できませんでした（" + response.data.message + ")";
     }
   }
 
+  /**
+   * エラーチェック処理.
+   *
+   * @returns エラーがある:true / エラーがない:false
+   */
   private hasError(): boolean {
     let hasError = false;
     this.nameOfError = "";
