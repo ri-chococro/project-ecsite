@@ -8,11 +8,19 @@ const routes: Array<RouteConfig> = [
     path: "/registerUser",
     component: () => import("../views/RegisterUser.vue"),
   },
-  //パスが登録されていない場合はログイン画面へ
-  // {
-  //   path: "*",
-  //   component: () => import("../views/Login.vue"),
-  // },
+  // パスが登録されていない場合はログイン画面へ
+  {
+    path: "*",
+    component: () => import("../views/Login.vue"),
+  },
+  {
+    path: "/login",
+    component: () => import("../views/Login.vue"),
+  },
+  {
+    path: "/logout",
+    component: () => import("../views/Logout.vue"),
+  },
 ];
 
 const router = new VueRouter({
