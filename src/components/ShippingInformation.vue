@@ -6,12 +6,14 @@
         <div class="input-field">
           <input id="name" type="text" v-model="distinationName" />
           <label for="name">お名前</label>
+          <div class="error">{{ nameErrorMessage }}</div>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
           <input id="email" type="email" v-model="distinationEmail" />
           <label for="email">メールアドレス</label>
+          <div class="error">{{ emailErrorMessage }}</div>
         </div>
       </div>
       <div class="row">
@@ -26,18 +28,23 @@
           <button class="btn" type="button">
             <span>住所検索</span>
           </button>
+          <div class="error">{{ zipcodeErrorMessage }}</div>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
           <input id="address" type="text" v-model="distinationAddress" />
-          <label for="address">住所</label>
+          <label for="address" :class="{ active: distinationAddress }"
+            >住所</label
+          >
+          <div class="error">{{ addressErrorMessage }}</div>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
           <input id="tel" type="tel" v-model="distinationTel" />
           <label for="tel">電話番号</label>
+          <div class="error">{{ telErrorMessage }}</div>
         </div>
       </div>
       <div class="row order-confirm-delivery-datetime">
@@ -128,6 +135,7 @@
           <span>18時</span>
         </label>
       </div>
+      <div class="error">{{ deliveryDateErrorMessage }}</div>
     </div>
 
     <h2 class="page-title">お支払い方法</h2>
@@ -163,6 +171,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+// import { OrderItem } from "../types/orderItem";
+import axios from "axios";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const axiosJsonpAdapter = require("axios-jsonp");
 
 @Component
 export default class ShippingInformation extends Vue {
@@ -184,6 +196,92 @@ export default class ShippingInformation extends Vue {
   private paymentMethod = "";
   // 商品リスト
   private orderItemList = [];
+  // 名前のエラーメッセージ
+  private nameErrorMessage = "";
+  // メールアドレスのエラーメッセージ
+  private emailErrorMessage = "";
+  // 郵便番号のエラーメッセージ
+  private zipcodeErrorMessage = "";
+  // 住所のエラーメッセージ
+  private addressErrorMessage = "";
+  // 電話番号のエラーメッセージ
+  private telErrorMessage = "";
+  // 配達日時のエラーメッセージ
+  private deliveryDateErrorMessage = "";
+  /**
+   * 注文する.
+   */
+  async onDoOrder(): Promise<void> {
+    console.log("注文する");
+    // エラーがあれば注文に進まない
+    if (this.hasInputErrors()) {
+      return;
+    }
+
+    // const URL = "http://153.127.48.168:8080/ecsite-api/order";
+
+    // const response = await axios.post(URL, {
+    //   userId: "1",
+    //   status: 1,
+    //   totalPrice: 0,
+    //   destinationName: this.distinationName,
+    //   destinationEmail: this.distinationEmail,
+    //   destinationZipcode: this.distinationZipcode,
+    //   destinationAddress: this.distinationAddress,
+    //   destinationTel: this.distinationTel,
+    //   deliveryTime: this.deliveryTime,
+    //   paymentMethod: this.paymentMethod,
+    //   orderItemFormList: this.orderItemList,
+    // });
+
+    // console.dir("response:" + JSON.stringify(response));
+
+    this.$router.push("/orderFinished");
+  }
+
+  /**
+   * 入力値をチェックする.
+   *
+   * @returns true:エラーあり, false:エラーなし
+   */
+  hasInputErrors(): boolean {
+    this.nameErrorMessage = "";
+    this.emailErrorMessage = "";
+    this.zipcodeErrorMessage = "";
+    this.addressErrorMessage = "";
+    this.telErrorMessage = "";
+    this.deliveryDateErrorMessage = "";
+
+    let hasError = false;
+
+    if (this.distinationName === "") {
+      this.nameErrorMessage = "名前を入力してください";
+      hasError = true;
+    }
+    if (this.distinationEmail === "") {
+      this.emailErrorMessage = "メールアドレスを入力して下さい";
+      hasError = true;
+    }
+    if (this.distinationZipcode === "") {
+      this.zipcodeErrorMessage = "郵便番号を入力して下さい";
+      hasError = true;
+    }
+    if (this.distinationAddress === "") {
+      this.addressErrorMessage = "住所を入力して下さい";
+      hasError = true;
+    }
+    if (this.distinationTel === "") {
+      this.telErrorMessage = "電話番号を入力して下さい";
+      hasError = true;
+    }
+    if (this.deliveryDate === "" || this.deliveryTime === "") {
+      this.deliveryDateErrorMessage = "配達日時を入力して下さい";
+      hasError = true;
+    }
+
+    return hasError;
+  }
+
 </script>
 
 <style scoped>
