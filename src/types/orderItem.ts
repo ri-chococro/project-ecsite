@@ -15,33 +15,33 @@ export class OrderItem {
     public _orderToppingList: Array<OrderTopping> //注文トッピングリスト
   ) {}
 
-  get calcSubTotalPrice(): number {
+  get calcSubTotalPrice(): string {
     if (this.size === "M") {
       const itemSubTotal = this.item.priceM * this.quantity;
       const toppingSubTotal =
         this.orderToppingList[0].Topping.priceM * this.orderToppingList.length;
-      return itemSubTotal + toppingSubTotal;
+      return (itemSubTotal + toppingSubTotal).toLocaleString();
     } else {
       const itemSubTotal = this.item.priceL * this.quantity;
       const toppingSubTotal =
         this.orderToppingList[0].Topping.priceL * this.orderToppingList.length;
-      return itemSubTotal + toppingSubTotal;
+      return (itemSubTotal + toppingSubTotal).toLocaleString();
     }
   }
 
-  get itemPrice(): number {
+  get itemPrice(): string {
     if (this.size === "M") {
-      return this.item.priceM;
+      return this.item.priceM.toLocaleString();
     } else {
-      return this.item.priceL;
+      return this.item.priceL.toLocaleString();
     }
   }
 
-  get toppingPrice(): number {
+  get toppingPrice(): string {
     if (this.size === "M") {
-      return this.item.toppingList[0].priceM;
+      return this.item.toppingList[0].priceM.toLocaleString();
     } else {
-      return this.item.toppingList[0].priceL;
+      return this.item.toppingList[0].priceL.toLocaleString();
     }
   }
 
