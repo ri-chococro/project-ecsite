@@ -29,6 +29,14 @@ export class OrderItem {
     }
   }
 
+  get itemPrice(): number {
+    if (this.size === "M") {
+      return this.item.priceM;
+    } else {
+      return this.item.priceL;
+    }
+  }
+
   public get id(): number {
     return this._id;
   }
