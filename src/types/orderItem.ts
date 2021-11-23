@@ -37,6 +37,14 @@ export class OrderItem {
     }
   }
 
+  get toppingPrice(): number {
+    if (this.size === "M") {
+      return this.item.toppingList[0].priceM;
+    } else {
+      return this.item.toppingList[0].priceL;
+    }
+  }
+
   public get id(): number {
     return this._id;
   }
