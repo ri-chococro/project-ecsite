@@ -4,11 +4,11 @@ import VueRouter, { RouteConfig } from "vue-router";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // パスが登録されていない場合はログイン画面へ
-  // {
-  //   path: "*",
-  //   component: () => import("../views/Login.vue"),
-  // },
+  // パスが登録されていない場合は商品一覧画面
+  {
+    path: "*",
+    component: () => import("../views/itemList.vue"),
+  },
   {
     path: "/itemList",
     component: () => import("../views/ItemList.vue"),
@@ -17,12 +17,6 @@ const routes: Array<RouteConfig> = [
     path: "/registerUser",
     component: () => import("../views/RegisterUser.vue"),
   },
-  //パスが登録されていない場合はログイン画面
-  {
-    path: "*",
-    component: () => import("../views/ItemList.vue"),
-  },
-
   {
     path: "/login",
     component: () => import("../views/Login.vue"),
@@ -34,6 +28,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/itemDetail/:id",
     component: () => import("../views/ItemDetail.vue"),
+  },
+  {
+    path: "/orderFinished",
+    component: () => import("../views/OrderFinished.vue"),
   },
 ];
 

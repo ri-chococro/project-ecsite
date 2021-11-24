@@ -1,11 +1,11 @@
+
 import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
-import { Topping } from "@/types/topping";
-import { OrderTopping } from "@/types/orderTopping";
+
 
 Vue.use(Vuex);
 
@@ -127,4 +127,5 @@ export default new Vuex.Store({
     },
   },
   modules: {},
+  
 });

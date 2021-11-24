@@ -13,12 +13,12 @@ export default {};
 
 <style>
 footer img {
-  width: 125px;
+  width: 140px;
 }
 
 footer p {
   color: #b3aeb5;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 footer {

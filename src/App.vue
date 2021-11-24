@@ -1,13 +1,10 @@
 <template>
   <div id="app">
-
     <Header />
     <div class="top-wrapper">
       <router-view />
-
     </div>
     <Footer />
-
   </div>
 </template>
 
@@ -28,11 +25,57 @@ export default class App extends Vue {}
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
-  /* width: 800px; */
   width: 100%;
   margin: auto;
   color: #2c3e50;
-  /* margin-top: 60px; */
+  font-size: 1.1rem;
+}
+
+/* widthの合計にpaddingやborderが含まれるようになるのでレイアウト崩れを起こしにくくする */
+* {
+  box-sizing: border-box;
+}
+
+/* ブラウザデフォルトのマージンをクリア */
+body {
+  margin: 0;
+}
+
+/* リンクの下線や青字などの装飾をなくす */
+a {
+  text-decoration: none;
+}
+
+/* コンテナ全体の設定 */
+.container {
+  max-width: 1300px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+/* heading全体の設定 */
+.heading {
+  padding-top: 80px;
+  padding-bottom: 50px;
+  color: #5f5d60;
+}
+
+.heading h2 {
+  font-weight: normal; /* h要素のデフォルトbold(太字)をnormalに変更 */
+}
+
+.heading h3 {
+  font-weight: normal; /* h要素のデフォルトbold(太字)をnormalに変更 */
+}
+
+/* text-contents全体の設定 */
+.text-contents {
+  width: 80%;
+  display: inline-block; /*もしこのクラスがインライン要素だった場合 widhやheightは指定できない。またmarginやpaddingは横のみしか指定できない。今回padding指定したいためにインラインブロック要素に変更する p要素などのブロック要素で使用するだけなら不要*/
+  margin-top: 15px;
+  font-size: 13px;
+  color: #b3aeb5;
 }
 
 /* 全てのページに対して上記メニューバー分の100pxを空ける */
@@ -45,7 +88,9 @@ export default class App extends Vue {}
   color: red;
 }
 
-nav {
-  margin-bottom: 20px;
+.page-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 30px;
 }
 </style>
