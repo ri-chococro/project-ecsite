@@ -67,11 +67,7 @@
           <div>ご注文金額合計：{{ totalPrice.toLocaleString() }}円 (税込)</div>
         </div>
         <div v-if="!noItem" class="row order-confirm-btn">
-          <button
-            class="btn"
-            type="button"
-            onclick="location.href='order_confirm.html'"
-          >
+          <button class="btn" type="button" v-on:click="onGoOrder">
             <span>注文に進む</span>
           </button>
         </div>
@@ -109,6 +105,10 @@ export default class CartList extends Vue {
 
   onDeleteClick(index: number): void {
     this.$store.commit("deleteItemInCart", index);
+  }
+
+  onGoOrder(): void {
+    this.$router.push("/orderConfirm");
   }
 }
 </script>
