@@ -1,13 +1,10 @@
 <template>
   <div id="app">
-
     <Header />
     <div class="top-wrapper">
       <router-view />
-
     </div>
     <Footer />
-
   </div>
 </template>
 
@@ -26,6 +23,14 @@ export default class App extends Vue {}
 </script>
 
 <style>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  width: 100%;
+  margin: auto;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
 /* widthの合計にpaddingやborderが含まれるようになるのでレイアウト崩れを起こしにくくする */
 * {
   box-sizing: border-box;
@@ -43,7 +48,7 @@ a {
 
 /* コンテナ全体の設定 */
 .container {
-  max-width: 1170px;
+  max-width: 1300px;
   width: 100%;
   padding: 0 15px;
   margin: 0 auto;

@@ -92,10 +92,11 @@ export default class ItemList extends Vue {
 
 <style scoped>
 .search-wrapper {
-  padding: 80px 0 50px 0; /*上はヘッダが来るのでその分180px分空ける*/
+  padding: 20px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
+  margin-top: -20px;
   /* text-align: center; */
   position: fixed; /* スクロールしても表示されるように位置を固定 */
-  height: 180px;
+  height: 130px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 1; /* 上に表示されるようにする(数が多いほど上に来る。例えば-1にすると裏側に行き見えなくなります) */
@@ -138,7 +139,7 @@ export default class ItemList extends Vue {
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: normal;
   line-height: 1.42857143;
   text-align: center;
@@ -153,10 +154,8 @@ export default class ItemList extends Vue {
 }
 
 .item-wrapper {
-  padding-top: 200px; /* 上はヘッダや検索フォームが来るのでその分空ける */
+  padding-top: 150px; /* 上はヘッダや検索フォームが来るのでその分空ける */
   padding-bottom: 80px;
-  padding-left: 15%;
-  padding-right: 5%;
   background-color: #f7f7f7;
   text-align: center;
 }
@@ -164,6 +163,8 @@ export default class ItemList extends Vue {
 .items {
   display: flex;
   flex-wrap: wrap; /* 表示内容が多かった時に自動的に複数行に分割される */
+  gap: 30px;
+  justify-content: center;
 }
 
 .item {
@@ -175,8 +176,8 @@ export default class ItemList extends Vue {
   margin: auto;
   display: block;
   border-radius: 30px;
-  width: 200px;
-  height: 200px;
+  width: 270px;
+  height: 270px;
   padding: 0 0 15px 0;
 }
 
