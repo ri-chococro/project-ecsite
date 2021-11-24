@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h2 class="page-title">お届け先情報</h2>
     <div class="order-confirm-delivery-info">
       <div class="row">
@@ -169,15 +169,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Prop, Component, Vue } from "vue-property-decorator";
 // import { OrderItem } from "../types/orderItem";
 import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axiosJsonpAdapter = require("axios-jsonp");
 import { format } from "date-fns";
+import { OrderItem } from '@/types/orderItem';
 
 @Component
 export default class OrderComponent extends Vue {
+  @Prop()
+  totalPrice!: number;
+  @Prop()
+  orderItems!: OrderItem[];
+
   // 名前
   private distinationName = "";
   // メールアドレス
@@ -191,7 +197,7 @@ export default class OrderComponent extends Vue {
   // 配達日時 文字列で入ってくるtype="date"インプット
   private deliveryDate = ""; // 2021-11-16
   // 配達時間
-  private deliveryTime = ""; // 10時
+  private deliveryTime = ""; // 10
   // 支払い方法
   private paymentMethod = 0;
   // 商品リスト
@@ -208,7 +214,7 @@ export default class OrderComponent extends Vue {
   private telErrorMessage = "";
   // 配達日時のエラーメッセージ
   private deliveryDateErrorMessage = "";
-  
+
   /**
    * 注文する.
    */
@@ -236,7 +242,7 @@ export default class OrderComponent extends Vue {
     const response = await axios.post(URL, {
       userId: "1",
       status: status,
-      totalPrice: 0,
+      totalPrice: this.totalPrice,
       destinationName: this.distinationName,
       destinationEmail: this.distinationEmail,
       destinationZipcode: this.distinationZipcode,
@@ -244,7 +250,7 @@ export default class OrderComponent extends Vue {
       destinationTel: this.distinationTel,
       deliveryTime: `${formattedDate} ${formattedTime}`,
       paymentMethod: this.paymentMethod,
-      orderItemFormList: this.orderItemList,
+      orderItemFormList: this.orderItems,
     });
 
     console.dir("response:" + JSON.stringify(response));
