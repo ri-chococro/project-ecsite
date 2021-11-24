@@ -23,7 +23,6 @@ export default new Vuex.Store({
     itemsInCart: new Array<OrderItem>(),
     // ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
-
   },
   mutations: {
     /**
@@ -95,14 +94,14 @@ export default new Vuex.Store({
      */
     deleteItemInCart(state, payload) {
       state.itemsInCart.splice(payload, 1);
-
+    },
+    /**
      * 取得したショッピングカート情報をステートオブジェクトに追加する.
      * @param state  - ステートオブジェクト
      * @param payload  - ショッピングカートに追加した商品情報
      */
     addItemInCart(state, payload) {
       state.items.push(payload.item);
-
     },
   },
   actions: {
@@ -162,8 +161,9 @@ export default new Vuex.Store({
      */
     getLoginStatus(state) {
       return state.isLogin;
+    },
 
-     * 商品Idを取得して返す.
+    /** 商品Idを取得して返す.
      * @param state - ステート
      * @returns - 商品ID
      */
