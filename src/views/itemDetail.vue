@@ -60,7 +60,7 @@
                 <input
                   type="checkbox"
                   v-model="toppingIds"
-                  value="topping.id"
+                  v-bind:value="topping.id"
                 />
                 <span>{{ topping.name }}</span>
               </label>
@@ -92,12 +92,7 @@
             <span>この商品金額：XXXX円(税抜)</span>
           </div>
           <div class="row item-cart-btn">
-            <button
-              class="btn"
-              type="button"
-              onclick="location.href='cart_list.html'"
-              v-on:click="onClickAddCart"
-            >
+            <button class="btn" type="button" v-on:click="onClickAddCart">
               <span>カートに入れる</span>
             </button>
           </div>
@@ -168,18 +163,31 @@ export default class ItemDetail extends Vue {
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
    */
   onClickAddCart(): void {
+    this.checkToppings = [];
+    this.orderToppings = [];
     // 選択したトッピングIDのIDを取得する
     for (let toppingId of this.toppingIds) {
-      this.checkToppings = this.currentItem.toppingList.filter(
-        (topping) => topping.id === toppingId
-      );
+      for (let currentItemToppingList of this.currentItem.toppingList) {
+        if (toppingId === currentItemToppingList.id) {
+          this.checkToppings.push(currentItemToppingList);
+        }
+      }
     }
+    console.log(this.checkToppings);
+    // for (let toppingId of this.toppingIds) {
+    //   this.checkToppings=this.currentItem.toppingList.filter(
+    //     (topping) => topping.id === toppingId
+    //   );
+    // }
+
     //取得したトッピング情報をOrderTopping型に変換する
-    for (let orderTopping of this.checkToppings) {
+    for (let checkTopping of this.checkToppings) {
       this.orderToppings.push(
-        new OrderTopping(-1, orderTopping.id, this.currentItem.id, orderTopping)
+        new OrderTopping(-1, checkTopping.id, this.currentItem.id, checkTopping)
       );
     }
+    console.log(this.orderToppings);
+
     //ストアのミューテーションを呼び出す
     this["$store"].commit(
       "addItemInCart",
@@ -203,7 +211,10 @@ export default class ItemDetail extends Vue {
         this.orderToppings
       )
     );
-    this["$router"].push("/shoppingCart");
+    const currentItem = this.$store.getters.getItemsInCart;
+    console.log(currentItem);
+    console.log(`${this.quantity}${this.size}${this.toppingIds}`);
+    this["$router"].push("/cartList");
   }
 }
 </script>
