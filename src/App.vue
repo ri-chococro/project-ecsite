@@ -3,6 +3,7 @@
     <Header />
     <div class="top-wrapper">
       <router-view />
+      <router-link to="/cartList">カートリスト確認用</router-link>
     </div>
     <Footer />
   </div>

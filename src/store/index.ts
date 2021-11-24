@@ -1,4 +1,3 @@
-
 import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
@@ -6,6 +5,8 @@ import axios from "axios";
 import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
 
+// 使うためには「npm install vuex-persistedstate」を行う
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -16,10 +17,13 @@ export default new Vuex.Store({
     totalItemCount: 0,
     //商品情報
     items: new Array<Item>(),
-
     user: new User(0, "", "", "", "", "", ""),
-    //ショッピングカート情報
+
+    // カート内商品一覧
     itemsInCart: new Array<OrderItem>(),
+    // ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
+    isLogin: false,
+
   },
   mutations: {
     /**
@@ -53,6 +57,11 @@ export default new Vuex.Store({
         return a._priceM < b._priceM ? -1 : 1;
       });
     },
+    /**
+     * ログインユーザ情報をstateに格納.
+     * @param state - ステート
+     * @param payload - ユーザ情報
+     */
     setLoginUser(state, payload) {
       state.user = new User(
         payload.id,
@@ -65,12 +74,35 @@ export default new Vuex.Store({
       );
     },
     /**
+
+     * ログインする.
+     * @param state - ステート
+     */
+    logined(state) {
+      state.isLogin = true;
+    },
+    /**
+     * ログアウトする.
+     * @param state - ステート
+     */
+    logouted(state) {
+      state.isLogin = false;
+    },
+    /**
+     * カート内から商品を1件削除する.
+     * @param state - state(itemsInCart)を利用するための引数
+     * @param payload - 削除したい商品のインデックス番号
+     */
+    deleteItemInCart(state, payload) {
+      state.itemsInCart.splice(payload, 1);
+
      * 取得したショッピングカート情報をステートオブジェクトに追加する.
      * @param state  - ステートオブジェクト
      * @param payload  - ショッピングカートに追加した商品情報
      */
     addItemInCart(state, payload) {
       state.items.push(payload.item);
+
     },
   },
   actions: {
@@ -115,6 +147,22 @@ export default new Vuex.Store({
       };
     },
     /**
+
+     * カート内商品一覧取得して返す.
+     * @param state - state(itemsInCart)を利用するための引数
+     * @returns カート内商品一覧
+     */
+    getItemsInCart(state) {
+      return state.itemsInCart;
+    },
+    /**
+     * ログイン状態を返す.
+     * @param state - ステート
+     * @returns true:ログイン済/false:ログアウト済
+     */
+    getLoginStatus(state) {
+      return state.isLogin;
+
      * 商品Idを取得して返す.
      * @param state - ステート
      * @returns - 商品ID
@@ -127,5 +175,15 @@ export default new Vuex.Store({
     },
   },
   modules: {},
-  
+  //ログイン状態フラグを保持するプラグイン
+  plugins: [
+    createPersistedState({
+      // ストレージのキーを指定
+      key: "vuex",
+      // isLoginフラグのみセッションストレージに格納しブラウザ更新しても残るようにしている(ログイン時:true / ログアウト時:false)
+      paths: ["isLogin"],
+      // ストレージの種類
+      storage: window.sessionStorage,
+    }),
+  ],
 });

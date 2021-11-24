@@ -33,6 +33,10 @@ const routes: Array<RouteConfig> = [
     path: "/orderFinished",
     component: () => import("../views/OrderFinished.vue"),
   },
+  {
+    path: "/cartList",
+    component: () => import("../views/CartList.vue"),
+  },
 ];
 
 const router = new VueRouter({
