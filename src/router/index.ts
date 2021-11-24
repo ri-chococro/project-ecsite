@@ -29,6 +29,10 @@ const routes: Array<RouteConfig> = [
     path: "/orderFinished",
     component: () => import("../views/OrderFinished.vue"),
   },
+  {
+    path: "/myPage",
+    component: () => import("../views/MyPage.vue"),
+  },
 ];
 
 const router = new VueRouter({

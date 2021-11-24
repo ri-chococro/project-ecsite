@@ -17,7 +17,9 @@
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
 
-          <router-link to="/orderHistory">注文履歴</router-link>
+          <router-link to="/myPage"
+            ><img src="img/no-profile.png" class="profile-img"
+          /></router-link>
         </div>
       </div>
     </div>
@@ -39,7 +41,7 @@ header {
 
 .header {
   display: flex; /* ヘッダロゴと右側のリンクを横並びにする */
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -71,6 +73,12 @@ header {
 /* fontawesome(カートアイコン＆ログインアイコンの設定) */
 .fas {
   margin-right: 5px;
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  margin-top: 17px;
 }
 
 /* スマートフォン用のメニューアイコン */
