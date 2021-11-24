@@ -1,66 +1,61 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <div class="header-left">
-        <router-link to="/itemList">
-          <img class="logo" src="img/header_logo.png" />
-        </router-link>
-      </div>
-      <div class="header-right">
-        <router-link to="/itemList">商品一覧</router-link>
-        <router-link to="/registerUser">会員登録</router-link>
-        <router-link to="/cartList">
-          <i class="fas fa-shopping-cart"> </i>カート
-        </router-link>
-        <router-link to="/login" class="login">
-          <i class="fas fa-sign-in-alt"></i>ログイン
-        </router-link>
+  <header>
+    <div class="container">
+      <div class="header">
+        <div class="header-left">
+          <router-link to="/itemList">
+            <img class="logo" src="img/header_logo.png" />
+          </router-link>
+        </div>
+        <div class="header-right">
+          <router-link to="/itemList">商品一覧</router-link>
+          <router-link to="/registerUser">会員登録</router-link>
+          <router-link to="/cartList">
+            <i class="fas fa-shopping-cart"> </i>カート
+          </router-link>
+          <router-link to="/login" class="login">
+            <i class="fas fa-sign-in-alt"></i>ログイン
+          </router-link>
 
-        <router-link to="/orderHistory">注文履歴</router-link>
+          <router-link to="/orderHistory">注文履歴</router-link>
+        </div>
       </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style>
+<style scoped>
 header {
-  height: 65px;
+  height: 80px;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255);
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
   z-index: 10; /* ヘッダが一番上に表示されるようにする(数が多いほど上に来る。例えば-1にするとヘッダが裏側に行き見えなくなります) */
 }
 
 .header {
   display: flex; /* ヘッダロゴと右側のリンクを横並びにする */
-  /* justify-content: flex-end; 右寄せにしたい場合*/
+  justify-content: space-between; 
+  align-items: center;
 }
 
 .logo {
-  width: 200px;
-  margin-top: 15px;
+  width: 230px;
 }
 
-/* .header-left {
-  float: left;
-} */
-
 .header-right {
-  margin-left: auto; /* ヘッダ右側のリンクだけ右寄せにする(ロゴは左寄せのまま) */
-  /* float: right; */
   display: flex; /* ヘッダ右側のリンクを横に並べる */
 }
 
 .header-right a {
-  line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
+  line-height: 80px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
   color: gray;
   display: block; /* a要素をブロック要素に変更(borderまでがクリックできるようになる) */
-  /* float: left; */
   transition: all 0.5s; /* アニメーションの設定 all=変化の対象 0.5s=変化にかかる時間 hoverと組み合わせることが多い */
 }
 
