@@ -8,7 +8,7 @@ export class Item {
     public _id: number, //ID
     public _type: string, //タイプ
     public _name: string, //名前
-    public _discription: string, //説明
+    public _description: string, //説明
     public _priceM: number, //Mの価格
     public _priceL: number, //Lの価格
     public _imagePath: string, //画像パス
@@ -40,12 +40,12 @@ export class Item {
     this._name = name;
   }
 
-  public get discription(): string {
-    return this._discription;
+  public get description(): string {
+    return this._description;
   }
 
-  public set discription(discription: string) {
-    this._discription = discription;
+  public set description(description: string) {
+    this._description = description;
   }
 
   public get priceM(): number {

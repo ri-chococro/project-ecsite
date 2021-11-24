@@ -99,6 +99,8 @@ export default class Login extends Vue {
       }
     );
     if (response.data.status === "success") {
+      // ログイン状態にする(stateのisLoginをtrueにする)
+      this.$store.commit("logined");
       this["$store"].commit("setLoginUser", {
         user: {
           id: response.data.id,
@@ -119,7 +121,7 @@ export default class Login extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 .login-page {
   width: 600px;
 }

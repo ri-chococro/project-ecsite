@@ -15,6 +15,49 @@ export class OrderItem {
     public _orderToppingList: Array<OrderTopping> //注文トッピングリスト
   ) {}
 
+  /**
+   * サイズごとの注文商品とトッピングの小計を返します.
+   *
+   * @returns 注文商品とトッピングの小計
+   */
+  get calcSubTotalPrice(): number {
+    if (this.size === "M") {
+      const itemSubTotal = this.item.priceM * this.quantity;
+      const toppingSubTotal =
+        this.orderToppingList[0].Topping.priceM * this.orderToppingList.length;
+      return itemSubTotal + toppingSubTotal;
+    } else {
+      const itemSubTotal = this.item.priceL * this.quantity;
+      const toppingSubTotal =
+        this.orderToppingList[0].Topping.priceL * this.orderToppingList.length;
+      return itemSubTotal + toppingSubTotal;
+    }
+  }
+  /**
+   * サイズごとの商品単価を返します.
+   *
+   * @returns 商品単価
+   */
+  get itemPrice(): string {
+    if (this.size === "M") {
+      return this.item.priceM.toLocaleString();
+    } else {
+      return this.item.priceL.toLocaleString();
+    }
+  }
+  /**
+   * サイズごとのトッピング単価を返します.
+   *
+   * @returns トッピング単価
+   */
+  get toppingPrice(): string {
+    if (this.size === "M") {
+      return this.item.toppingList[0].priceM.toLocaleString();
+    } else {
+      return this.item.toppingList[0].priceL.toLocaleString();
+    }
+  }
+
   public get id(): number {
     return this._id;
   }
