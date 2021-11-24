@@ -9,14 +9,21 @@
               <img v-bind:src="currentItem.imagePath" />
             </div>
             <div class="item-intro">
-              {{ currentItem.discription }}
+              {{ currentItem.description }}
             </div>
           </div>
           <div class="row item-size">
             <div class="item-hedding">サイズ</div>
             <div>
               <label>
-                <input id="size-m" name="size" type="radio" checked="checked" />
+                <input
+                  id="size-m"
+                  name="size"
+                  type="radio"
+                  checked="checked"
+                  value="M"
+                  v-model="size"
+                />
                 <span>
                   &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
                     currentItem.priceM
@@ -24,7 +31,13 @@
                 >
               </label>
               <label>
-                <input id="size-l" name="size" type="radio" />
+                <input
+                  id="size-l"
+                  name="size"
+                  type="radio"
+                  value="L"
+                  v-model="size"
+                />
                 <span>
                   &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
                     currentItem.priceL
@@ -39,54 +52,25 @@
               <span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;200円(税抜)
               <span>&nbsp;Ｌ</span>&nbsp;&nbsp;300円(税抜)
             </div>
-            <div>
+            <span
+              v-for="topping of currentItem.toppingList"
+              v-bind:key="topping.id"
+            >
               <label class="item-topping">
-                <input type="checkbox" />
-                <span>ハワイアンソルト</span>
+                <input
+                  type="checkbox"
+                  v-model="toppingIds"
+                  value="topping.id"
+                />
+                <span>{{ topping.name }}</span>
               </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>ハワイアンマヨネーズ</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>ハワイアントマト</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>ブルーチーズ</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>ハワイアンチョコレート</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>アンチョビ</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>エビ</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>ガーリックスライス</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>トロピカルフルーツ</span>
-              </label>
-              <label class="item-topping">
-                <input type="checkbox" />
-                <span>ココナッツ</span>
-              </label>
-            </div>
+            </span>
           </div>
           <div class="row item-quantity">
             <div class="item-hedding item-hedding-quantity">数量</div>
             <div class="item-quantity-selectbox">
               <div class="input-field col s12">
-                <select>
+                <select class="browser-default" v-model="quantity">
                   <option value="" disabled selected>選択して下さい</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -105,13 +89,14 @@
             </div>
           </div>
           <div class="row item-total-price">
-            <span>この商品金額：38,000 円(税抜)</span>
+            <span>この商品金額：XXXX円(税抜)</span>
           </div>
           <div class="row item-cart-btn">
             <button
               class="btn"
               type="button"
               onclick="location.href='cart_list.html'"
+              v-on:click="onClickAddCart"
             >
               <span>カートに入れる</span>
             </button>
@@ -125,6 +110,8 @@
 
 <script lang="ts">
 import { Item } from "@/types/item";
+import { OrderItem } from "@/types/orderItem";
+import { OrderTopping } from "@/types/orderTopping";
 import { Topping } from "@/types/topping";
 import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
@@ -141,7 +128,18 @@ export default class ItemDetail extends Vue {
     true,
     []
   );
+  private quantity = 0;
+  private size = "";
+  private toppingIds = [];
+  private itemId = 0;
+  //選択したトッピング情報
+  private checkToppings = new Array<Topping>();
+  //選択したトッピング情報をオーダートッピング型に変換
+  private orderToppings = new Array<OrderTopping>();
 
+  /**
+   * Vuexストアで受け取ったリクエストパラメータのIDから１件の商品情報を取得する.
+   */
   async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const itemId = parseInt(this["$route"].params.id);
@@ -154,7 +152,7 @@ export default class ItemDetail extends Vue {
       response.data.item.id,
       response.data.item.type,
       response.data.item.name,
-      response.data.item.discription,
+      response.data.item.description,
       response.data.item.priceM,
       response.data.item.priceL,
       response.data.item.imagePath,
@@ -162,7 +160,114 @@ export default class ItemDetail extends Vue {
       response.data.item.toppingList
     );
   }
+  /**
+   * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
+   */
+  onClickAddCart(): void {
+    // 選択したトッピングIDのIDを取得する
+    for (let toppingId of this.toppingIds) {
+      this.checkToppings = this.currentItem.toppingList.filter(
+        (topping) => topping.id === toppingId
+      );
+    }
+    //取得したトッピング情報をOrderTopping型に変換する
+    for (let orderTopping of this.checkToppings) {
+      this.orderToppings.push(
+        new OrderTopping(-1, orderTopping.id, this.currentItem.id, orderTopping)
+      );
+    }
+    //ストアのミューテーションを呼び出す
+    this["$store"].commit(
+      "addItemInCart",
+      new OrderItem(
+        -1,
+        this.currentItem.id,
+        -1,
+        this.quantity,
+        this.size,
+        new Item(
+          this.currentItem.id,
+          this.currentItem.type,
+          this.currentItem.name,
+          this.currentItem.description,
+          this.currentItem.priceM,
+          this.currentItem.priceL,
+          this.currentItem.imagePath,
+          this.currentItem.deleted,
+          this.currentItem.toppingList
+        ),
+        this.orderToppings
+      )
+    );
+    this["$router"].push("/shoppingCart");
+  }
 }
 </script>
 
-<style></style>
+<style scoped>
+.item-detail {
+  display: flex;
+  /* 中央揃え */
+  justify-content: center;
+}
+.item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 30px;
+  width: 250px;
+  height: 250px;
+  padding: 0 0 15px 0;
+}
+
+.item-intro {
+  width: 400px;
+  padding-top: 50px;
+  padding-left: 50px;
+  font-size: 20px;
+}
+
+.item-hedding {
+  font-weight: bold;
+  font-size: 17px;
+  text-align: left;
+}
+.item-size {
+  /* text-align: center; */
+  font-size: 15px;
+  margin-bottom: 20px;
+  padding: 0 200px 0 200px;
+}
+
+/* サイズをオレンジ〇で囲む */
+.price {
+  background-color: #ff4500;
+  border-radius: 50%; /* 角丸にする設定 */
+  color: black;
+}
+
+.item-topping {
+  margin-right: 10px;
+}
+
+.item-hedding-quantity {
+  margin-left: 200px;
+}
+
+.item-quantity {
+  text-align: center;
+  font-size: 15px;
+}
+
+.item-quantity-selectbox {
+  padding: 0 300px 0 300px;
+}
+
+.item-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
+.item-cart-btn {
+  text-align: center;
+}
+</style>
