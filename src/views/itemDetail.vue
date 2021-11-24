@@ -2,14 +2,14 @@
   <div class="container">
     <div class="top-wrapper">
       <div class="container">
-        <h1 class="page-title">Hawaiianパラダイス</h1>
+        <h1 class="page-title">{{ currentItem.name }}</h1>
         <div class="row">
           <div class="row item-detail">
             <div class="item-icon">
-              <img src="img/1.jpg" />
+              <img v-bind:src="currentItem.imagePath" />
             </div>
             <div class="item-intro">
-              ハワイで取れる名産物でかつオーガニックな食料がふんだんに使われたローカルフーズです。健康志向の方に大人気の商品です。
+              {{ currentItem.discription }}
             </div>
           </div>
           <div class="row item-size">
@@ -18,15 +18,17 @@
               <label>
                 <input id="size-m" name="size" type="radio" checked="checked" />
                 <span>
-                  &nbsp;<span class="price">Ｍ</span
-                  >&nbsp;&nbsp;1,380円(税抜)</span
+                  &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
+                    currentItem.priceM
+                  }}円(税抜)</span
                 >
               </label>
               <label>
                 <input id="size-l" name="size" type="radio" />
                 <span>
-                  &nbsp;<span class="price">Ｌ</span
-                  >&nbsp;&nbsp;2,380円(税抜)</span
+                  &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
+                    currentItem.priceL
+                  }}円(税抜)</span
                 >
               </label>
             </div>
@@ -122,9 +124,45 @@
 </template>
 
 <script lang="ts">
+import { Item } from "@/types/item";
+import { Topping } from "@/types/topping";
+import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
 @Component
-export default class ItemDetail extends Vue {}
+export default class ItemDetail extends Vue {
+  private currentItem = new Item(
+    0,
+    "XXXX",
+    "XXXX",
+    "XXXX",
+    0,
+    0,
+    "/img_aloha/noImage.png",
+    true,
+    []
+  );
+
+  async created(): Promise<void> {
+    // 送られてきたリクエストパラメータのidをnumberに変換して取得する
+    const itemId = parseInt(this["$route"].params.id);
+
+    const response = await axios.get(
+      `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
+    );
+    console.dir("response" + JSON.stringify(response));
+    this.currentItem = new Item(
+      response.data.item.id,
+      response.data.item.type,
+      response.data.item.name,
+      response.data.item.discription,
+      response.data.item.priceM,
+      response.data.item.priceL,
+      response.data.item.imagePath,
+      response.data.item.deleted,
+      response.data.item.toppingList
+    );
+  }
+}
 </script>
 
 <style></style>

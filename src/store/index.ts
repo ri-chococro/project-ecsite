@@ -101,6 +101,12 @@ export default new Vuex.Store({
         return state.items.filter((item) => item.name.includes(name));
       };
     },
+    getItemById(state) {
+      return (itemId: number) => {
+        const items = state.items.filter((item) => item.id === itemId);
+        return items[0];
+      };
+    },
   },
   modules: {},
 });
