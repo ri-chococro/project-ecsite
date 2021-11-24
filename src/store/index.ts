@@ -9,7 +9,11 @@ export default new Vuex.Store({
   state: {
     items: new Array<OrderItem>(),
   },
-  mutations: {},
+  mutations: {
+    deleteItemInCart(state, payload) {
+      state.items.splice(payload, 1);
+    },
+  },
   getters: {
     getItemsInCart(state) {
       return state.items;
