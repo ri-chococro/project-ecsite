@@ -4,6 +4,7 @@ import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
+
 // 使うためには「npm install vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
 
@@ -17,10 +18,12 @@ export default new Vuex.Store({
     //商品情報
     items: new Array<Item>(),
     user: new User(0, "", "", "", "", "", ""),
+
     // カート内商品一覧
     itemsInCart: new Array<OrderItem>(),
     // ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+
   },
   mutations: {
     /**
@@ -71,6 +74,7 @@ export default new Vuex.Store({
       );
     },
     /**
+
      * ログインする.
      * @param state - ステート
      */
@@ -91,6 +95,14 @@ export default new Vuex.Store({
      */
     deleteItemInCart(state, payload) {
       state.itemsInCart.splice(payload, 1);
+
+     * 取得したショッピングカート情報をステートオブジェクトに追加する.
+     * @param state  - ステートオブジェクト
+     * @param payload  - ショッピングカートに追加した商品情報
+     */
+    addItemInCart(state, payload) {
+      state.items.push(payload.item);
+
     },
   },
   actions: {
@@ -135,6 +147,7 @@ export default new Vuex.Store({
       };
     },
     /**
+
      * カート内商品一覧取得して返す.
      * @param state - state(itemsInCart)を利用するための引数
      * @returns カート内商品一覧
@@ -149,6 +162,16 @@ export default new Vuex.Store({
      */
     getLoginStatus(state) {
       return state.isLogin;
+
+     * 商品Idを取得して返す.
+     * @param state - ステート
+     * @returns - 商品ID
+     */
+    getItemById(state) {
+      return (itemId: number) => {
+        const items = state.items.filter((item) => item.id === itemId);
+        return items[0];
+      };
     },
   },
   modules: {},
