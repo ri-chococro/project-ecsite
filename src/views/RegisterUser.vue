@@ -210,7 +210,9 @@ export default class RegisterUser extends Vue {
       this.emailOfError = "メールアドレスが入力されていません";
       hasError = true;
     }
-    if (this.emailAddress.includes("@") === false) {
+    // メールアドレスをXXXX@XXXXの形式にする
+    let emailPattern = /[A-Za-z0-9_.-]{1,}@{1}[A-Za-z0-9_.-]{1,}$/;
+    if (emailPattern.test(this.emailAddress) === false) {
       this.emailOfError = "メールアドレスの形式が不正です";
       hasError = true;
     }
