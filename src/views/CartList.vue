@@ -17,7 +17,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="currentCartItem of currentCartItems"
+                v-for="(currentCartItem, i) of currentCartItems"
                 v-bind:key="currentCartItem.id"
               >
                 <td class="cart-item-name">
@@ -49,62 +49,15 @@
                   </div>
                 </td>
                 <td>
-                  <button class="btn" type="button">
+                  <button
+                    class="btn"
+                    type="button"
+                    v-on:click="onDeleteClick(i)"
+                  >
                     <span>削除</span>
                   </button>
                 </td>
               </tr>
-
-              <!-- <tr>
-                <td class="cart-item-name">
-                  <div class="cart-item-icon">
-                    <img src="img/1.jpg" />
-                  </div>
-                  <span>ハワイアンパラダイス</span>
-                </td>
-                <td>
-                  <span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円
-                  &nbsp;&nbsp;1個
-                </td>
-                <td>
-                  <ul>
-                    <li>ピーマン300円</li>
-                    <li>オニオン300円</li>
-                    <li>あらびきソーセージ300円</li>
-                  </ul>
-                </td>
-                <td><div class="text-center">3,280円</div></td>
-                <td>
-                  <button class="btn" type="button">
-                    <span>削除</span>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="cart-item-name">
-                  <div class="cart-item-icon">
-                    <img src="img/1.jpg" />
-                  </div>
-                  <span>ハワイアンパラダイス</span>
-                </td>
-                <td>
-                  <span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円
-                  &nbsp;&nbsp;1個
-                </td>
-                <td>
-                  <ul>
-                    <li>ピーマン300円</li>
-                    <li>オニオン300円</li>
-                    <li>あらびきソーセージ300円</li>
-                  </ul>
-                </td>
-                <td><div class="text-center">3,280円</div></td>
-                <td>
-                  <button class="btn" type="button">
-                    <span>削除</span>
-                  </button>
-                </td>
-              </tr> -->
             </tbody>
           </table>
         </div>
@@ -152,6 +105,10 @@ export default class CartList extends Vue {
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
     this.totalPrice += this.taxPrice;
+  }
+
+  onDeleteClick(index: number): void {
+    this.$store.commit("deleteItemInCart", index);
   }
 }
 </script>
