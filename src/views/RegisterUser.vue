@@ -218,9 +218,9 @@ export default class RegisterUser extends Vue {
       this.zipCodeOfError = "郵便番号が入力されていません";
       hasError = true;
     }
-    // XXX-XXXXの形式にする
-    let correctPattern = /^[0-9]{3}-[0-9]{4}$/;
-    if (correctPattern.test(this.zipCode) === false) {
+    // 郵便番号をXXX-XXXXの形式にする
+    let zipcodePattern = /^[0-9]{3}-[0-9]{4}$/;
+    if (zipcodePattern.test(this.zipCode) === false) {
       this.zipCodeOfError = "郵便番号はXXX-XXXXの形式で入力してください";
       hasError = true;
     }
@@ -230,6 +230,13 @@ export default class RegisterUser extends Vue {
     }
     if (this.telephone === "") {
       this.telephoneOfError = "電話番号が入力されていません";
+      hasError = true;
+    }
+    // 電話番号をXXXX-XXXX-XXXXの形式にする
+    let telephonePattern = /^[0-9]{1,5}-[0-9]{1,4}-[0-9]{4}$/;
+    if (telephonePattern.test(this.telephone) === false) {
+      this.telephoneOfError =
+        "電話番号はXXXX-XXXX-XXXXの形式で入力してください";
       hasError = true;
     }
     if (this.password === "") {
