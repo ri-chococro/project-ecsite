@@ -15,6 +15,11 @@ export class OrderItem {
     public _orderToppingList: Array<OrderTopping> //注文トッピングリスト
   ) {}
 
+  /**
+   * サイズごとの注文商品とトッピングの小計を返します.
+   *
+   * @returns 注文商品とトッピングの小計
+   */
   get calcSubTotalPrice(): number {
     if (this.size === "M") {
       const itemSubTotal = this.item.priceM * this.quantity;
@@ -28,7 +33,11 @@ export class OrderItem {
       return itemSubTotal + toppingSubTotal;
     }
   }
-
+  /**
+   * サイズごとの商品単価を返します.
+   *
+   * @returns 商品単価
+   */
   get itemPrice(): string {
     if (this.size === "M") {
       return this.item.priceM.toLocaleString();
@@ -36,7 +45,11 @@ export class OrderItem {
       return this.item.priceL.toLocaleString();
     }
   }
-
+  /**
+   * サイズごとのトッピング単価を返します.
+   *
+   * @returns トッピング単価
+   */
   get toppingPrice(): string {
     if (this.size === "M") {
       return this.item.toppingList[0].priceM.toLocaleString();
