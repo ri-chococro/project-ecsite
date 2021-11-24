@@ -45,8 +45,8 @@
             {{ searchAddressError }}
           </div>
           <div class="input-field col s12">
-            <input id="zipcode" type="text" maxlength="7" v-model="zipCode" />
-            <label for="zipcode">郵便番号(ハイフンなし)</label>
+            <input id="zipcode" type="text" maxlength="8" v-model="zipCode" />
+            <label for="zipcode">郵便番号</label>
             <button class="btn" type="button" v-on:click="seartchAddress()">
               <span>住所検索</span>
             </button>
@@ -216,6 +216,12 @@ export default class RegisterUser extends Vue {
     }
     if (this.zipCode === "") {
       this.zipCodeOfError = "郵便番号が入力されていません";
+      hasError = true;
+    }
+    // XXX-XXXXの形式にする
+    let correctPattern = /^[0-9]{3}-[0-9]{4}$/;
+    if (correctPattern.test(this.zipCode) === false) {
+      this.zipCodeOfError = "郵便番号はXXX-XXXXの形式で入力してください";
       hasError = true;
     }
     if (this.address === "") {
