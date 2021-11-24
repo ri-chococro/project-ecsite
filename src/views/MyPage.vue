@@ -23,8 +23,18 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import { User } from "../types/user";
+
+@Component
+export default class MyPage extends Vue {
+  private loginUser!: User;
+
+  created(): void {
+    this.loginUser = this.$store.getters.getLoginUser;
+  }
+}
 </script>
 
 <style scoped>

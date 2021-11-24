@@ -101,6 +101,15 @@ export default new Vuex.Store({
         return state.items.filter((item) => item.name.includes(name));
       };
     },
+    /**
+     * ログインしているユーザーの情報を返す.
+     * 
+     * @param state -ステート
+     * @returns - ログインユーザー情報
+     */
+    getLoginUser(state) {
+      return state.user;
+    }
   },
   modules: {},
 });
