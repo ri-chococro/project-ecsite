@@ -30,7 +30,7 @@ export default {};
 
 <style scoped>
 header {
-  height: 80px;
+  height: 65px;
   width: 100%;
   background-color: rgba(255, 255, 255);
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
@@ -39,12 +39,13 @@ header {
 
 .header {
   display: flex; /* ヘッダロゴと右側のリンクを横並びにする */
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
 }
 
 .logo {
-  width: 230px;
+  width: 200px;
+  margin-top: 15px;
 }
 
 .header-right {
@@ -52,7 +53,7 @@ header {
 }
 
 .header-right a {
-  line-height: 80px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
+  line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
   color: gray;
   display: block; /* a要素をブロック要素に変更(borderまでがクリックできるようになる) */

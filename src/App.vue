@@ -29,7 +29,6 @@ export default class App extends Vue {}
   width: 100%;
   margin: auto;
   color: #2c3e50;
-  font-size: 1.1rem;
 }
 
 /* widthの合計にpaddingやborderが含まれるようになるのでレイアウト崩れを起こしにくくする */
@@ -49,7 +48,7 @@ a {
 
 /* コンテナ全体の設定 */
 .container {
-  max-width: 1300px;
+  max-width: 1170px;
   width: 100%;
   padding: 0 15px;
   margin: 0 auto;
