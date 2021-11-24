@@ -84,31 +84,60 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class CartList extends Vue {
+  // カート内の商品
   private currentCartItems: Array<OrderItem> = [];
+  // 商品小計（税抜）
   private totalPrice = 0;
+  // 消費税
   private taxPrice = 0;
+  // カート内商品有無のフラグ
   private noItem = false;
 
+  /**
+   * Vuexストア内ゲッター経由でstateからカート内商品を取得し、初期画面表示を行う.
+   *
+   * @remarks
+   * Vueインスタンスが生成されたタイミングでVuexストア内のゲッターを呼ぶ。
+   * カート内商品がない場合、エラーメッセージを表示。
+   * 商品小計、消費税を計算して変数に格納する。
+   *
+   */
   created(): void {
+    // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
     console.log(this.currentCartItems);
+    // カート内に商品ない場合フラグを立てる
     if (this.currentCartItems.length === 0) {
       this.noItem = true;
     }
+    // OrderItemクラス内のメソッドを利用し、商品小計を取得
     for (let currentCartItem of this.currentCartItems) {
       this.totalPrice += currentCartItem.calcSubTotalPrice;
     }
+    // 消費税の計算
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
     this.totalPrice += this.taxPrice;
   }
 
+  /**
+   * 削除ボタンが押された際にVuexストア内のミューテーションを呼ぶ.
+   *
+   * @param index - 削除したい商品のインデックス番号
+   */
   onDeleteClick(index: number): void {
     this.$store.commit("deleteItemInCart", index);
   }
 
+  /**
+   * 注文に進むボタンが押された際の処理.
+   */
   onGoOrder(): void {
-    this.$router.push("/orderConfirm");
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+    } else {
+      this.$router.push("/orderConfirm");
+    }
   }
 }
 </script>
