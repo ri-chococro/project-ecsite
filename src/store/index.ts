@@ -4,6 +4,8 @@ import Vuex from "vuex";
 import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
+import { OrderItem } from "@/types/orderItem";
+
 
 Vue.use(Vuex);
 
@@ -16,6 +18,8 @@ export default new Vuex.Store({
     items: new Array<Item>(),
 
     user: new User(0, "", "", "", "", "", ""),
+    //ショッピングカート情報
+    itemsInCart: new Array<OrderItem>(),
   },
   mutations: {
     /**
@@ -60,6 +64,14 @@ export default new Vuex.Store({
         payload.telephone
       );
     },
+    /**
+     * 取得したショッピングカート情報をステートオブジェクトに追加する.
+     * @param state  - ステートオブジェクト
+     * @param payload  - ショッピングカートに追加した商品情報
+     */
+    addItemInCart(state, payload) {
+      state.items.push(payload.item);
+    },
   },
   actions: {
     /**
@@ -100,6 +112,17 @@ export default new Vuex.Store({
     getSearchByName(state) {
       return (name: string) => {
         return state.items.filter((item) => item.name.includes(name));
+      };
+    },
+    /**
+     * 商品Idを取得して返す.
+     * @param state - ステート
+     * @returns - 商品ID
+     */
+    getItemById(state) {
+      return (itemId: number) => {
+        const items = state.items.filter((item) => item.id === itemId);
+        return items[0];
       };
     },
   },
