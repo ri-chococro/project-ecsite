@@ -11,7 +11,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: "/itemList",
-    component: () => import("../views/itemList.vue"),
+    component: () => import("../views/ItemList.vue"),
   },
   {
     path: "/registerUser",
@@ -26,12 +26,18 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Logout.vue"),
   },
   {
+    path: "/itemDetail/:id",
+    component: () => import("../views/ItemDetail.vue"),
+  },
+  {
     path: "/orderFinished",
     component: () => import("../views/OrderFinished.vue"),
   },
   {
     path: "/orderConfirm",
     component: () => import("../views/OrderConfirm.vue"),
+    path: "/cartList",
+    component: () => import("../views/CartList.vue"),
   },
 ];
 

@@ -12,6 +12,8 @@ export default class Logout extends Vue {
    * ログアウトする.
    */
   async created(): Promise<void> {
+    // ログアウト状態にする(stateのisLoginをfalseにする)
+    this.$store.commit("logouted");
     await axios.post("http://153.127.48.168:8080/ecsite-api/user/logout");
     this["$router"].push("/itemList");
   }
