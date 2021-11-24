@@ -110,6 +110,27 @@ export default class OrderConfirm extends Vue {
 </script>
 
 <style scoped>
+.cart-table-th {
+  text-align: center;
+}
+.cart-item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 20px;
+  width: 100px;
+  height: 100px;
+  padding: 0 0 15px 0;
+}
+.cart-item-name {
+  text-align: center;
+  font-size: 15px;
+}
+
+.cart-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
 .order-confirm-delivery-info {
   margin: 0 200px 0 200px;
 }
