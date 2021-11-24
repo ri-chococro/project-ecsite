@@ -2,6 +2,7 @@
   <div class="container">
     <form>
       <h2 class="page-title">クレジットカード情報</h2>
+      <span>{{ creditCardError }}</span>
       <span class="error">{{ cardNumberError }}</span>
       <div class="input-field col s6">
         <input
@@ -18,7 +19,7 @@
         有効期限：<select
           name="card_exp_month"
           class="browser-default"
-          v-model="cardExpMonth"
+          v-model.number="cardExpMonth"
         >
           <option value="1" selected>1</option>
           <option value="2">2</option>
@@ -38,7 +39,7 @@
           name="card_exp_year"
           id=""
           class="browser-default"
-          v-model="cardExpYear"
+          v-model.number="cardExpYear"
         >
           <option value="2021" selected>2021</option>
           <option value="2022">2022</option>
@@ -84,7 +85,7 @@
           type="text"
           class="validate"
           maxlength="4"
-          v-model="cvv"
+          v-model.number="cvv"
           required
         />
         <label for="credit-cord">セキュリティコード</label>
@@ -116,7 +117,9 @@ export default class CreditCardComponent extends Vue {
   private cardNameError = "";
   // セキュリティコードのエラー
   private cvvError = "";
-
+  // セキュリティコードのエラー
+  private creditCardError = "";
+  
   async onclick(): Promise<void> {
     let hasError = false;
     this.cardNumberError = "";
@@ -149,8 +152,11 @@ export default class CreditCardComponent extends Vue {
     if (this.cvv === "") {
       this.cvvError = "セキュリティコードを入力してください";
       hasError = true;
-    } else if (cvvPattern.test(this.cvv) === false) {
-      this.cvvError = "セキュリティコードは半角数字で3桁〜4桁以内で入力してください";
+    }
+    // セキュリティコードを半角数字で3桁または4桁にする
+    else if (cvvPattern.test(this.cvv) === false) {
+      this.cvvError =
+        "セキュリティコードは半角数字で3桁〜4桁以内で入力してください";
       hasError = true;
     }
     if (hasError === true) {
@@ -164,14 +170,19 @@ export default class CreditCardComponent extends Vue {
         userId: userId,
         // orderNumber: this.orderNumber,
         // amount: this.amount,
-        cardNumber: this.cardNumber,
-        cardExpMonth: this.cardExpMonth,
-        cardExpYear: this.cardExpYear,
+        cardNumber: Number(this.cardNumber),
+        cardExpMonth: Number(this.cardExpMonth),
+        cardExpYear: Number(this.cardExpYear),
         cardName: this.cardName,
-        cvv: this.cvv,
+        cvv: Number(this.cvv),
       }
     );
     console.log(response);
+    if (response.data.status === "error") {
+      this.creditCardError = "クレジットカード情報が不正です";
+      return;
+    }
+    this["$router"].push("/orderFinished");
   }
 }
 </script>
