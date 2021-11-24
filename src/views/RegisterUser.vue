@@ -46,7 +46,7 @@
           </div>
           <div class="input-field col s12">
             <input id="zipcode" type="text" maxlength="8" v-model="zipCode" />
-            <label for="zipcode">郵便番号</label>
+            <label for="zipcode">郵便番号(ハイフンあり)</label>
             <button class="btn" type="button" v-on:click="seartchAddress()">
               <span>住所検索</span>
             </button>
@@ -104,7 +104,7 @@
             <span>登録<i class="material-icons right">done</i></span>
           </button>
           <button class="btn" type="button" v-on:click="reset">
-            <span>リセット<i class="material-icons right">done</i></span>
+            <span>クリア<i class="material-icons right">done</i></span>
           </button>
         </div>
       </div>
@@ -206,23 +206,23 @@ export default class RegisterUser extends Vue {
       this.nameOfError = "姓または名が入力されていません";
       hasError = true;
     }
+    let emailPattern = /[A-Za-z0-9_.-]{1,}@{1}[A-Za-z0-9_.-]{1,}$/;
     if (this.emailAddress === "") {
       this.emailOfError = "メールアドレスが入力されていません";
       hasError = true;
     }
     // メールアドレスをXXXX@XXXXの形式にする
-    let emailPattern = /[A-Za-z0-9_.-]{1,}@{1}[A-Za-z0-9_.-]{1,}$/;
-    if (emailPattern.test(this.emailAddress) === false) {
+    else if (emailPattern.test(this.emailAddress) === false) {
       this.emailOfError = "メールアドレスの形式が不正です";
       hasError = true;
     }
+    let zipCodePattern = /^[0-9]{3}-[0-9]{4}$/;
     if (this.zipCode === "") {
       this.zipCodeOfError = "郵便番号が入力されていません";
       hasError = true;
     }
     // 郵便番号をXXX-XXXXの形式にする
-    let zipcodePattern = /^[0-9]{3}-[0-9]{4}$/;
-    if (zipcodePattern.test(this.zipCode) === false) {
+    else if (zipCodePattern.test(this.zipCode) === false) {
       this.zipCodeOfError = "郵便番号はXXX-XXXXの形式で入力してください";
       hasError = true;
     }
@@ -230,13 +230,13 @@ export default class RegisterUser extends Vue {
       this.addressOfError = "住所が入力されていません";
       hasError = true;
     }
+    let telephonePattern = /^[0-9]{1,5}-[0-9]{1,4}-[0-9]{4}$/;
     if (this.telephone === "") {
       this.telephoneOfError = "電話番号が入力されていません";
       hasError = true;
     }
     // 電話番号をXXXX-XXXX-XXXXの形式にする
-    let telephonePattern = /^[0-9]{1,5}-[0-9]{1,4}-[0-9]{4}$/;
-    if (telephonePattern.test(this.telephone) === false) {
+    else if (telephonePattern.test(this.telephone) === false) {
       this.telephoneOfError =
         "電話番号はXXXX-XXXX-XXXXの形式で入力してください";
       hasError = true;
@@ -246,9 +246,9 @@ export default class RegisterUser extends Vue {
       hasError = true;
     }
     // パスワードを8〜16文字以内で設定する
-    if (this.password.length < 8 || this.password.length > 16) {
+    else if (this.password.length < 8 || this.password.length > 16) {
       this.passwordOfError =
-        "パスワードは８文字以上１６文字以内で設定してください";
+        "パスワードは8文字以上16文字以内で設定してください";
       hasError = true;
     }
     console.log(typeof this.password.length);
@@ -286,8 +286,13 @@ export default class RegisterUser extends Vue {
    * 郵便番号から住所を自動で入力する.
    */
   async seartchAddress(): Promise<void> {
+    this.zipCodeOfError = "";
     // Jsonではなくエラーで返ってきてしまうためtrycatch構文
     try {
+      if (this.zipCode === "") {
+        this.zipCodeOfError = "郵便番号が入力されていません";
+        return;
+      }
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const axiosJsonpAdapter = require("axios-jsonp");
       const response = await axios.get("https://zipcoda.net/api", {
@@ -298,13 +303,19 @@ export default class RegisterUser extends Vue {
       });
       // 結果が複数取れてしまったらエラーメッセージ表示
       if (response.data.items.length !== 1) {
-        this.searchAddressError = "存在しない郵便番号です";
+        this.zipCodeOfError = "存在しない郵便番号です";
+        return;
+      }
+      // 形式をXXX-XXXXにする
+      let zipCodePattern = /^[0-9]{3}-[0-9]{4}$/;
+      if (zipCodePattern.test(this.zipCode) === false) {
+        this.zipCodeOfError = "郵便番号はXXX-XXXXの形式で入力してください";
         return;
       }
       this.address =
         response.data.items[0].pref + response.data.items[0].address;
     } catch {
-      this.searchAddressError = "存在しない郵便番号です";
+      this.zipCodeOfError = "存在しない郵便番号です";
     }
   }
 }
