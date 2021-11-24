@@ -16,7 +16,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="(currentCartItem, i) of currentCartItems"
+                v-for="currentCartItem of currentCartItems"
                 v-bind:key="currentCartItem.id"
               >
                 <td class="cart-item-name">
@@ -65,9 +65,40 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { OrderItem } from "@/types/orderItem";
 
 @Component
-export default class OrderConfirm extends Vue {}
+export default class OrderConfirm extends Vue {
+  // カート内の商品
+  private currentCartItems: Array<OrderItem> = [];
+  // 商品小計（税抜）
+  private totalPrice = 0;
+  // 消費税
+  private taxPrice = 0;
+
+  /**
+   * Vuexストア内ゲッター経由でstateからカート内商品を取得.
+   *
+   * @remarks
+   * Vueインスタンスが生成されたタイミングでVuexストア内のゲッターを呼ぶ。
+   * カート内商品がない場合、エラーメッセージを表示。
+   * 商品小計、消費税を計算して変数に格納する。
+   *
+   */
+  created(): void {
+    // Vuexストアのゲッター経由でカート内の商品を取得
+    this.currentCartItems = this.$store.getters.getItemsInCart;
+    console.log(this.currentCartItems);
+    // OrderItemクラス内のメソッドを利用し、商品小計を取得
+    for (let currentCartItem of this.currentCartItems) {
+      this.totalPrice += currentCartItem.calcSubTotalPrice;
+    }
+    // 消費税の計算
+    const tax = 0.1;
+    this.taxPrice = Math.floor(this.totalPrice * tax);
+    this.totalPrice += this.taxPrice;
+  }
+}
 </script>
 
 <style scoped>
