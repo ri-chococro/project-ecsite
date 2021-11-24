@@ -210,6 +210,10 @@ export default class RegisterUser extends Vue {
       this.emailOfError = "メールアドレスが入力されていません";
       hasError = true;
     }
+    if (this.emailAddress.includes("@") === false) {
+      this.emailOfError = "メールアドレスの形式が不正です";
+      hasError = true;
+    }
     if (this.zipCode === "") {
       this.zipCodeOfError = "郵便番号が入力されていません";
       hasError = true;
