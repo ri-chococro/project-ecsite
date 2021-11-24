@@ -128,9 +128,13 @@ export default class ItemDetail extends Vue {
     true,
     []
   );
+  //商品数量
   private quantity = 0;
+  //商品サイズ
   private size = "";
+  //選択したトッピングID
   private toppingIds = [];
+  //選択した商品ID
   private itemId = 0;
   //選択したトッピング情報
   private checkToppings = new Array<Topping>();
