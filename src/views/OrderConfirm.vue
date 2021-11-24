@@ -4,7 +4,7 @@
       <div class="container">
         <h1 class="page-title">注文内容確認</h1>
         <!-- table -->
-        <div v-if="!noItem" class="row">
+        <div class="row">
           <table class="striped">
             <thead>
               <tr>
@@ -52,7 +52,7 @@
           </table>
         </div>
 
-        <div v-if="!noItem" class="row cart-total-price">
+        <div class="row cart-total-price">
           <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
           <div>ご注文金額合計：{{ totalPrice.toLocaleString() }}円 (税込)</div>
         </div>
@@ -81,9 +81,7 @@ export default class OrderConfirm extends Vue {
    *
    * @remarks
    * Vueインスタンスが生成されたタイミングでVuexストア内のゲッターを呼ぶ。
-   * カート内商品がない場合、エラーメッセージを表示。
    * 商品小計、消費税を計算して変数に格納する。
-   *
    */
   created(): void {
     // Vuexストアのゲッター経由でカート内の商品を取得
