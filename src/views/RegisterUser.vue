@@ -47,7 +47,7 @@
           <div class="input-field col s12">
             <input id="zipcode" type="text" maxlength="8" v-model="zipCode" />
             <label for="zipcode">郵便番号(ハイフンあり)</label>
-            <button class="btn" type="button" v-on:click="seartchAddress()">
+            <button class="btn" type="button" v-on:click="searchAddress()">
               <span>住所検索</span>
             </button>
           </div>
@@ -285,7 +285,7 @@ export default class RegisterUser extends Vue {
   /**
    * 郵便番号から住所を自動で入力する.
    */
-  async seartchAddress(): Promise<void> {
+  async searchAddress(): Promise<void> {
     this.zipCodeOfError = "";
     // Jsonではなくエラーで返ってきてしまうためtrycatch構文
     try {
