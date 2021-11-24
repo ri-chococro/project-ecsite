@@ -34,6 +34,8 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/OrderFinished.vue"),
   },
   {
+    path: "/orderConfirm",
+    component: () => import("../views/OrderConfirm.vue"),
     path: "/cartList",
     component: () => import("../views/CartList.vue"),
   },
