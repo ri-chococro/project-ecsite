@@ -243,6 +243,13 @@ export default class RegisterUser extends Vue {
       this.passwordOfError = "パスワードが入力されていません";
       hasError = true;
     }
+    // パスワードを8〜16文字以内で設定する
+    if (this.password.length < 8 || this.password.length > 16) {
+      this.passwordOfError =
+        "パスワードは８文字以上１６文字以内で設定してください";
+      hasError = true;
+    }
+    console.log(typeof this.password.length);
     if (this.confirmationPassword === "") {
       this.confirmationOfError = "確認用パスワードが入力されていません";
       hasError = true;
