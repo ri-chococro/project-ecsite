@@ -1,4 +1,3 @@
-
 import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
@@ -102,7 +101,9 @@ export default new Vuex.Store({
         return state.items.filter((item) => item.name.includes(name));
       };
     },
+    getUserId(state) {
+      return state.user.id;
+    },
   },
   modules: {},
-  
 });
