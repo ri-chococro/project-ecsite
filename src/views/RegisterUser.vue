@@ -41,7 +41,7 @@
         </div>
         <div class="row">
           <div class="error">
-            {{ zipCodeOfError }}<br>
+            {{ zipCodeOfError }}<br />
             {{ searchAddressError }}
           </div>
           <div class="input-field col s12">
@@ -260,20 +260,26 @@ export default class RegisterUser extends Vue {
    * 郵便番号から住所を自動で入力する.
    */
   async seartchAddress(): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const axiosJsonpAdapter = require("axios-jsonp");
-    const response = await axios.get("https://zipcoda.net/api", {
-      adapter: axiosJsonpAdapter,
-      params: {
-        zipcode: this.zipCode,
-      },
-    });
-    // 結果が複数取れてしまったらエラーメッセージ表示
-    if (response.data.items.length !== 1) {
+    // Jsonではなくエラーで返ってきてしまうためtrycatch構文
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const axiosJsonpAdapter = require("axios-jsonp");
+      const response = await axios.get("https://zipcoda.net/api", {
+        adapter: axiosJsonpAdapter,
+        params: {
+          zipcode: this.zipCode,
+        },
+      });
+      // 結果が複数取れてしまったらエラーメッセージ表示
+      if (response.data.items.length !== 1) {
+        this.searchAddressError = "存在しない郵便番号です";
+        return;
+      }
+      this.address =
+        response.data.items[0].pref + response.data.items[0].address;
+    } catch {
       this.searchAddressError = "存在しない郵便番号です";
-      return;
     }
-    this.address = response.data.items[0].pref + response.data.items[0].address;
   }
 }
 </script>
