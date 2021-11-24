@@ -3,8 +3,9 @@
     <div class="top-wrapper">
       <div class="container">
         <h1 class="page-title">ショッピングカート</h1>
+        <div v-if="noItem" class="error-message">カートに商品がありません</div>
         <!-- table -->
-        <div class="row">
+        <div v-if="!noItem" class="row">
           <table class="striped">
             <thead>
               <tr>
@@ -108,11 +109,11 @@
           </table>
         </div>
 
-        <div class="row cart-total-price">
-          <div>消費税：{{ taxPrice.toLocaleStrong() }}円</div>
-          <div>ご注文金額合計：{{ totalPrice.toLocaleStrong() }}円 (税込)</div>
+        <div v-if="!noItem" class="row cart-total-price">
+          <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
+          <div>ご注文金額合計：{{ totalPrice.toLocaleString() }}円 (税込)</div>
         </div>
-        <div class="row order-confirm-btn">
+        <div v-if="!noItem" class="row order-confirm-btn">
           <button
             class="btn"
             type="button"
@@ -137,12 +138,13 @@ export default class CartList extends Vue {
   private currentCartItems: Array<OrderItem> = [];
   private totalPrice = 0;
   private taxPrice = 0;
-  private noItem = true;
+  private noItem = false;
 
   created(): void {
-    this.currentCartItems = this.$store.getters.getItemsInCart();
+    this.currentCartItems = this.$store.getters.getItemsInCart;
+    console.log(this.currentCartItems);
     if (this.currentCartItems.length === 0) {
-      this.noItem = false;
+      this.noItem = true;
     }
     for (let currentCartItem of this.currentCartItems) {
       this.totalPrice += currentCartItem.calcSubTotalPrice;
@@ -178,5 +180,8 @@ export default class CartList extends Vue {
 
 .order-confirm-btn {
   text-align: center;
+}
+.error-message {
+  color: red;
 }
 </style>
