@@ -15,17 +15,17 @@ export class OrderItem {
     public _orderToppingList: Array<OrderTopping> //注文トッピングリスト
   ) {}
 
-  get calcSubTotalPrice(): string {
+  get calcSubTotalPrice(): number {
     if (this.size === "M") {
       const itemSubTotal = this.item.priceM * this.quantity;
       const toppingSubTotal =
         this.orderToppingList[0].Topping.priceM * this.orderToppingList.length;
-      return (itemSubTotal + toppingSubTotal).toLocaleString();
+      return itemSubTotal + toppingSubTotal;
     } else {
       const itemSubTotal = this.item.priceL * this.quantity;
       const toppingSubTotal =
         this.orderToppingList[0].Topping.priceL * this.orderToppingList.length;
-      return (itemSubTotal + toppingSubTotal).toLocaleString();
+      return itemSubTotal + toppingSubTotal;
     }
   }
 
