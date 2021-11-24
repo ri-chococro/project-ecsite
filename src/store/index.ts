@@ -1,3 +1,4 @@
+
 import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
@@ -103,4 +104,5 @@ export default new Vuex.Store({
     },
   },
   modules: {},
+  
 });

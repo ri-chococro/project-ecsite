@@ -119,7 +119,7 @@ export default class Login extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 .login-page {
   width: 600px;
 }
