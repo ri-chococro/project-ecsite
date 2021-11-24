@@ -44,7 +44,7 @@
                 </td>
                 <td>
                   <div class="text-center">
-                    {{ currentCartItem.calcSubTotalPrice.toLocaleString() }}円
+                    {{ currentCartItem.calcSubTotalPrice }}円
                   </div>
                 </td>
                 <td>
@@ -109,8 +109,8 @@
         </div>
 
         <div class="row cart-total-price">
-          <div>消費税：8,000円</div>
-          <div>ご注文金額合計：38,000円 (税込)</div>
+          <div>消費税：{{ taxPrice.toLocaleStrong() }}円</div>
+          <div>ご注文金額合計：{{ totalPrice.toLocaleStrong() }}円 (税込)</div>
         </div>
         <div class="row order-confirm-btn">
           <button
@@ -149,6 +149,7 @@ export default class CartList extends Vue {
     }
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
+    this.totalPrice += this.taxPrice;
   }
 }
 </script>
