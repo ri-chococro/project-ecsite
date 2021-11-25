@@ -145,6 +145,7 @@ export default new Vuex.Store({
         return state.items.filter((item) => item.name.includes(name));
       };
     },
+
     /**
 
      * カート内商品一覧取得して返す.
