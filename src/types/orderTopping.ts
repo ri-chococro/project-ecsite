@@ -34,11 +34,11 @@ export class OrderTopping {
     this._orderItemId = orderItemId;
   }
 
-  public get Topping(): Array<Topping> {
-    return this._Topping;
+  public get topping(): Topping {
+    return this._topping;
   }
 
-  public set Topping(Topping: Array<Topping>) {
-    this._Topping = Topping;
+  public set topping(topping: Topping) {
+    this._topping = topping;
   }
 }
