@@ -7,7 +7,7 @@ export class OrderTopping {
     public _id: number, //ID
     public _toppingId: number, //トッピングID
     public _orderItemId: number, //注文商品ID
-    public _Topping: Array<Topping> //トッピング
+    public _topping: Topping //トッピング
   ) {}
 
   public get id(): number {
