@@ -103,6 +103,7 @@ export default class CartList extends Vue {
    *
    */
   created(): void {
+    console.log("createdが呼ばれた");
     // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
     console.log(this.currentCartItems);
@@ -127,6 +128,21 @@ export default class CartList extends Vue {
    */
   onDeleteClick(index: number): void {
     this.$store.commit("deleteItemInCart", index);
+    this.totalPrice = 0;
+    // Vuexストアのゲッター経由でカート内の商品を取得
+    this.currentCartItems = this.$store.getters.getItemsInCart;
+    // カート内に商品ない場合フラグを立てる
+    if (this.currentCartItems.length === 0) {
+      this.noItem = true;
+    }
+    // OrderItemクラス内のメソッドを利用し、商品小計を取得
+    for (let currentCartItem of this.currentCartItems) {
+      this.totalPrice += currentCartItem.calcSubTotalPrice;
+    }
+    // 消費税の計算
+    const tax = 0.1;
+    this.taxPrice = Math.floor(this.totalPrice * tax);
+    this.totalPrice += this.taxPrice;
   }
 
   /**

@@ -94,29 +94,28 @@ export default class Login extends Vue {
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/user/login",
       {
-        mailAddress: this.mailAddress,
+        email: this.mailAddress,
         password: this.password,
       }
     );
     if (response.data.status === "success") {
       // ログイン状態にする(stateのisLoginをtrueにする)
       this.$store.commit("logined");
+      
+      let user = response.data.responseMap.user;
       this["$store"].commit("setLoginUser", {
-        user: {
-          id: response.data.id,
-          name: response.data.name,
-          email: response.data.email,
-          password: response.data.password,
-          zipcode: response.data.zipcode,
-          address: response.data.address,
-          telephone: response.data.telephone,
-        },
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        zipcode: user.zipcode,
+        address: user.address,
+        telephone: user.telephone,
       });
       this["$router"].push("/itemList");
     } else if (response.data.status === "error") {
       this.mismatchError = response.data.message;
     }
-    console.log(response);
   }
 }
 </script>

@@ -101,7 +101,7 @@ export default new Vuex.Store({
      * @param payload  - ショッピングカートに追加した商品情報
      */
     addItemInCart(state, payload) {
-      state.items.push(payload.item);
+      state.itemsInCart.push(payload);
     },
   },
   actions: {
@@ -174,6 +174,15 @@ export default new Vuex.Store({
         return items[0];
       };
     },
+    /**
+     * ログインしているユーザーの情報を返す.
+     * 
+     * @param state -ステート
+     * @returns - ログインユーザー情報
+     */
+    getLoginUser(state) {
+      return state.user;
+    }
   },
   modules: {},
   //ログイン状態フラグを保持するプラグイン
