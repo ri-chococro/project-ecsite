@@ -176,6 +176,7 @@
           />
           <label for="credit-number">クレジットカード番号</label>
         </div>
+        <span class="error">{{ cardDateError }}</span>
         <div class="date-of-expiry">
           有効期限：<select
             name="card_exp_month"
@@ -269,9 +270,8 @@ const axiosJsonpAdapter = require("axios-jsonp");
 import { addHours, format } from "date-fns";
 import { OrderItem } from "@/types/orderItem";
 import { User } from "@/types/user";
-import CreditCardComponent from "./CreditCardComponent.vue";
 
-@Component({ components: { CreditCardComponent } })
+@Component
 export default class OrderComponent extends Vue {
   @Prop()
   totalPrice!: number;
@@ -310,6 +310,7 @@ export default class OrderComponent extends Vue {
   private telErrorMessage = "";
   // 配達日時のエラーメッセージ
   private deliveryDateErrorMessage = "";
+
   // クレジットカード番号
   private cardNumber = "";
   // 有効期限（月）
@@ -322,6 +323,8 @@ export default class OrderComponent extends Vue {
   private cvv = "";
   // クレジットカード番号のエラー
   private cardNumberError = "";
+  // 有効期限切れのエラー
+  private cardDateError = "";
   // 名義人のエラー
   private cardNameError = "";
   // セキュリティコードのエラー
@@ -407,6 +410,27 @@ export default class OrderComponent extends Vue {
 
     console.dir("response:" + JSON.stringify(response));
 
+    // クレジットカード決済のときの処理
+    if (this.paymentMethod === 2) {
+      const userId = this["$store"].getters.getUserId;
+      const response = await axios.post(
+        "http://153.127.48.168:8080/sample-credit-card-web-api/credit-card/payment",
+        {
+          user_id: userId,
+          amount: this.totalPrice,
+          card_number: this.cardNumber,
+          card_exp_month: this.cardExpMonth,
+          card_exp_year: this.cardExpYear,
+          card_name: this.cardName,
+          card_cvv: this.cvv,
+        }
+      );
+      console.log(response);
+      if (response.data.status === "error") {
+        this.creditCardError = "クレジットカード情報が不正です";
+        return;
+      }
+    }
     this.$router.push("/orderFinished");
   }
 
@@ -426,6 +450,7 @@ export default class OrderComponent extends Vue {
     this.cardNumberError = "";
     this.cardNameError = "";
     this.cvvError = "";
+    this.cardDateError = "";
 
     let hasError = false;
     // 共通入力情報のエラー（代引き、クレジットカード決済）
@@ -471,6 +496,16 @@ export default class OrderComponent extends Vue {
       else if (cardNumberPattern.test(this.cardNumber) === false) {
         this.cardNumberError =
           "クレジットカード番号は半角数字で14桁~16桁で入力してください";
+        hasError = true;
+      }
+      // 有効期限が切れているときのエラー
+      let nowDate = new Date();
+      let cardDate = new Date(
+        Number(this.cardExpYear),
+        Number(this.cardExpMonth)
+      );
+      if (cardDate < nowDate) {
+        this.cardDateError = "有効期限が切れています";
         hasError = true;
       }
       let cardNamePattern = /[A-Z]{1,50}$/;
@@ -553,10 +588,6 @@ export default class OrderComponent extends Vue {
   height: auto;
 }
 .container {
-  width: 500px;
-  text-align: center;
-}
-.error {
-  text-align: left;
+  width: 550px;
 }
 </style>
