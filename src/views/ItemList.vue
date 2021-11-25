@@ -3,6 +3,7 @@
     <!-- search form -->
     <div class="search-wrapper">
       <div class="container">
+        
         <form method="post" class="search-form">
           {{ searchNameMessage }}
           <input
@@ -16,6 +17,7 @@
             type="button"
             v-on:click="onSearchClick"
           >
+
             <span>検索</span>
           </button>
         </form>
