@@ -4,7 +4,7 @@
       <div class="header">
         <div class="header-left">
           <router-link to="/itemList">
-            <img class="logo" src="img/header_logo.png" />
+            <img class="logo" src="img_aloha/header_logo.png" />
           </router-link>
         </div>
         <div class="header-right">
@@ -45,7 +45,7 @@ export default class Header extends Vue {
 
 <style scoped>
 header {
-  height: 80px;
+  height: 65px;
   width: 100%;
   background-color: rgba(255, 255, 255);
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
@@ -59,7 +59,8 @@ header {
 }
 
 .logo {
-  width: 230px;
+  width: 200px;
+  margin-top: 15px;
 }
 
 .header-right {
@@ -67,7 +68,7 @@ header {
 }
 
 .header-right a {
-  line-height: 80px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
+  line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
   color: gray;
   display: block; /* a要素をブロック要素に変更(borderまでがクリックできるようになる) */
