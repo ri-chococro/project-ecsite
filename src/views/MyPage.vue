@@ -2,7 +2,7 @@
   <div class="container">
     <div class="profile-wrapper">
       <div class="icon-name">
-        <img src="img/no-profile.png" class="profile-img" />
+        <img src="img_aloha/no-profile.png" class="profile-img" />
         <div class="name">{{ loginUser.name }}</div>
       </div>
       <div>

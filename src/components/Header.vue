@@ -20,7 +20,7 @@
             <i class="fas fa-sign-in-alt"></i>ログアウト
           </router-link>
           <router-link to="/myPage" v-if="isLogin"
-            ><img src="img/no-profile.png" class="profile-img"
+            ><img src="img_aloha/no-profile.png" class="profile-img"
           /></router-link>
         </div>
       </div>
@@ -93,7 +93,7 @@ header {
 .profile-img {
   width: 40px;
   height: 40px;
-  margin-top: 17px;
+  margin-top: 10px;
 }
 
 /* スマートフォン用のメニューアイコン */
