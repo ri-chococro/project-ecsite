@@ -183,7 +183,8 @@
             class="browser-default"
             v-model.number="cardExpMonth"
           >
-            <option value="1" selected>1</option>
+            <option disabled selected>選択してください</option>
+            <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
@@ -203,7 +204,8 @@
             class="browser-default"
             v-model.number="cardExpYear"
           >
-            <option value="2021" selected>2021</option>
+            <option disabled selected>選択してください</option>
+            <option value="2021">2021</option>
             <option value="2022">2022</option>
             <option value="2023">2023</option>
             <option value="2024">2024</option>
@@ -412,11 +414,10 @@ export default class OrderComponent extends Vue {
 
     // クレジットカード決済のときの処理
     if (this.paymentMethod === 2) {
-      const userId = this["$store"].getters.getUserId;
       const response = await axios.post(
         "http://153.127.48.168:8080/sample-credit-card-web-api/credit-card/payment",
         {
-          user_id: userId,
+          user_id: this.loginUser.id,
           amount: this.totalPrice,
           card_number: this.cardNumber,
           card_exp_month: this.cardExpMonth,
@@ -426,11 +427,13 @@ export default class OrderComponent extends Vue {
         }
       );
       console.log(response);
+
       if (response.data.status === "error") {
         this.creditCardError = "クレジットカード情報が不正です";
         return;
       }
     }
+
     this.$router.push("/orderFinished");
   }
 
@@ -504,7 +507,13 @@ export default class OrderComponent extends Vue {
         Number(this.cardExpYear),
         Number(this.cardExpMonth)
       );
-      if (cardDate < nowDate) {
+      if (
+        this.cardExpMonth === "" ||
+        this.cardExpYear === ""
+      ) {
+        this.cardDateError = "有効期限を選択してください";
+        hasError = true;
+      } else if (cardDate < nowDate) {
         this.cardDateError = "有効期限が切れています";
         hasError = true;
       }
@@ -588,6 +597,6 @@ export default class OrderComponent extends Vue {
   height: auto;
 }
 .container {
-  width: 550px;
+  width: 600px;
 }
 </style>
