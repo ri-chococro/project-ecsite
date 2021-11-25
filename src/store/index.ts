@@ -149,7 +149,6 @@ export default new Vuex.Store({
     },
 
     /**
-
      * カート内商品一覧取得して返す.
      * @param state - state(itemsInCart)を利用するための引数
      * @returns カート内商品一覧
@@ -235,7 +234,7 @@ export default new Vuex.Store({
       };
     },
     /**
-     * ログインしているユーザーの情報を返す.
+    * ログインしているユーザーの情報を返す.
      * 
      * @param state -ステート
      * @returns - ログインユーザー情報
