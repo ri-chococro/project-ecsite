@@ -94,7 +94,7 @@ export default class Login extends Vue {
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/user/login",
       {
-        mailAddress: this.mailAddress,
+        email: this.mailAddress,
         password: this.password,
       }
     );
