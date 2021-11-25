@@ -144,7 +144,7 @@
           <input
             name="paymentMethod"
             type="radio"
-            value="1"
+            :value="1"
             v-model.number="paymentMethod"
           />
           <span>代金引換</span>
@@ -153,7 +153,7 @@
           <input
             name="paymentMethod"
             type="radio"
-            value="2"
+            :value="2"
             v-model.number="paymentMethod"
           />
           <span>クレジットカード</span>
@@ -170,12 +170,11 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-property-decorator";
-// import { OrderItem } from "../types/orderItem";
 import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axiosJsonpAdapter = require("axios-jsonp");
-import { format } from "date-fns";
-import { OrderItem } from '@/types/orderItem';
+import { addHours, format } from "date-fns";
+import { OrderItem } from "@/types/orderItem";
 
 @Component
 export default class OrderComponent extends Vue {
@@ -194,12 +193,12 @@ export default class OrderComponent extends Vue {
   private distinationAddress = "";
   // 電話番号
   private distinationTel = "";
-  // 配達日時 文字列で入ってくるtype="date"インプット
-  private deliveryDate = ""; // 2021-11-16
+  // 配達日時
+  private deliveryDate = "";
   // 配達時間
-  private deliveryTime = ""; // 10
+  private deliveryTime = "";
   // 支払い方法
-  private paymentMethod = 0;
+  private paymentMethod = 1;
   // 商品リスト
   private orderItemList = [];
   // 名前のエラーメッセージ
@@ -223,9 +222,6 @@ export default class OrderComponent extends Vue {
     if (this.hasInputErrors()) {
       return;
     }
-
-    const URL = "http://153.127.48.168:8080/ecsite-api/order";
-
     // 代金引換の場合:1 / クレジットカード決済の場合:2
     let status;
     if (this.paymentMethod === 1) {
@@ -234,27 +230,57 @@ export default class OrderComponent extends Vue {
       status = 2;
     }
 
-    // 送信する配達日時をフォーマット
     let deliveryDate = new Date(this.deliveryDate);
+    // deliveryDateと時間から、配達日時を求める
+    const deliveryDateTime = new Date(
+      deliveryDate.getFullYear(),
+      deliveryDate.getMonth(),
+      deliveryDate.getDate(),
+      Number(this.deliveryTime)
+    );
+
     // 配達日時が現在時刻の3時間後より前の場合はエラー
     let now = new Date();
     if (deliveryDateTime < addHours(now, 3)) {
       this.deliveryDateErrorMessage = "今から3時間後以降の日時をご入力ください";
       return;
     }
+    // 配達日時をフォーマット
+    const formattedDeliveryTime = format(
+      deliveryDateTime,
+      "yyyy/MM/dd HH:mm:ss"
+    );
+
+    // WEB APIに渡す注文商品のリストを作成
+    let orderItemFormList = [];
+    for (let orderItem of this.orderItems) {
+      // 注文商品のリストに渡すトッピングのリストを作成
+      let orderToppingFormList = [];
+      for (let topping of orderItem.orderToppingList) {
+        orderToppingFormList.push(topping.toppingId);
+      }
+      orderItemFormList.push({
+        itemId: orderItem.itemId,
+        quantity: orderItem.quantity,
+        size: orderItem.size,
+        orderToppingFormList,
+      });
+    }
+
+    const URL = "http://153.127.48.168:8080/ecsite-api/order";
 
     const response = await axios.post(URL, {
       userId: "1",
-      status: status,
+      status,
       totalPrice: this.totalPrice,
       destinationName: this.distinationName,
       destinationEmail: this.distinationEmail,
       destinationZipcode: this.distinationZipcode,
       destinationAddress: this.distinationAddress,
       destinationTel: this.distinationTel,
-      deliveryTime: `${formattedDate} ${formattedTime}`,
+      deliveryTime: formattedDeliveryTime,
       paymentMethod: this.paymentMethod,
-      orderItemFormList: this.orderItems,
+      orderItemFormList,
     });
 
     console.dir("response:" + JSON.stringify(response));
