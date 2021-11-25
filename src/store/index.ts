@@ -101,7 +101,7 @@ export default new Vuex.Store({
      * @param payload  - ショッピングカートに追加した商品情報
      */
     addItemInCart(state, payload) {
-      state.items.push(payload.item);
+      state.itemsInCart.push(payload);
     },
   },
   actions: {
