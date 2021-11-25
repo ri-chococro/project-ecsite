@@ -112,6 +112,7 @@ import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class ItemDetail extends Vue {
+  //Itemオブジェクト
   private currentItem = new Item(
     0,
     "XXXX",
@@ -126,7 +127,7 @@ export default class ItemDetail extends Vue {
   //商品数量
   private quantity = 0;
   //商品サイズ
-  private size = "";
+  private size = "M";
   //選択したトッピングID
   private toppingIds = [];
   //選択した商品ID
@@ -260,6 +261,11 @@ export default class ItemDetail extends Vue {
   color: black;
 }
 
+.item-toppings {
+  font-size: 15px;
+  padding: 0 200px 0 200px;
+}
+
 .item-topping {
   margin-right: 10px;
 }
@@ -285,4 +291,5 @@ export default class ItemDetail extends Vue {
 .item-cart-btn {
   text-align: center;
 }
+
 </style>
