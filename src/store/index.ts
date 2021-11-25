@@ -173,6 +173,15 @@ export default new Vuex.Store({
         return items[0];
       };
     },
+    /**
+     * ログインしているユーザーの情報を返す.
+     * 
+     * @param state -ステート
+     * @returns - ログインユーザー情報
+     */
+    getLoginUser(state) {
+      return state.user;
+    }
   },
   modules: {},
   //ログイン状態フラグを保持するプラグイン
