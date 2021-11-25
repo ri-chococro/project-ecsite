@@ -160,6 +160,100 @@
         </label>
       </span>
     </div>
+     <div class="container" v-if="paymentMethod===2">
+    <form>
+      <h2 class="page-title">クレジットカード情報</h2>
+      <span class="error">{{ creditCardError }}</span>
+      <span class="error">{{ cardNumberError }}</span>
+      <div class="input-field col s6">
+        <input
+          id="credit-number"
+          type="text"
+          class="validate"
+          maxlength="16"
+          v-model="cardNumber"
+          required
+        />
+        <label for="credit-number">クレジットカード番号</label>
+      </div>
+      <div class="date-of-expiry">
+        有効期限：<select
+          name="card_exp_month"
+          class="browser-default"
+          v-model.number="cardExpMonth"
+        >
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+        月
+        <select
+          name="card_exp_year"
+          id=""
+          class="browser-default"
+          v-model.number="cardExpYear"
+        >
+          <option value="2021" selected>2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+          <option value="2033">2033</option>
+          <option value="2034">2034</option>
+          <option value="2035">2035</option>
+          <option value="2036">2036</option>
+          <option value="2037">2037</option>
+          <option value="2038">2038</option>
+          <option value="2039">2039</option>
+          <option value="2040">2040</option>
+          <option value="2041">2041</option>
+        </select>
+        年
+      </div>
+      <span class="error"> {{ cardNameError }}</span>
+      <div class="input-field col s6">
+        <input
+          id="credit-name"
+          type="text"
+          class="validate"
+          maxlength="50"
+          v-model="cardName"
+          required
+        />
+        <label for="credit-name">カード名義人</label>
+      </div>
+      <span class="error"> {{ cvvError }}</span>
+
+      <div class="input-field col s6">
+        <input
+          id="credit-cord"
+          type="text"
+          class="validate"
+          maxlength="4"
+          v-model.number="cvv"
+          required
+        />
+        <label for="credit-cord">セキュリティコード</label>
+        <button type="button" v-on:click="onclick">ぼたん</button>
+      </div>
+    </form>
+  </div>
     <div class="row order-confirm-btn">
       <button class="btn" type="button" v-on:click="onDoOrder">
         <span>この内容で注文する</span>
@@ -176,8 +270,9 @@ const axiosJsonpAdapter = require("axios-jsonp");
 import { addHours, format } from "date-fns";
 import { OrderItem } from "@/types/orderItem";
 import { User } from "@/types/user";
+import CreditCardComponent from "./CreditCardComponent.vue";
 
-@Component
+@Component({ components: { CreditCardComponent } })
 export default class OrderComponent extends Vue {
   @Prop()
   totalPrice!: number;
@@ -393,5 +488,19 @@ export default class OrderComponent extends Vue {
 
 .order-confirm-btn {
   text-align: center;
+}
+.date-of-expiry {
+  display: flex;
+}
+.browser-default {
+  width: auto;
+  height: auto;
+}
+.container {
+  width: 500px;
+  text-align: center;
+}
+.error {
+  text-align: left;
 }
 </style>

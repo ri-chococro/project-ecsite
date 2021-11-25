@@ -2,7 +2,7 @@
   <div class="container">
     <form>
       <h2 class="page-title">クレジットカード情報</h2>
-      <span>{{ creditCardError }}</span>
+      <span class="error">{{ creditCardError }}</span>
       <span class="error">{{ cardNumberError }}</span>
       <div class="input-field col s6">
         <input
@@ -99,6 +99,7 @@
 import axios from "axios";
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Emit } from "vue-property-decorator";
 @Component
 export default class CreditCardComponent extends Vue {
   // クレジットカード番号
@@ -117,9 +118,10 @@ export default class CreditCardComponent extends Vue {
   private cardNameError = "";
   // セキュリティコードのエラー
   private cvvError = "";
-  // セキュリティコードのエラー
+  // カード
   private creditCardError = "";
   
+  @Emit()
   async onclick(): Promise<void> {
     let hasError = false;
     this.cardNumberError = "";
@@ -167,14 +169,13 @@ export default class CreditCardComponent extends Vue {
     const response = await axios.post(
       "http://153.127.48.168:8080/sample-credit-card-web-api/credit-card/payment",
       {
-        userId: userId,
-        // orderNumber: this.orderNumber,
-        // amount: this.amount,
-        cardNumber: Number(this.cardNumber),
-        cardExpMonth: Number(this.cardExpMonth),
-        cardExpYear: Number(this.cardExpYear),
-        cardName: this.cardName,
-        cvv: Number(this.cvv),
+        user_id: userId,
+        amount: 1,
+        card_number:this.cardNumber,
+        card_exp_month:this.cardExpMonth,
+        card_exp_year:this.cardExpYear,
+        card_name: this.cardName,
+        card_cvv: this.cvv,
       }
     );
     console.log(response);
