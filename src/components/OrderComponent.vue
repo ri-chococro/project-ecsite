@@ -250,7 +250,7 @@
           required
         />
         <label for="credit-cord">セキュリティコード</label>
-        <button type="button" v-on:click="onclick">ぼたん</button>
+      
       </div>
     </form>
   </div>
@@ -311,6 +311,25 @@ export default class OrderComponent extends Vue {
   private telErrorMessage = "";
   // 配達日時のエラーメッセージ
   private deliveryDateErrorMessage = "";
+   // クレジットカード番号
+  private cardNumber = "";
+  // 有効期限（月）
+  private cardExpMonth = "";
+  // 有効期限（年）
+  private cardExpYear = "";
+  //カード名義人
+  private cardName = "";
+  // セキュリティコード
+  private cvv = "";
+  // クレジットカード番号のエラー
+  private cardNumberError = "";
+  // 名義人のエラー
+  private cardNameError = "";
+  // セキュリティコードのエラー
+  private cvvError = "";
+  // カード情報が不正のときのエラー
+  private creditCardError = "";
+  
   /**
    * ログインユーザーを取得.
    */
@@ -321,6 +340,7 @@ export default class OrderComponent extends Vue {
    * 注文する.
    */
   async onDoOrder(): Promise<void> {
+
     // エラーがあれば注文に進まない
     if (this.hasInputErrors()) {
       return;

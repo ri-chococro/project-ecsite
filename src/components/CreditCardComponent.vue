@@ -99,7 +99,7 @@
 import axios from "axios";
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Emit } from "vue-property-decorator";
+
 @Component
 export default class CreditCardComponent extends Vue {
   // クレジットカード番号
@@ -121,7 +121,6 @@ export default class CreditCardComponent extends Vue {
   // カード
   private creditCardError = "";
   
-  @Emit()
   async onclick(): Promise<void> {
     let hasError = false;
     this.cardNumberError = "";
