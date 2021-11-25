@@ -175,6 +175,7 @@ import axios from "axios";
 const axiosJsonpAdapter = require("axios-jsonp");
 import { addHours, format } from "date-fns";
 import { OrderItem } from "@/types/orderItem";
+import { User } from "@/types/user";
 
 @Component
 export default class OrderComponent extends Vue {
@@ -183,6 +184,8 @@ export default class OrderComponent extends Vue {
   @Prop()
   orderItems!: OrderItem[];
 
+  // ログインユーザー
+  private loginUser!: User;
   // 名前
   private distinationName = "";
   // メールアドレス
@@ -213,7 +216,12 @@ export default class OrderComponent extends Vue {
   private telErrorMessage = "";
   // 配達日時のエラーメッセージ
   private deliveryDateErrorMessage = "";
-
+  /**
+   * ログインユーザーを取得.
+   */
+  created(): void {
+    this.loginUser = this.$store.getters.getLoginUser;
+  }
   /**
    * 注文する.
    */
@@ -222,6 +230,7 @@ export default class OrderComponent extends Vue {
     if (this.hasInputErrors()) {
       return;
     }
+
     // 代金引換の場合:1 / クレジットカード決済の場合:2
     let status;
     if (this.paymentMethod === 1) {
@@ -270,7 +279,7 @@ export default class OrderComponent extends Vue {
     const URL = "http://153.127.48.168:8080/ecsite-api/order";
 
     const response = await axios.post(URL, {
-      userId: "1",
+      userId: this.loginUser.id,
       status,
       totalPrice: this.totalPrice,
       destinationName: this.distinationName,
