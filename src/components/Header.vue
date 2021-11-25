@@ -19,8 +19,9 @@
           <router-link to="/logout" v-if="isLogin">
             <i class="fas fa-sign-in-alt"></i>ログアウト
           </router-link>
-
-          <router-link to="/orderHistory" v-if="isLogin">注文履歴</router-link>
+          <router-link to="/myPage" v-if="isLogin"
+            ><img src="img_aloha/no-profile.png" class="profile-img"
+          /></router-link>
         </div>
       </div>
     </div>
@@ -87,6 +88,12 @@ header {
 /* fontawesome(カートアイコン＆ログインアイコンの設定) */
 .fas {
   margin-right: 5px;
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  margin-top: 10px;
 }
 
 /* スマートフォン用のメニューアイコン */

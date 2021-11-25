@@ -384,7 +384,7 @@ export default class OrderComponent extends Vue {
       // 注文商品のリストに渡すトッピングのリストを作成
       let orderToppingFormList = [];
       for (let topping of orderItem.orderToppingList) {
-        orderToppingFormList.push(topping.toppingId);
+        orderToppingFormList.push({ toppingId: topping.toppingId });
       }
       orderItemFormList.push({
         itemId: orderItem.itemId,
