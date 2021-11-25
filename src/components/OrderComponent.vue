@@ -236,8 +236,12 @@ export default class OrderComponent extends Vue {
 
     // 送信する配達日時をフォーマット
     let deliveryDate = new Date(this.deliveryDate);
-    let formattedDate = format(deliveryDate, "yyyy/MM/dd");
-    let formattedTime = `${this.deliveryTime}:00:00`;
+    // 配達日時が現在時刻の3時間後より前の場合はエラー
+    let now = new Date();
+    if (deliveryDateTime < addHours(now, 3)) {
+      this.deliveryDateErrorMessage = "今から3時間後以降の日時をご入力ください";
+      return;
+    }
 
     const response = await axios.post(URL, {
       userId: "1",
@@ -277,8 +281,12 @@ export default class OrderComponent extends Vue {
       this.nameErrorMessage = "名前を入力してください";
       hasError = true;
     }
+    let emailPattern = /[A-Za-z0-9_.-]{1,}@{1}[A-Za-z0-9_.-]{1,}$/;
     if (this.distinationEmail === "") {
       this.emailErrorMessage = "メールアドレスを入力して下さい";
+      hasError = true;
+    } else if (emailPattern.test(this.distinationEmail) === false) {
+      this.emailErrorMessage = "メールアドレスの形式が不正です";
       hasError = true;
     }
     if (this.distinationZipcode === "") {
@@ -289,8 +297,12 @@ export default class OrderComponent extends Vue {
       this.addressErrorMessage = "住所を入力して下さい";
       hasError = true;
     }
+    let telephonePattern = /^[0-9]{1,5}-[0-9]{1,4}-[0-9]{4}$/;
     if (this.distinationTel === "") {
       this.telErrorMessage = "電話番号を入力して下さい";
+      hasError = true;
+    } else if (telephonePattern.test(this.distinationTel) === false) {
+      this.telErrorMessage = "電話番号はXXXX-XXXX-XXXXの形式で入力してください";
       hasError = true;
     }
     if (this.deliveryDate === "" || this.deliveryTime === "") {
