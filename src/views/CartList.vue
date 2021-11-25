@@ -38,7 +38,7 @@
                     v-bind:key="topping.id"
                   >
                     <li>
-                      {{ topping.Topping.name
+                      {{ topping.topping.name
                       }}{{ currentCartItem.toppingPrice }}円
                     </li>
                   </ul>
