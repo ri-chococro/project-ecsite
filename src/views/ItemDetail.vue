@@ -49,9 +49,10 @@
           </div>
           <div class="row item-toppings">
             <div class="item-hedding">
-              トッピング：&nbsp;1つにつき
-              <span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;200円(税抜)
-              <span>&nbsp;Ｌ</span>&nbsp;&nbsp;300円(税抜)
+              トッピング：
+              &nbsp;1つにつき<span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;
+              {{ toppingPriceM }}円(税抜) <span>&nbsp;Ｌ</span>&nbsp;&nbsp;
+              {{ toppingPriceL }}円(税抜)
             </div>
             <span
               v-for="topping of currentItem.toppingList"
@@ -146,6 +147,10 @@ export default class ItemDetail extends Vue {
   private orderToppings = new Array<OrderTopping>();
   //リアルタイム金額表示
   private realTimePrice = 0;
+  //トッピングMの金額
+  private toppingPriceM = 0;
+  //トッピングLの金額
+  private toppingPriceL = 0;
 
   /**
    * 金額をリアルタイムで表示する.
@@ -192,6 +197,10 @@ export default class ItemDetail extends Vue {
 
     //金額のリアルタイム表示の初期値
     this.realTimePrice = this.currentItem.priceM;
+    //トッピングMの金額
+    this.toppingPriceM = this.currentItem.toppingList[0].priceM;
+    //トッピングLの金額
+    this.toppingPriceL = this.currentItem.toppingList[0].priceL;
   }
   /**
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
