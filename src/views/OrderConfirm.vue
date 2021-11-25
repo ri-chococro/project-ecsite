@@ -44,7 +44,7 @@
                 </td>
                 <td>
                   <div class="text-center">
-                    {{ currentCartItem.calcSubTotalPrice }}円
+                    {{ currentCartItem.calcSubTotalPrice.toLocaleString() }}円
                   </div>
                 </td>
               </tr>

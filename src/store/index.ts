@@ -4,9 +4,11 @@ import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
+import { Topping } from "@/types/topping";
 
 // 使うためには「npm install vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
+import { OrderTopping } from "@/types/orderTopping";
 
 Vue.use(Vuex);
 
@@ -154,6 +156,64 @@ export default new Vuex.Store({
      */
     getItemsInCart(state) {
       return state.itemsInCart;
+      // const returnItemsInCart = new Array<OrderItem>();
+      // //
+      // for (const itemInCart of state.itemsInCart) {
+      //   // itemの中のトッピングリスト
+      //   const itemInCartToppingList = new Array<Topping>();
+      //   for (const cartToppingList of itemInCart.item.toppingList) {
+      //     itemInCartToppingList.push(
+      //       new Topping(
+      //         cartToppingList.id,
+      //         cartToppingList.type,
+      //         cartToppingList.name,
+      //         cartToppingList.priceM,
+      //         cartToppingList.priceL
+      //       )
+      //     );
+      //   }
+      //   // OrderToppingList
+      //   const itemInCartOrdertoppingList = new Array<OrderTopping>();
+      //   for (const cartOrderToppingList of itemInCart.orderToppingList) {
+      //     itemInCartOrdertoppingList.push(
+      //       new OrderTopping(
+      //         cartOrderToppingList.id,
+      //         cartOrderToppingList.toppingId,
+      //         cartOrderToppingList.orderItemId,
+      //         new Topping(
+      //           cartOrderToppingList.Topping.id,
+      //           cartOrderToppingList.Topping.type,
+      //           cartOrderToppingList.Topping.name,
+      //           cartOrderToppingList.Topping.priceM,
+      //           cartOrderToppingList.Topping.priceL
+      //         )
+      //       )
+      //     );
+      //   }
+      //   //
+      //   returnItemsInCart.push(
+      //     new OrderItem(
+      //       itemInCart.id,
+      //       itemInCart.itemId,
+      //       itemInCart.orderId,
+      //       itemInCart.quantity,
+      //       itemInCart.size,
+      //       new Item(
+      //         itemInCart.item.id,
+      //         itemInCart.item.type,
+      //         itemInCart.item.name,
+      //         itemInCart.item.description,
+      //         itemInCart.item.priceM,
+      //         itemInCart.item.priceL,
+      //         itemInCart.item.imagePath,
+      //         itemInCart.item.deleted,
+      //         itemInCartToppingList
+      //       ),
+      //       itemInCartOrdertoppingList
+      //     )
+      //   );
+      // }
+      // return returnItemsInCart;
     },
     /**
      * ログイン状態を返す.
