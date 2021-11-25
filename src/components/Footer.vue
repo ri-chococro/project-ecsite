@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="container">
-      <img src="img/header_logo.png" />
+      <img src="img_aloha/header_logo.png" />
       <p>アロハな気分をあなたにお届け！</p>
     </div>
   </footer>
