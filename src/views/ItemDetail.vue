@@ -22,6 +22,7 @@
                   type="radio"
                   value="M"
                   v-model="size"
+                  v-on:change="realTimeCalcPrice"
                 />
                 <span>
                   &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
@@ -36,6 +37,7 @@
                   type="radio"
                   value="L"
                   v-model="size"
+                  v-on:change="realTimeCalcPrice"
                 />
                 <span>
                   &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
@@ -60,6 +62,7 @@
                   type="checkbox"
                   v-model="toppingIds"
                   v-bind:value="topping.id"
+                  v-on:change="realTimeCalcPrice"
                 />
                 <span>{{ topping.name }}</span>
               </label>
@@ -69,7 +72,11 @@
             <div class="item-hedding item-hedding-quantity">数量</div>
             <div class="item-quantity-selectbox">
               <div class="input-field col s12">
-                <select class="browser-default" v-model="quantity">
+                <select
+                  class="browser-default"
+                  v-model="quantity"
+                  v-on:change="realTimeCalcPrice"
+                >
                   <option value="" disabled selected>選択して下さい</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -88,7 +95,9 @@
             </div>
           </div>
           <div class="row item-total-price">
-            <span>この商品金額：{{}}円(税抜)</span>
+            <span
+              >この商品金額：{{ realTimePrice.toLocaleString() }}円(税抜)</span
+            >
           </div>
           <div class="row item-cart-btn">
             <button class="btn" type="button" v-on:click="onClickAddCart">
@@ -135,7 +144,29 @@ export default class ItemDetail extends Vue {
   private checkToppings = new Array<Topping>();
   //選択したトッピング情報をオーダートッピング型に変換
   private orderToppings = new Array<OrderTopping>();
+  //リアルタイム金額表示
+  private realTimePrice = 0;
 
+  /**
+   * 金額をリアルタイムで表示する.
+   */
+  realTimeCalcPrice(): void {
+    if (this.size === "M") {
+      const itemSubTotal = this.currentItem.priceM * this.quantity;
+      const toppingSubTotal =
+        this.toppingIds.length *
+        this.currentItem.toppingList[0].priceM *
+        this.quantity;
+      this.realTimePrice = itemSubTotal + toppingSubTotal;
+    } else {
+      const itemSubTotal = this.currentItem.priceL * this.quantity;
+      const toppingSubTotal =
+        this.toppingIds.length *
+        this.currentItem.toppingList[0].priceL *
+        this.quantity;
+      this.realTimePrice = itemSubTotal + toppingSubTotal;
+    }
+  }
   /**
    * Vuexストアで受け取ったリクエストパラメータのIDから１件の商品情報を取得する.
    */
@@ -158,6 +189,9 @@ export default class ItemDetail extends Vue {
       response.data.item.deleted,
       response.data.item.toppingList
     );
+
+    //金額のリアルタイム表示の初期値
+    this.realTimePrice = this.currentItem.priceM;
   }
   /**
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
