@@ -56,6 +56,11 @@
           <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
           <div>ご注文金額合計：{{ totalPrice.toLocaleString() }}円 (税込)</div>
         </div>
+
+        <OrderComponent
+          :total-price="this.totalPrice"
+          :order-items="this.currentCartItems"
+        ></OrderComponent>
       </div>
       <!-- end container -->
     </div>
@@ -66,8 +71,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { OrderItem } from "@/types/orderItem";
+import OrderComponent from "../components/OrderComponent.vue";
 
-@Component
+@Component({
+  components: {
+    OrderComponent,
+  },
+})
 export default class OrderConfirm extends Vue {
   // カート内の商品
   private currentCartItems: Array<OrderItem> = [];
@@ -100,6 +110,27 @@ export default class OrderConfirm extends Vue {
 </script>
 
 <style scoped>
+.cart-table-th {
+  text-align: center;
+}
+.cart-item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 20px;
+  width: 100px;
+  height: 100px;
+  padding: 0 0 15px 0;
+}
+.cart-item-name {
+  text-align: center;
+  font-size: 15px;
+}
+
+.cart-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
 .order-confirm-delivery-info {
   margin: 0 200px 0 200px;
 }
