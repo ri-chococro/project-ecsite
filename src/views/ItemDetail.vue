@@ -20,7 +20,6 @@
                   id="size-m"
                   name="size"
                   type="radio"
-                  checked="checked"
                   value="M"
                   v-model="size"
                 />
@@ -89,7 +88,7 @@
             </div>
           </div>
           <div class="row item-total-price">
-            <span>この商品金額：XXXX円(税抜)</span>
+            <span>この商品金額：{{}}円(税抜)</span>
           </div>
           <div class="row item-cart-btn">
             <button class="btn" type="button" v-on:click="onClickAddCart">
@@ -125,7 +124,7 @@ export default class ItemDetail extends Vue {
     []
   );
   //商品数量
-  private quantity = 0;
+  private quantity = 1;
   //商品サイズ
   private size = "M";
   //選択したトッピングID
@@ -291,5 +290,4 @@ export default class ItemDetail extends Vue {
 .item-cart-btn {
   text-align: center;
 }
-
 </style>
