@@ -38,14 +38,14 @@
                     v-bind:key="topping.id"
                   >
                     <li>
-                      {{ topping.Topping.name
+                      {{ topping.topping.name
                       }}{{ currentCartItem.toppingPrice }}円
                     </li>
                   </ul>
                 </td>
                 <td>
                   <div class="text-center">
-                    {{ currentCartItem.calcSubTotalPrice }}円
+                    {{ currentCartItem.calcSubTotalPrice.toLocaleString() }}円
                   </div>
                 </td>
                 <td>

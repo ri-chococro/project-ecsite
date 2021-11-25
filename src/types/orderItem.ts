@@ -24,14 +24,14 @@ export class OrderItem {
     if (this.size === "M") {
       const itemSubTotal = this.item.priceM * this.quantity;
       const toppingSubTotal =
-        this.orderToppingList[0].Topping.priceM *
+        this.orderToppingList[0].topping.priceM *
         this.orderToppingList.length *
         this.quantity;
       return itemSubTotal + toppingSubTotal;
     } else {
       const itemSubTotal = this.item.priceL * this.quantity;
       const toppingSubTotal =
-        this.orderToppingList[0].Topping.priceL *
+        this.orderToppingList[0].topping.priceL *
         this.orderToppingList.length *
         this.quantity;
       return itemSubTotal + toppingSubTotal;
