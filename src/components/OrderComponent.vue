@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h2 class="page-title">お届け先情報</h2>
     <div class="order-confirm-delivery-info">
       <div class="row">
@@ -144,7 +144,7 @@
           <input
             name="paymentMethod"
             type="radio"
-            value="1"
+            :value="1"
             v-model.number="paymentMethod"
           />
           <span>代金引換</span>
@@ -153,7 +153,7 @@
           <input
             name="paymentMethod"
             type="radio"
-            value="2"
+            :value="2"
             v-model.number="paymentMethod"
           />
           <span>クレジットカード</span>
@@ -169,15 +169,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-// import { OrderItem } from "../types/orderItem";
+import { Prop, Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axiosJsonpAdapter = require("axios-jsonp");
-import { format } from "date-fns";
+import { addHours, format } from "date-fns";
+import { OrderItem } from "@/types/orderItem";
+import { User } from "@/types/user";
 
 @Component
 export default class OrderComponent extends Vue {
+  @Prop()
+  totalPrice!: number;
+  @Prop()
+  orderItems!: OrderItem[];
+
+  // ログインユーザー
+  private loginUser!: User;
   // 名前
   private distinationName = "";
   // メールアドレス
@@ -188,12 +196,12 @@ export default class OrderComponent extends Vue {
   private distinationAddress = "";
   // 電話番号
   private distinationTel = "";
-  // 配達日時 文字列で入ってくるtype="date"インプット
-  private deliveryDate = ""; // 2021-11-16
+  // 配達日時
+  private deliveryDate = "";
   // 配達時間
-  private deliveryTime = ""; // 10時
+  private deliveryTime = "";
   // 支払い方法
-  private paymentMethod = 0;
+  private paymentMethod = 1;
   // 商品リスト
   private orderItemList = [];
   // 名前のエラーメッセージ
@@ -208,7 +216,12 @@ export default class OrderComponent extends Vue {
   private telErrorMessage = "";
   // 配達日時のエラーメッセージ
   private deliveryDateErrorMessage = "";
-  
+  /**
+   * ログインユーザーを取得.
+   */
+  created(): void {
+    this.loginUser = this.$store.getters.getLoginUser;
+  }
   /**
    * 注文する.
    */
@@ -218,8 +231,6 @@ export default class OrderComponent extends Vue {
       return;
     }
 
-    const URL = "http://153.127.48.168:8080/ecsite-api/order";
-
     // 代金引換の場合:1 / クレジットカード決済の場合:2
     let status;
     if (this.paymentMethod === 1) {
@@ -228,23 +239,57 @@ export default class OrderComponent extends Vue {
       status = 2;
     }
 
-    // 送信する配達日時をフォーマット
     let deliveryDate = new Date(this.deliveryDate);
-    let formattedDate = format(deliveryDate, "yyyy/MM/dd");
-    let formattedTime = `${this.deliveryTime}:00:00`;
+    // deliveryDateと時間から、配達日時を求める
+    const deliveryDateTime = new Date(
+      deliveryDate.getFullYear(),
+      deliveryDate.getMonth(),
+      deliveryDate.getDate(),
+      Number(this.deliveryTime)
+    );
+
+    // 配達日時が現在時刻の3時間後より前の場合はエラー
+    let now = new Date();
+    if (deliveryDateTime < addHours(now, 3)) {
+      this.deliveryDateErrorMessage = "今から3時間後以降の日時をご入力ください";
+      return;
+    }
+    // 配達日時をフォーマット
+    const formattedDeliveryTime = format(
+      deliveryDateTime,
+      "yyyy/MM/dd HH:mm:ss"
+    );
+
+    // WEB APIに渡す注文商品のリストを作成
+    let orderItemFormList = [];
+    for (let orderItem of this.orderItems) {
+      // 注文商品のリストに渡すトッピングのリストを作成
+      let orderToppingFormList = [];
+      for (let topping of orderItem.orderToppingList) {
+        orderToppingFormList.push(topping.toppingId);
+      }
+      orderItemFormList.push({
+        itemId: orderItem.itemId,
+        quantity: orderItem.quantity,
+        size: orderItem.size,
+        orderToppingFormList,
+      });
+    }
+
+    const URL = "http://153.127.48.168:8080/ecsite-api/order";
 
     const response = await axios.post(URL, {
-      userId: "1",
-      status: status,
-      totalPrice: 0,
+      userId: this.loginUser.id,
+      status,
+      totalPrice: this.totalPrice,
       destinationName: this.distinationName,
       destinationEmail: this.distinationEmail,
       destinationZipcode: this.distinationZipcode,
       destinationAddress: this.distinationAddress,
       destinationTel: this.distinationTel,
-      deliveryTime: `${formattedDate} ${formattedTime}`,
+      deliveryTime: formattedDeliveryTime,
       paymentMethod: this.paymentMethod,
-      orderItemFormList: this.orderItemList,
+      orderItemFormList,
     });
 
     console.dir("response:" + JSON.stringify(response));
@@ -271,8 +316,12 @@ export default class OrderComponent extends Vue {
       this.nameErrorMessage = "名前を入力してください";
       hasError = true;
     }
+    let emailPattern = /[A-Za-z0-9_.-]{1,}@{1}[A-Za-z0-9_.-]{1,}$/;
     if (this.distinationEmail === "") {
       this.emailErrorMessage = "メールアドレスを入力して下さい";
+      hasError = true;
+    } else if (emailPattern.test(this.distinationEmail) === false) {
+      this.emailErrorMessage = "メールアドレスの形式が不正です";
       hasError = true;
     }
     if (this.distinationZipcode === "") {
@@ -283,8 +332,12 @@ export default class OrderComponent extends Vue {
       this.addressErrorMessage = "住所を入力して下さい";
       hasError = true;
     }
+    let telephonePattern = /^[0-9]{1,5}-[0-9]{1,4}-[0-9]{4}$/;
     if (this.distinationTel === "") {
       this.telErrorMessage = "電話番号を入力して下さい";
+      hasError = true;
+    } else if (telephonePattern.test(this.distinationTel) === false) {
+      this.telErrorMessage = "電話番号はXXXX-XXXX-XXXXの形式で入力してください";
       hasError = true;
     }
     if (this.deliveryDate === "" || this.deliveryTime === "") {
