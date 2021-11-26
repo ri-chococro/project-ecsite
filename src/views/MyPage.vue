@@ -51,7 +51,6 @@
                   <!-- 注文詳細を表示するモーダル -->
                   <modal
                     :name="String(i)"
-                    :adaptive="true"
                     width="850"
                     height="auto"
                     :scrollable="true"
@@ -174,6 +173,11 @@ export default class MyPage extends Vue {
 
     const response = await axios.get(url);
     this.orderHistory = response.data.orders;
+
+    //IDの降順に並び替える
+    this.orderHistory.sort(function (a, b) {
+      return a.id > b.id ? -1 : 1;
+    });
   }
   /**
    * 注文詳細のモーダルを開く

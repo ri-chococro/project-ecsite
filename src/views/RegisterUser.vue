@@ -56,7 +56,7 @@
           <div class="error">{{ addressOfError }}</div>
           <div class="input-field col s12">
             <input id="address" type="text" v-model="address" />
-            <label for="address" :class="{active:address}">住所</label>
+            <label for="address" :class="{ active: address }">住所</label>
           </div>
         </div>
         <div class="row">
@@ -241,6 +241,7 @@ export default class RegisterUser extends Vue {
         "電話番号はXXXX-XXXX-XXXXの形式で入力してください";
       hasError = true;
     }
+    let passwordPattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
     if (this.password === "") {
       this.passwordOfError = "パスワードが入力されていません";
       hasError = true;
@@ -250,7 +251,14 @@ export default class RegisterUser extends Vue {
       this.passwordOfError =
         "パスワードは8文字以上16文字以内で設定してください";
       hasError = true;
+    } 
+    // パスワードに数字、小文字英字、大文字英字を含ませる
+    else if (passwordPattern.test(this.password) === false) {
+      this.passwordOfError =
+        "パスワードは半角数字、小文字の半角英字、大文字の半角英字を必ず1つ含めてください";
+      hasError = true;
     }
+
     console.log(typeof this.password.length);
     if (this.confirmationPassword === "") {
       this.confirmationOfError = "確認用パスワードが入力されていません";
