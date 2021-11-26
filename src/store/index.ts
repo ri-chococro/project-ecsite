@@ -105,6 +105,14 @@ export default new Vuex.Store({
     addItemInCart(state, payload) {
       state.itemsInCart.push(payload);
     },
+    /**
+     * カートの中身をリセットする.
+     * 
+     * @param state - ステート
+     */
+    resetCart(state) {
+      state.itemsInCart = new Array<OrderItem>();
+    }
   },
   actions: {
     /**
