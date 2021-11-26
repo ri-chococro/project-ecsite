@@ -4,11 +4,11 @@ import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
-import { Topping } from "@/types/topping";
+// import { Topping } from "@/types/topping";
 
 // 使うためには「npm install vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
-import { OrderTopping } from "@/types/orderTopping";
+// import { OrderTopping } from "@/types/orderTopping";
 
 Vue.use(Vuex);
 
@@ -19,12 +19,14 @@ export default new Vuex.Store({
     totalItemCount: 0,
     //商品情報
     items: new Array<Item>(),
+    // ログインユーザ情報
     user: new User(0, "", "", "", "", "", ""),
-
     // カート内商品一覧
     itemsInCart: new Array<OrderItem>(),
     // ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    // カートリストからログイン画面に遷移された時に立てるフラグ
+    fromCartList: false,
   },
   mutations: {
     /**
@@ -104,6 +106,39 @@ export default new Vuex.Store({
      */
     addItemInCart(state, payload) {
       state.itemsInCart.push(payload);
+    },
+    /**
+     * 並び替え種類によってstateのitem配列の中身を並び替える.
+     * @param state - ステート
+     * @param payload - 並び替えの種類
+     */
+    sortOrderByPrice(state, payload) {
+      if (payload === "高い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? 1 : -1;
+        });
+      } else if (payload === "安い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? -1 : 1;
+        });
+      } else if (payload === "おすすめ順") {
+        state.items.sort(function (a, b) {
+          return a.id < b.id ? -1 : 1;
+        });
+      }
+    },
+    /** カートリストからログイン画面に遷移された時にフラグを立てる.
+     * @param state - ステート
+     */
+    fromCartListFlagOn(state) {
+      state.fromCartList = true;
+    },
+    /**
+     * カートリストからログイン後フラグをおろす.
+     * @param state - ステート
+     */
+    fromCartListFlagOff(state) {
+      state.fromCartList = false;
     },
     /**
      * カートの中身をリセットする.
@@ -242,6 +277,15 @@ export default new Vuex.Store({
         const items = state.items.filter((item) => item.id === itemId);
         return items[0];
       };
+    },
+    /**
+
+     * カートリスト遷移フラグを返す.
+     * @param state - ステート
+     * @returns カートリスト遷移フラグ
+     */
+    getFromCartListFlag(state) {
+      return state.fromCartList;
     },
     /**
      * ログインしているユーザーの情報を返す.

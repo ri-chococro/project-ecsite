@@ -51,7 +51,6 @@
                   <!-- 注文詳細を表示するモーダル -->
                   <modal
                     :name="String(i)"
-                    :adaptive="true"
                     width="850"
                     height="auto"
                     :scrollable="true"
@@ -156,6 +155,12 @@ export default class MyPage extends Vue {
    * ログインユーザー情報を取得し、注文履歴を取得する。
    */
   async created(): Promise<void> {
+    // ログインしていなければログイン画面へ遷移
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+      return;
+    }
+
     this.loginUser = this.$store.getters.getLoginUser;
 
     await this.getOrderHistory();
@@ -168,6 +173,11 @@ export default class MyPage extends Vue {
 
     const response = await axios.get(url);
     this.orderHistory = response.data.orders;
+
+    //IDの降順に並び替える
+    this.orderHistory.sort(function (a, b) {
+      return a.id > b.id ? -1 : 1;
+    });
   }
   /**
    * 注文詳細のモーダルを開く
