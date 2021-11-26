@@ -15,7 +15,7 @@
         </button>
       </div>
       <div class="thank-you">
-        <img src="img_aloha/p3969.gif">
+        <img src="/img_aloha/p3969.gif">
       </div>
     </div>
   </div>
