@@ -115,6 +115,7 @@ export default class ItemList extends Vue {
       this.searchNameMessage = "";
     }
   }
+
   /**
    * 並び替えを行う.
    */
@@ -167,6 +168,7 @@ export default class ItemList extends Vue {
   appearance: auto;
   -webkit-rtl-ordering: logical;
   cursor: text;
+  /* text-transform: uppercase; */
 }
 
 .search-btn {
