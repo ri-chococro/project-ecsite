@@ -4,7 +4,7 @@
       <!-- search form -->
       <div class="search-wrapper">
         <div class="container">
-          <form method="post" class="search-form">
+          <form class="search-form">
             {{ searchNameMessage }}
             <input
               type="text"
@@ -50,8 +50,10 @@
                 item.name
               }}</router-link>
               <br />
-              <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-              <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
+              <span class="price">Ｍ</span
+              >{{ item.priceM.toLocaleString() }}円(税抜)<br />
+              <span class="price">Ｌ</span
+              >{{ item.priceL.toLocaleString() }}円(税抜)<br />
             </div>
           </div>
         </div>
