@@ -1,41 +1,58 @@
 <template>
-  <div class="contaner">
-    <!-- search form -->
-    <div class="search-wrapper">
-      <div class="container">
-        <form method="post" class="search-form">
-          {{ searchNameMessage }}
-          <input
-            type="text"
-            name="name"
-            class="search-name-input"
-            v-model="searchName"
-          />
-          <button
-            class="btn search-btn"
-            type="button"
-            v-on:click="onSearchClick"
-          >
-            <span>検索</span>
-          </button>
-        </form>
+  <div class="item-list">
+    <div class="contaner">
+      <!-- search form -->
+      <div class="search-wrapper">
+        <div class="container">
+          <form method="post" class="search-form">
+            {{ searchNameMessage }}
+            <input
+              type="text"
+              name="name"
+              class="search-name-input"
+              v-model="searchName"
+            />
+            <button
+              class="btn search-btn"
+              type="button"
+              v-on:click="onSearchClick"
+            >
+              <span>検索</span>
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+      <!-- sort order -->
+      <div class="item-wrapper">
+        <div class="container">
+          <div class="items">
+            <form>
+              <label for="sortOrderKinds">並び替え</label>
+              <select v-model="sortOrderKinds">
+                <option value="">標準</option>
+                <option>高い順</option>
+                <option>安い順</option>
+              </select>
+            </form>
+          </div>
+        </div>
+      </div>
 
-    <!-- item list -->
-    <div class="item-wrapper">
-      <div class="container">
-        <div class="items">
-          <div class="item" v-for="item of itemList" v-bind:key="item.id">
-            <div class="item-icon">
-              <img v-bind:src="item.imagePath" />
+      <!-- item list -->
+      <div class="item-wrapper">
+        <div class="container">
+          <div class="items">
+            <div class="item" v-for="item of itemList" v-bind:key="item.id">
+              <div class="item-icon">
+                <img v-bind:src="item.imagePath" />
+              </div>
+              <router-link :to="'/itemDetail/' + item.id">{{
+                item.name
+              }}</router-link>
+              <br />
+              <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
+              <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
             </div>
-            <router-link :to="'/itemDetail/' + item.id">{{
-              item.name
-            }}</router-link>
-            <br />
-            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
           </div>
         </div>
       </div>
@@ -54,6 +71,8 @@ export default class ItemList extends Vue {
   public searchName = "";
   //検索エラーメッセージ
   public searchNameMessage = "";
+  //絞り込み種類
+  private sortOrderKinds = "";
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから従業員一覧を取得する.

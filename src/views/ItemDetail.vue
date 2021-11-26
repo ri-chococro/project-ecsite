@@ -209,10 +209,14 @@ export default class ItemDetail extends Vue {
     this.checkToppings = [];
     this.orderToppings = [];
     // 選択したトッピングIDのIDを取得する
-    for (let toppingId of this.toppingIds) {
-      for (let currentItemToppingList of this.currentItem.toppingList) {
-        if (toppingId === currentItemToppingList.id) {
-          this.checkToppings.push(currentItemToppingList);
+    if (this.toppingIds.length === 0) {
+      this.checkToppings.push(new Topping(-1, "0", "トッピングなし", 0, 0));
+    } else {
+      for (let toppingId of this.toppingIds) {
+        for (let currentItemToppingList of this.currentItem.toppingList) {
+          if (toppingId === currentItemToppingList.id) {
+            this.checkToppings.push(currentItemToppingList);
+          }
         }
       }
     }
