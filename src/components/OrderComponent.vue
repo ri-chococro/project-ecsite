@@ -41,6 +41,14 @@
           <label for="address" :class="{ active: distinationAddress }"
             >住所</label
           >
+          <button
+            class="btn"
+            type="button"
+            v-on:click="clearAddress"
+            v-if="distinationAddress"
+          >
+            <span>他の住所に送る</span>
+          </button>
           <div class="error">{{ addressErrorMessage }}</div>
         </div>
       </div>
@@ -343,7 +351,7 @@ export default class OrderComponent extends Vue {
    */
   created(): void {
     this.loginUser = this.$store.getters.getLoginUser;
-    
+
     // ログイン情報を入力欄に表示
     this.distinationName = this.loginUser.name;
     this.distinationEmail = this.loginUser.email;
@@ -571,6 +579,13 @@ export default class OrderComponent extends Vue {
       console.log(error);
       this.zipcodeErrorMessage = "存在しない郵便番号です";
     }
+  }
+  /**
+   * 住所入力欄を空にする.
+   */
+  clearAddress(): void {
+    this.distinationZipcode = "";
+    this.distinationAddress = "";
   }
 }
 </script>
