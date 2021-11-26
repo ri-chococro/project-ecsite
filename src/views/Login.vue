@@ -39,7 +39,7 @@
             <div class="row">
               <div class="input-field col s6 m6 l6">
                 <p class="margin medium-small">
-                  <a href="register_admin.html">管理者登録はこちら</a>
+                  <router-link to="/registerUser">管理者登録はこちら</router-link>
                 </p>
               </div>
             </div>
