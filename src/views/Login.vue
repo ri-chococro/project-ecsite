@@ -39,7 +39,7 @@
             <div class="row">
               <div class="input-field col s6 m6 l6">
                 <p class="margin medium-small">
-                  <a href="register_admin.html">管理者登録はこちら</a>
+                  <router-link to="/registerUser">管理者登録はこちら</router-link>
                 </p>
               </div>
             </div>
@@ -101,7 +101,7 @@ export default class Login extends Vue {
     if (response.data.status === "success") {
       // ログイン状態にする(stateのisLoginをtrueにする)
       this.$store.commit("logined");
-      
+
       let user = response.data.responseMap.user;
       this["$store"].commit("setLoginUser", {
         id: user.id,
@@ -112,7 +112,12 @@ export default class Login extends Vue {
         address: user.address,
         telephone: user.telephone,
       });
-      this["$router"].push("/itemList");
+      if (this.$store.getters.getFromCartListFlag === true) {
+        this["$router"].push("/orderConfirm");
+        this.$store.commit("fromCartListFlagOff");
+      } else {
+        this["$router"].push("/itemList");
+      }
     } else if (response.data.status === "error") {
       this.mismatchError = response.data.message;
     }

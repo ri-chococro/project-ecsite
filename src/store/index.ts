@@ -19,12 +19,14 @@ export default new Vuex.Store({
     totalItemCount: 0,
     //商品情報
     items: new Array<Item>(),
+    // ログインユーザ情報
     user: new User(0, "", "", "", "", "", ""),
-
     // カート内商品一覧
     itemsInCart: new Array<OrderItem>(),
     // ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    // カートリストからログイン画面に遷移された時に立てるフラグ
+    fromCartList: false,
   },
   mutations: {
     /**
@@ -124,6 +126,27 @@ export default new Vuex.Store({
           return a.id < b.id ? -1 : 1;
         });
       }
+    },
+    /** カートリストからログイン画面に遷移された時にフラグを立てる.
+     * @param state - ステート
+     */
+    fromCartListFlagOn(state) {
+      state.fromCartList = true;
+    },
+    /**
+     * カートリストからログイン後フラグをおろす.
+     * @param state - ステート
+     */
+    fromCartListFlagOff(state) {
+      state.fromCartList = false;
+    },
+    /**
+     * カートの中身をリセットする.
+     *
+     * @param state - ステート
+     */
+    resetCart(state) {
+      state.itemsInCart = new Array<OrderItem>();
     },
   },
   actions: {
@@ -254,6 +277,17 @@ export default new Vuex.Store({
       };
     },
     /**
+<<<<<<< HEAD
+=======
+     * カートリスト遷移フラグを返す.
+     * @param state - ステート
+     * @returns カートリスト遷移フラグ
+     */
+    getFromCartListFlag(state) {
+      return state.fromCartList;
+    },
+    /**
+>>>>>>> develop
      * ログインしているユーザーの情報を返す.
      *
      * @param state -ステート
