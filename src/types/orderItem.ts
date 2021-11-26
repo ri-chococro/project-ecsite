@@ -56,9 +56,9 @@ export class OrderItem {
    */
   get toppingPrice(): string {
     if (this.size === "M") {
-      return this.item.toppingList[0].priceM.toLocaleString();
+      return this.orderToppingList[0].topping.priceM.toLocaleString();
     } else {
-      return this.item.toppingList[0].priceL.toLocaleString();
+      return this.orderToppingList[0].topping.priceL.toLocaleString();
     }
   }
 
