@@ -27,9 +27,9 @@
                 </td>
                 <td>
                   <span class="price">&nbsp;{{ currentCartItem.size }}</span
-                  >&nbsp;&nbsp;{{ currentCartItem.itemPrice }}円 &nbsp;&nbsp;{{
-                    currentCartItem.quantity
-                  }}個
+                  >&nbsp;&nbsp;{{
+                    currentCartItem.itemPrice.toLocaleString()
+                  }}円 &nbsp;&nbsp;{{ currentCartItem.quantity }}個
                 </td>
                 <td>
                   <ul
@@ -38,7 +38,7 @@
                   >
                     <li>
                       {{ topping.topping.name
-                      }}{{ currentCartItem.toppingPrice }}円
+                      }}{{ currentCartItem.toppingPrice.toLocaleString() }}円
                     </li>
                   </ul>
                 </td>
