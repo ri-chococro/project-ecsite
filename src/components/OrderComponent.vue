@@ -556,7 +556,7 @@ export default class OrderComponent extends Vue {
         },
       });
       console.dir("response:" + JSON.stringify(response.data.items[0].address));
-      this.distinationAddress = response.data.items[0].address;
+      this.distinationAddress = response.data.items[0].pref + response.data.items[0].address;
     } catch (error) {
       console.log(error);
       this.zipcodeErrorMessage = "存在しない郵便番号です";
