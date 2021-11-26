@@ -42,11 +42,11 @@ export class OrderItem {
    *
    * @returns 商品単価
    */
-  get itemPrice(): string {
+  get itemPrice(): number {
     if (this.size === "M") {
-      return this.item.priceM.toLocaleString();
+      return this.item.priceM * this.quantity;
     } else {
-      return this.item.priceL.toLocaleString();
+      return this.item.priceL * this.quantity;
     }
   }
   /**
@@ -54,11 +54,11 @@ export class OrderItem {
    *
    * @returns トッピング単価
    */
-  get toppingPrice(): string {
+  get toppingPrice(): number {
     if (this.size === "M") {
-      return this.orderToppingList[0].topping.priceM.toLocaleString();
+      return this.orderToppingList[0].topping.priceM * this.quantity;
     } else {
-      return this.orderToppingList[0].topping.priceL.toLocaleString();
+      return this.orderToppingList[0].topping.priceL * this.quantity;
     }
   }
 
