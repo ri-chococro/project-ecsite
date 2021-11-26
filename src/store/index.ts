@@ -108,7 +108,26 @@ export default new Vuex.Store({
       state.itemsInCart.push(payload);
     },
     /**
-     * カートリストからログイン画面に遷移された時にフラグを立てる.
+     * 並び替え種類によってstateのitem配列の中身を並び替える.
+     * @param state - ステート
+     * @param payload - 並び替えの種類
+     */
+    sortOrderByPrice(state, payload) {
+      if (payload === "高い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? 1 : -1;
+        });
+      } else if (payload === "安い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? -1 : 1;
+        });
+      } else if (payload === "おすすめ順") {
+        state.items.sort(function (a, b) {
+          return a.id < b.id ? -1 : 1;
+        });
+      }
+    },
+    /** カートリストからログイン画面に遷移された時にフラグを立てる.
      * @param state - ステート
      */
     fromCartListFlagOn(state) {

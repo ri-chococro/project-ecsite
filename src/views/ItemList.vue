@@ -24,25 +24,26 @@
           </form>
         </div>
       </div>
-      <!-- sort order -->
-      <div class="item-wrapper">
-        <div class="container">
-          <div class="items">
-            <form>
-              <label for="sortOrderKinds">並び替え</label>
-              <select v-model="sortOrderKinds">
-                <option value="">標準</option>
-                <option>高い順</option>
-                <option>安い順</option>
-              </select>
-            </form>
-          </div>
-        </div>
-      </div>
 
       <!-- item list -->
       <div class="item-wrapper">
         <div class="container">
+          <!-- sort order -->
+          <div class="sort-order">
+            <form>
+              <label for="sortOrderKinds">並び替え</label>
+              <select
+                v-model="sortOrderKinds"
+                class="browser-default"
+                v-on:change="changeSortOrder(sortOrderKinds)"
+              >
+                <option>安い順</option>
+                <option>高い順</option>
+                <option>おすすめ順</option>
+              </select>
+            </form>
+          </div>
+          <!-- end sort order -->
           <div class="items">
             <div class="item" v-for="item of itemList" v-bind:key="item.id">
               <div class="item-icon">
@@ -78,7 +79,7 @@ export default class ItemList extends Vue {
   //検索エラーメッセージ
   public searchNameMessage = "";
   //絞り込み種類
-  private sortOrderKinds = "";
+  private sortOrderKinds = "安い順";
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから従業員一覧を取得する.
@@ -113,6 +114,12 @@ export default class ItemList extends Vue {
     } else {
       this.searchNameMessage = "";
     }
+  }
+  /**
+   * 並び替えを行う.
+   */
+  changeSortOrder(value: string): void {
+    this.$store.commit("sortOrderByPrice", value);
   }
 }
 </script>
@@ -184,7 +191,7 @@ export default class ItemList extends Vue {
 }
 
 .item-wrapper {
-  padding-top: 130px; /* 上はヘッダや検索フォームが来るのでその分空ける */
+  padding-top: 10px; /* 上はヘッダや検索フォームが来るのでその分空ける */
   padding-bottom: 80px;
   background-color: #f7f7f7;
   text-align: center;
@@ -214,5 +221,10 @@ export default class ItemList extends Vue {
 .price {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
+}
+.sort-order {
+  padding-top: 150px;
+  width: 180px;
+  text-align: left;
 }
 </style>
