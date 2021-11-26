@@ -4,8 +4,10 @@
       <!-- search form -->
       <div class="search-wrapper">
         <div class="container">
-          <form method="post" class="search-form">
-            {{ searchNameMessage }}
+          <form class="search-form">
+            <div class="searchError">
+              {{ searchNameMessage }}
+            </div>
             <input
               type="text"
               name="name"
@@ -44,14 +46,18 @@
           <div class="items">
             <div class="item" v-for="item of itemList" v-bind:key="item.id">
               <div class="item-icon">
-                <img v-bind:src="item.imagePath" />
+                <router-link :to="'/itemDetail/' + item.id">
+                  <img v-bind:src="item.imagePath"
+                /></router-link>
               </div>
               <router-link :to="'/itemDetail/' + item.id">{{
                 item.name
               }}</router-link>
               <br />
-              <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-              <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
+              <span class="price">Ｍ</span
+              >{{ item.priceM.toLocaleString() }}円(税抜)<br />
+              <span class="price">Ｌ</span
+              >{{ item.priceL.toLocaleString() }}円(税抜)<br />
             </div>
           </div>
         </div>
@@ -104,12 +110,17 @@ export default class ItemList extends Vue {
       this.searchNameMessage = "1件もありませんでしたので、全件表示します";
       this.itemList = this["$store"].getters.getAllItems;
       this.searchName = "";
+    } else {
+      this.searchNameMessage = "";
     }
   }
 }
 </script>
 
 <style scoped>
+.searchError {
+  color: #ff4500;
+}
 .search-wrapper {
   padding: 20px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
   margin-top: -40px;
