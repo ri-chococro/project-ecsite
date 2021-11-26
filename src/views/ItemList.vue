@@ -107,6 +107,9 @@ export default class ItemList extends Vue {
       this.searchName = "";
     }
   }
+  /**
+   * 並び替えを行う.
+   */
   changeSortOrder(value: string): void {
     this.$store.commit("sortOrderByPrice", value);
   }

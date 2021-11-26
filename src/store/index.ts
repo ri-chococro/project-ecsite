@@ -105,6 +105,11 @@ export default new Vuex.Store({
     addItemInCart(state, payload) {
       state.itemsInCart.push(payload);
     },
+    /**
+     * 並び替え種類によってstateのitem配列の中身を並び替える.
+     * @param state - ステート
+     * @param payload - 並び替えの種類
+     */
     sortOrderByPrice(state, payload) {
       if (payload === "高い順") {
         state.items.sort(function (a, b) {
