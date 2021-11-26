@@ -277,8 +277,6 @@ export default new Vuex.Store({
       };
     },
     /**
-<<<<<<< HEAD
-=======
      * カートリスト遷移フラグを返す.
      * @param state - ステート
      * @returns カートリスト遷移フラグ
@@ -287,7 +285,6 @@ export default new Vuex.Store({
       return state.fromCartList;
     },
     /**
->>>>>>> develop
      * ログインしているユーザーの情報を返す.
      *
      * @param state -ステート
