@@ -129,6 +129,12 @@ export default class OrderConfirm extends Vue {
    * 商品小計、消費税を計算して変数に格納する。
    */
   created(): void {
+    // ログインしていなければログイン画面へ遷移
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+      return;
+    }
+
     // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
     console.log(this.currentCartItems);

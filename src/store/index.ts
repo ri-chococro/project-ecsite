@@ -4,11 +4,11 @@ import { Item } from "../types/item";
 import axios from "axios";
 import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
-import { Topping } from "@/types/topping";
+// import { Topping } from "@/types/topping";
 
 // 使うためには「npm install vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
-import { OrderTopping } from "@/types/orderTopping";
+// import { OrderTopping } from "@/types/orderTopping";
 
 Vue.use(Vuex);
 
@@ -108,7 +108,26 @@ export default new Vuex.Store({
       state.itemsInCart.push(payload);
     },
     /**
-     * カートリストからログイン画面に遷移された時にフラグを立てる.
+     * 並び替え種類によってstateのitem配列の中身を並び替える.
+     * @param state - ステート
+     * @param payload - 並び替えの種類
+     */
+    sortOrderByPrice(state, payload) {
+      if (payload === "高い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? 1 : -1;
+        });
+      } else if (payload === "安い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? -1 : 1;
+        });
+      } else if (payload === "おすすめ順") {
+        state.items.sort(function (a, b) {
+          return a.id < b.id ? -1 : 1;
+        });
+      }
+    },
+    /** カートリストからログイン画面に遷移された時にフラグを立てる.
      * @param state - ステート
      */
     fromCartListFlagOn(state) {
@@ -168,7 +187,9 @@ export default new Vuex.Store({
      */
     getSearchByName(state) {
       return (name: string) => {
-        return state.items.filter((item) => item.name.includes(name));
+        return state.items.filter((item) =>
+          item.name.toUpperCase().includes(name.toUpperCase())
+        );
       };
     },
 
@@ -258,6 +279,7 @@ export default new Vuex.Store({
       };
     },
     /**
+
      * カートリスト遷移フラグを返す.
      * @param state - ステート
      * @returns カートリスト遷移フラグ
