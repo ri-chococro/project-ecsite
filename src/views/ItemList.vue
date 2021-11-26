@@ -114,6 +114,9 @@ export default class ItemList extends Vue {
       this.searchNameMessage = "";
     }
   }
+  // suggest(): void {
+  //   this.searchName = this.searchName.toUpperCase();
+  // }
 }
 </script>
 
@@ -160,6 +163,7 @@ export default class ItemList extends Vue {
   appearance: auto;
   -webkit-rtl-ordering: logical;
   cursor: text;
+  /* text-transform: uppercase; */
 }
 
 .search-btn {

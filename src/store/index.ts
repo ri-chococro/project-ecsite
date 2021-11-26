@@ -107,12 +107,12 @@ export default new Vuex.Store({
     },
     /**
      * カートの中身をリセットする.
-     * 
+     *
      * @param state - ステート
      */
     resetCart(state) {
       state.itemsInCart = new Array<OrderItem>();
-    }
+    },
   },
   actions: {
     /**
@@ -152,7 +152,9 @@ export default new Vuex.Store({
      */
     getSearchByName(state) {
       return (name: string) => {
-        return state.items.filter((item) => item.name.includes(name));
+        return state.items.filter((item) =>
+          item.name.toUpperCase().includes(name.toUpperCase())
+        );
       };
     },
 
@@ -242,14 +244,14 @@ export default new Vuex.Store({
       };
     },
     /**
-    * ログインしているユーザーの情報を返す.
-     * 
+     * ログインしているユーザーの情報を返す.
+     *
      * @param state -ステート
      * @returns - ログインユーザー情報
      */
     getLoginUser(state) {
       return state.user;
-    }
+    },
   },
   modules: {},
   //ログイン状態フラグを保持するプラグイン
