@@ -433,7 +433,8 @@ export default class OrderComponent extends Vue {
         return;
       }
     }
-
+    // 注文したらカートの中身を空にする
+    this.$store.commit("resetCart");
     this.$router.push("/orderFinished");
   }
 
@@ -507,10 +508,7 @@ export default class OrderComponent extends Vue {
         Number(this.cardExpYear),
         Number(this.cardExpMonth)
       );
-      if (
-        this.cardExpMonth === "" ||
-        this.cardExpYear === ""
-      ) {
+      if (this.cardExpMonth === "" || this.cardExpYear === "") {
         this.cardDateError = "有効期限を選択してください";
         hasError = true;
       } else if (cardDate < nowDate) {
@@ -556,7 +554,8 @@ export default class OrderComponent extends Vue {
         },
       });
       console.dir("response:" + JSON.stringify(response.data.items[0].address));
-      this.distinationAddress = response.data.items[0].address;
+      this.distinationAddress =
+        response.data.items[0].pref + response.data.items[0].address;
     } catch (error) {
       console.log(error);
       this.zipcodeErrorMessage = "存在しない郵便番号です";

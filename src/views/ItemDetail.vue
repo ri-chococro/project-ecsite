@@ -26,7 +26,7 @@
                 />
                 <span>
                   &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
-                    currentItem.priceM
+                    currentItem.priceM.toLocaleString()
                   }}円(税抜)</span
                 >
               </label>
@@ -41,7 +41,7 @@
                 />
                 <span>
                   &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
-                    currentItem.priceL
+                    currentItem.priceL.toLocaleString()
                   }}円(税抜)</span
                 >
               </label>
@@ -51,8 +51,9 @@
             <div class="item-hedding">
               トッピング：
               &nbsp;1つにつき<span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;
-              {{ toppingPriceM }}円(税抜) <span>&nbsp;Ｌ</span>&nbsp;&nbsp;
-              {{ toppingPriceL }}円(税抜)
+              {{ toppingPriceM.toLocaleString() }}円(税抜)
+              <span>&nbsp;Ｌ</span>&nbsp;&nbsp;
+              {{ toppingPriceL.toLocaleString() }}円(税抜)
             </div>
             <span
               v-for="topping of currentItem.toppingList"

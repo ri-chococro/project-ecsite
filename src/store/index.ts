@@ -121,6 +121,14 @@ export default new Vuex.Store({
     fromCartListFlagOff(state) {
       state.fromCartList = false;
     },
+    /**
+     * カートの中身をリセットする.
+     *
+     * @param state - ステート
+     */
+    resetCart(state) {
+      state.itemsInCart = new Array<OrderItem>();
+    },
   },
   actions: {
     /**
