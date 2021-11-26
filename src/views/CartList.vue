@@ -150,6 +150,7 @@ export default class CartList extends Vue {
    */
   onGoOrder(): void {
     if (this.$store.getters.getLoginStatus === false) {
+      this.$store.commit("fromCartListFlagOn");
       this.$router.push("/login");
     } else {
       this.$router.push("/orderConfirm");
