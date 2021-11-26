@@ -105,6 +105,21 @@ export default new Vuex.Store({
     addItemInCart(state, payload) {
       state.itemsInCart.push(payload);
     },
+    sortOrderByPrice(state, payload) {
+      if (payload === "高い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? 1 : -1;
+        });
+      } else if (payload === "安い順") {
+        state.items.sort(function (a, b) {
+          return a.priceM < b.priceM ? -1 : 1;
+        });
+      } else if (payload === "おすすめ順") {
+        state.items.sort(function (a, b) {
+          return a.id < b.id ? -1 : 1;
+        });
+      }
+    },
   },
   actions: {
     /**
@@ -234,14 +249,14 @@ export default new Vuex.Store({
       };
     },
     /**
-    * ログインしているユーザーの情報を返す.
-     * 
+     * ログインしているユーザーの情報を返す.
+     *
      * @param state -ステート
      * @returns - ログインユーザー情報
      */
     getLoginUser(state) {
       return state.user;
-    }
+    },
   },
   modules: {},
   //ログイン状態フラグを保持するプラグイン
