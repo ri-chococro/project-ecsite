@@ -44,7 +44,9 @@
           <div class="items">
             <div class="item" v-for="item of itemList" v-bind:key="item.id">
               <div class="item-icon">
-                <img v-bind:src="item.imagePath" />
+                <router-link :to="'/itemDetail/' + item.id">
+                  <img v-bind:src="item.imagePath"
+                /></router-link>
               </div>
               <router-link :to="'/itemDetail/' + item.id">{{
                 item.name
