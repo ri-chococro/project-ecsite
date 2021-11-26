@@ -87,9 +87,9 @@ export default class Top extends Vue {}
 
 <style scoped>
 .top-wrapper {
-  padding: 180px 0 100px 0; /* 上はヘッダが来るのでその分180px分空ける */
-  background-image: url(/img/hawaii_top.jpeg/); /* 背景画像設定 */
-  background-size: cover; /*画像の縦横比を崩すことなく、画像ができるだけ大きくなるよう拡大縮小*/
+  padding: 180px 0 500px 0; /* 上はヘッダが来るのでその分180px分空ける */
+  background-image: url(/img/hawaii4.jpg/); /* 背景画像設定 */
+  background-size: cover; /* 画像の縦横比を崩すことなく、画像ができるだけ大きくなるよう拡大縮小 */
   color: white;
   text-align: center;
 }
