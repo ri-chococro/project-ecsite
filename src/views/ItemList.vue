@@ -5,7 +5,9 @@
       <div class="search-wrapper">
         <div class="container">
           <form class="search-form">
-            {{ searchNameMessage }}
+            <div class="searchError">
+              {{ searchNameMessage }}
+            </div>
             <input
               type="text"
               name="name"
@@ -108,12 +110,17 @@ export default class ItemList extends Vue {
       this.searchNameMessage = "1件もありませんでしたので、全件表示します";
       this.itemList = this["$store"].getters.getAllItems;
       this.searchName = "";
+    } else {
+      this.searchNameMessage = "";
     }
   }
 }
 </script>
 
 <style scoped>
+.searchError {
+  color: #ff4500;
+}
 .search-wrapper {
   padding: 20px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
   margin-top: -40px;
