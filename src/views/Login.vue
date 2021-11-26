@@ -113,7 +113,7 @@ export default class Login extends Vue {
         telephone: user.telephone,
       });
       if (this.$store.getters.getFromCartListFlag === true) {
-        this["$router"].push("/cartList");
+        this["$router"].push("/orderConfirm");
         this.$store.commit("fromCartListFlagOff");
       } else {
         this["$router"].push("/itemList");
