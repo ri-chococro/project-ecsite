@@ -45,6 +45,10 @@ const routes: Array<RouteConfig> = [
     path: "/cartList",
     component: () => import("../views/CartList.vue"),
   },
+  {
+    path: "/404",
+    component: () => import("../views/404.vue"),
+  }
 ];
 
 const router = new VueRouter({
