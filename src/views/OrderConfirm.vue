@@ -102,7 +102,7 @@ import OrderComponent from "../components/OrderComponent.vue";
 export default class OrderConfirm extends Vue {
   // カート内の商品
   private currentCartItems: Array<OrderItem> = [];
-  // 商品小計（税込）
+  // 商品合計（税込）
   private totalPrice = 0;
   // 消費税
   private taxPrice = 0;
@@ -110,7 +110,7 @@ export default class OrderConfirm extends Vue {
   private coupons = [
     new Coupon("thankyou", 500, "感謝セール"),
     new Coupon("1225", 300, "クリスマス"),
-    new Coupon("cat22", 600, "猫の日"),
+    new Coupon("Aloha2021", 600, "ハワイキャンペーン"),
   ];
   // 入力されたクーポンコード
   private inputCouponCode = "";
@@ -139,24 +139,34 @@ export default class OrderConfirm extends Vue {
     // 消費税の計算
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
+    // 合計金額の計算
     this.totalPrice += this.taxPrice;
-
-    console.dir(JSON.stringify(this.coupons));
   }
-
+  /**
+   * クーポン適用ボタン押下時の処理.
+   * @remarks
+   * エラーチェックを行い、問題なければクーポンに応じた金額を合計金額から値引く
+   *
+   * @param code - 入力されたクーポンコード
+   */
   couponDiscount(code: string): void {
+    // 既にクーポンが使われている時にエラーを出す
     if (this.hasCoupon === true) {
       this.couponError = "既にクーポンが使われています";
       return;
     }
 
+    // 入力されたクーポンコードと登録されたクーポンの突合
     for (let coupon of this.coupons) {
+      // クーポンコードが入力されていないとき
       if (code === "") {
         this.hasCoupon = false;
         this.couponError = "クーポンコードを入力してください";
+        // 登録されていないクーポンコードが入力されたとき
       } else if (coupon.code !== code) {
         this.hasCoupon = false;
         this.couponError = "クーポンコードが存在しません";
+        // 正しいクーポンコードが入力されたとき
       } else if (coupon.code === code) {
         this.hasCoupon = true;
         this.couponError = "";
@@ -165,13 +175,17 @@ export default class OrderConfirm extends Vue {
           coupon.discountPrice,
           coupon.couponType
         );
+        // 値引きを行う
         this.totalPrice -= this.currentCoupon.discountPrice;
         return;
       }
     }
-    console.log(`${this.hasCoupon}:${this.currentCoupon}`);
-    console.log(this.currentCoupon);
   }
+  /**
+   * クーポン取り消しボタン押下時の処理.
+   * @remarks
+   * 値引き分の金額を戻す
+   */
   cancelCoupon(): void {
     this.hasCoupon = false;
     this.couponError = "";
