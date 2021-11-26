@@ -51,9 +51,29 @@
             </tbody>
           </table>
         </div>
+        <div class="coupon-form">
+          <label for="coupon">クーポンコード入力欄</label>
+          <span
+            ><input type="text" name="coupon" v-model="inputCouponCode" />
+            <button type="button" v-on:click="couponDiscount(inputCouponCode)">
+              適用
+            </button>
+            {{ couponError }}</span
+          >
+        </div>
 
         <div class="row cart-total-price">
           <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
+          <div v-if="hasCoupon">
+            <div>
+              {{ currentCoupon.couponType }}クーポン割引：-{{
+                currentCoupon.discountPrice
+              }}円
+            </div>
+            <button type="button" v-on:click="cancelCoupon()">
+              クーポン取り消し
+            </button>
+          </div>
           <div>ご注文金額合計：{{ totalPrice.toLocaleString() }}円 (税込)</div>
         </div>
 
@@ -71,6 +91,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { OrderItem } from "@/types/orderItem";
+import { Coupon } from "@/types/coupon";
 import OrderComponent from "../components/OrderComponent.vue";
 
 @Component({
@@ -81,10 +102,24 @@ import OrderComponent from "../components/OrderComponent.vue";
 export default class OrderConfirm extends Vue {
   // カート内の商品
   private currentCartItems: Array<OrderItem> = [];
-  // 商品小計（税抜）
+  // 商品小計（税込）
   private totalPrice = 0;
   // 消費税
   private taxPrice = 0;
+  // クーポンを格納する配列
+  private coupons = [
+    new Coupon("thankyou", 500, "感謝セール"),
+    new Coupon("1225", 300, "クリスマス"),
+    new Coupon("cat22", 600, "猫の日"),
+  ];
+  // 入力されたクーポンコード
+  private inputCouponCode = "";
+  // 選択したクーポン
+  private currentCoupon: Coupon = new Coupon("", 0, "");
+  // クーポン有無フラグ
+  private hasCoupon = false;
+  // クーポンエラー
+  private couponError = "";
 
   /**
    * Vuexストア内ゲッター経由でstateからカート内商品を取得.
@@ -105,6 +140,44 @@ export default class OrderConfirm extends Vue {
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
     this.totalPrice += this.taxPrice;
+
+    console.dir(JSON.stringify(this.coupons));
+  }
+
+  couponDiscount(code: string): void {
+    if (this.hasCoupon === true) {
+      this.couponError = "既にクーポンが使われています";
+      return;
+    }
+
+    for (let coupon of this.coupons) {
+      if (code === "") {
+        this.hasCoupon = false;
+        this.couponError = "クーポンコードを入力してください";
+      } else if (coupon.code !== code) {
+        this.hasCoupon = false;
+        this.couponError = "クーポンコードが存在しません";
+      } else if (coupon.code === code) {
+        this.hasCoupon = true;
+        this.couponError = "";
+        this.currentCoupon = new Coupon(
+          coupon.code,
+          coupon.discountPrice,
+          coupon.couponType
+        );
+        this.totalPrice -= this.currentCoupon.discountPrice;
+        return;
+      }
+    }
+    console.log(`${this.hasCoupon}:${this.currentCoupon}`);
+    console.log(this.currentCoupon);
+  }
+  cancelCoupon(): void {
+    this.hasCoupon = false;
+    this.couponError = "";
+    this.inputCouponCode = "";
+    this.totalPrice += this.currentCoupon.discountPrice;
+    this.currentCoupon = new Coupon("", 0, "");
   }
 }
 </script>
@@ -149,5 +222,8 @@ export default class OrderConfirm extends Vue {
 
 .order-confirm-payment-method-radio {
   margin-right: 10px;
+}
+.coupon-form {
+  width: 300px;
 }
 </style>
