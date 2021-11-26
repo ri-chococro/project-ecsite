@@ -155,6 +155,12 @@ export default class MyPage extends Vue {
    * ログインユーザー情報を取得し、注文履歴を取得する。
    */
   async created(): Promise<void> {
+    // ログインしていなければログイン画面へ遷移
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+      return;
+    }
+
     this.loginUser = this.$store.getters.getLoginUser;
 
     await this.getOrderHistory();
