@@ -56,7 +56,7 @@
           <div class="error">{{ addressOfError }}</div>
           <div class="input-field col s12">
             <input id="address" type="text" v-model="address" />
-            <label for="address">住所</label>
+            <label for="address" :class="{active:address}">住所</label>
           </div>
         </div>
         <div class="row">
