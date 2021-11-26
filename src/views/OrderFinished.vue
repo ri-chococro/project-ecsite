@@ -26,6 +26,14 @@ import { Component, Vue } from "vue-property-decorator";
  */
 @Component
 export default class OrderFinished extends Vue {
+  created(): void {
+    // ログインしていなければログイン画面へ遷移
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+      return;
+    }
+  }
+
   /**
    * トップ画面へ戻る
    */
