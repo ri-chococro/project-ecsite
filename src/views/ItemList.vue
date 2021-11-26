@@ -8,12 +8,20 @@
             <div class="searchError">
               {{ searchNameMessage }}
             </div>
+            <label for="SearchText" class="hide-label">キーワード検索</label>
             <input
-              type="text"
-              name="name"
-              class="search-name-input"
+              id="SearchText"
+              type="search"
               v-model="searchName"
+              placeholder="検索キーワードを入力"
+              autocomplete="on"
+              list="hawaii"
             />
+            <datalist id="hawaii">
+              <div v-for="item of itemList" v-bind:key="item.id">
+                <option v-bind:value="item.name"></option>
+              </div>
+            </datalist>
             <button
               class="btn search-btn"
               type="button"
