@@ -4,7 +4,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // ルートパスに遷移すると商品詳細ページへ
+  // ルートパスに遷移すると商品一覧ページへ
   {
     path: "/",
     component: () => import("../views/ItemList.vue"),
