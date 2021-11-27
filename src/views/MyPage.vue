@@ -203,6 +203,8 @@ export default class MyPage extends Vue {
   margin: -20px;
   background-color: #f7f7f7;
   text-align: center;
+  background-image: url("/img_aloha/tropical_pattern.png");
+  background-size: 250px;
 }
 .container {
   width: 600px;
