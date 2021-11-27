@@ -3,7 +3,7 @@
     <div class="container">
       <div class="icon-name">
         <img src="img_aloha/no-profile.png" class="profile-img" />
-        <div class="name">{{ loginUser.name }}</div>
+        <div class="name">{{ loginUser.name }} 様</div>
       </div>
       <div>
         <div class="title">登録情報</div>
@@ -200,21 +200,21 @@ export default class MyPage extends Vue {
 
 <style scoped>
 .profile-wrapper {
-  margin: -20px;
-  background-color: #f7f7f7;
+  margin-top: -20px;
   text-align: center;
   background-image: url("/img_aloha/tropical_pattern.png");
   background-size: 250px;
 }
 .container {
-  width: 600px;
-  padding: 30px 0;
+  width: 750px;
+  padding: 20px 120px;
+  background-color: #f7f7f7;
+  position: relative;
 }
 .icon-name {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
-  padding-left: 80px;
+  padding-left: 10%;
   gap: 30px;
 }
 .profile-img {
@@ -230,7 +230,6 @@ export default class MyPage extends Vue {
   border-bottom: 1px solid #ccc;
 }
 .user-info {
-  width: 500px;
   padding: 20px;
   box-shadow: black 2px 2px 5px;
   font-size: 18px;
@@ -252,7 +251,6 @@ export default class MyPage extends Vue {
 
 .order-history {
   text-align: center;
-  padding-left: 50px;
 }
 
 /* モーダルのスタイル */
