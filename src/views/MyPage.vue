@@ -44,8 +44,8 @@
                 <td>
                   <div>
                     <span v-if="hasDelivered(order.deliveryTime)">
-                      <i class="fas fa-check-circle fa-lg icon"></i>
-                      <span>発送済み</span>
+                      <i class="fas fa-check-circle fa-lg check-icon"></i>
+                      <span>お届け済</span>
                     </span>
                     <span v-else
                       >{{ formattedDeliveryTime(order.deliveryTime) }}<br />
@@ -357,6 +357,10 @@ export default class MyPage extends Vue {
 
 .order-history {
   text-align: center;
+}
+.check-icon {
+  color: rgb(65, 146, 65);
+  margin-right: 10px;
 }
 
 /* モーダルのスタイル */
