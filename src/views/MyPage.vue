@@ -130,6 +130,30 @@
                           <p>(内税 {{ order.tax.toLocaleString() }}円)</p>
                         </div>
                       </div>
+                      <!-- 配送時間の2時間前までならキャンセルできるため、キャンセルボタン表示 -->
+                      <!-- キャンセルボタンを押すと、確認のモーダルが開く -->
+                      <button
+                        class="btn pink lighten-2"
+                        v-if="canCancel(order.deliveryTime)"
+                        v-on:click="show('cancel')"
+                      >
+                        注文をキャンセル
+                      </button>
+                      <!-- キャンセルの確認モーダル -->
+                      <modal name="cancel" width="400px" height="200px">
+                        <div class="modal-body cancel-modal">
+                          <p>⚠️本当に注文をキャンセルしてよろしいですか。</p>
+                          <button
+                            class="btn pink lighten-2 yes-btn"
+                            v-on:click="cancelOrder(i)"
+                          >
+                            はい
+                          </button>
+                          <button class="btn" v-on:click="hide('cancel')">
+                            いいえ
+                          </button>
+                        </div>
+                      </modal>
                     </div>
                   </modal>
                   <!-- ここまでモーダル -->
@@ -150,6 +174,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { User } from "../types/user";
 import VModal from "vue-js-modal";
 import { format } from "date-fns/esm";
+import { addHours } from "date-fns";
 
 Vue.use(VModal);
 
@@ -235,6 +260,36 @@ export default class MyPage extends Vue {
     let deliveryTime = new Date(date);
     return format(deliveryTime, "yyyy/MM/dd HH時");
   }
+  /**
+   * キャンセルできるかどうかを返す.
+   *
+   * @remarks
+   * 配送日時の2時間前までならキャンセルできる
+   *
+   * @param - 配送日時
+   * @return - 配送時間の2時間前までならtrue, それ以外ならfalse
+   */
+  canCancel(date: string): boolean {
+    let now = new Date();
+    let deliveryTime = new Date(date);
+
+    if (deliveryTime > addHours(now, 2)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  /**
+   * 注文をキャンセルする.
+   *
+   * @param - 注文履歴のインデックス
+   */
+  cancelOrder(i: number): void {
+    this.orderHistory.splice(i, 1);
+    // モーダルを閉じる
+    this.hide("cancel");
+    this.hide(String(i));
+  }
 }
 </script>
 
@@ -308,5 +363,21 @@ export default class MyPage extends Vue {
   display: flex;
   justify-content: space-between;
   padding: 0 15px;
+}
+.close-btn {
+  margin-right: 15px;
+}
+.link {
+  text-decoration: underline;
+  color: #333;
+}
+
+.cancel-modal {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 16px;
+}
+.yes-btn {
+  margin-right: 15px;
 }
 </style>
