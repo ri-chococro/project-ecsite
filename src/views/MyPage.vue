@@ -26,7 +26,6 @@
                 <th>注文日</th>
                 <th>合計金額</th>
                 <th>ステータス</th>
-           
               </tr>
             </thead>
             <tbody>
@@ -93,6 +92,11 @@
                                   height="100px"
                                 />
                               </div>
+                              <router-link
+                                :to="'/itemDetail/' + orderItem.item.id"
+                                class="link"
+                                >商品ページへ</router-link
+                              >
                             </td>
                             <td>
                               <span>{{ orderItem.item.name }}</span>
@@ -122,14 +126,21 @@
                         </tbody>
                       </table>
                       <div class="modal-bottom">
-                        <button class="btn" v-on:click="hide(String(i))">
-                          閉じる
-                        </button>
+                        <div>
+                          <p>受取人：{{ order.destinationName }}</p>
+                          <p>お届け先：{{ order.destinationAddress }}</p>
+                        </div>
                         <div>
                           <p>合計 {{ order.totalPrice.toLocaleString() }}円</p>
                           <p>(内税 {{ order.tax.toLocaleString() }}円)</p>
                         </div>
                       </div>
+                      <button
+                        class="btn close-btn"
+                        v-on:click="hide(String(i))"
+                      >
+                        閉じる
+                      </button>
                       <!-- 配送時間の2時間前までならキャンセルできるため、キャンセルボタン表示 -->
                       <!-- キャンセルボタンを押すと、確認のモーダルが開く -->
                       <button
@@ -349,12 +360,8 @@ export default class MyPage extends Vue {
 }
 
 /* モーダルのスタイル */
-.modal-header,
 .modal-body {
-  padding: 10px 25px;
-}
-.modal-header {
-  border-bottom: 1px solid #ddd;
+  padding: 10px 25px 50px;
 }
 .modal-title {
   text-align: center;
