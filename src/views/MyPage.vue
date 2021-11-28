@@ -25,6 +25,8 @@
                 <th>注文ID</th>
                 <th>注文日</th>
                 <th>合計金額</th>
+                <th>ステータス</th>
+           
               </tr>
             </thead>
             <tbody>
@@ -38,6 +40,18 @@
                 <td>
                   <div class="text-center">
                     {{ order.totalPrice.toLocaleString() }}円
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <span v-if="hasDelivered(order.deliveryTime)">
+                      <i class="fas fa-check-circle fa-lg icon"></i>
+                      <span>発送済み</span>
+                    </span>
+                    <span v-else
+                      >{{ formattedDeliveryTime(order.deliveryTime) }}<br />
+                      お届け予定</span
+                    >
                   </div>
                 </td>
                 <td>
@@ -135,6 +149,7 @@ import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
 import { User } from "../types/user";
 import VModal from "vue-js-modal";
+import { format } from "date-fns/esm";
 
 Vue.use(VModal);
 
@@ -194,6 +209,31 @@ export default class MyPage extends Vue {
    */
   hide(i: string): void {
     this.$modal.hide(i);
+  }
+  /**
+   * 配送状況を返す.
+   *
+   * @param - 配送日時
+   * @return - 配送状況 配送済みならtrue, 未配送ならfalse
+   */
+  hasDelivered(date: string): boolean {
+    // 現在の日時より配送日時が過去なら配送済み
+    let now = new Date();
+    let deliveryTime = new Date(date);
+    if (deliveryTime < now) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  /**
+   * 配送日時をフォーマットする.
+   *
+   * @param - 配送日時
+   */
+  formattedDeliveryTime(date: string): string {
+    let deliveryTime = new Date(date);
+    return format(deliveryTime, "yyyy/MM/dd HH時");
   }
 }
 </script>
