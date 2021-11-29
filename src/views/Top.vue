@@ -392,6 +392,7 @@ a.btn-custom01:active:after {
 .message-wrapper {
   padding: 0px 0 100px 0;
   background-size: cover; /* 画像の縦横比を崩すことなく、画像ができるだけ大きくなるよう拡大縮小 */
+  background-image: url(/img/hawaii7.jpg/); /* 背景画像設定 */
   color: white;
   text-align: center;
 }
