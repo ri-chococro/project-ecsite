@@ -148,6 +148,14 @@ export default new Vuex.Store({
     resetCart(state) {
       state.itemsInCart = new Array<OrderItem>();
     },
+    /**
+     * カート内の対象のアイテムに数量を加える.
+     * @param state -ステート
+     * @param payload -カート内のインデックス番号とその数量
+     */
+    addCartItem(state, payload) {
+      state.itemsInCart[payload.index].quantity += payload.quantity;
+    },
   },
   actions: {
     /**
