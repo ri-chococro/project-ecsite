@@ -192,31 +192,34 @@ export default class ItemDetail extends Vue {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const itemId = parseInt(this["$route"].params.id);
 
-    const response = await axios.get(
-      `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
-    );
-    console.dir("response" + JSON.stringify(response));
-    this.currentItem = new Item(
-      response.data.item.id,
-      response.data.item.type,
-      response.data.item.name,
-      response.data.item.description,
-      response.data.item.priceM,
-      response.data.item.priceL,
-      response.data.item.imagePath,
-      response.data.item.deleted,
-      response.data.item.toppingList
-    );
-
-    //金額のリアルタイム表示の初期値
-    this.realTimePrice = this.currentItem.priceM;
-    //トッピングMの金額
-    this.toppingPriceM = this.currentItem.toppingList[0].priceM;
-    //トッピングLの金額
-    this.toppingPriceL = this.currentItem.toppingList[0].priceL;
-
-    // データが取得されたらローディング中のフラグをfalseにする
-    this.isLoading = false;
+    try {
+      const response = await axios.get(
+        `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
+      );
+      console.dir("response" + JSON.stringify(response));
+      this.currentItem = new Item(
+        response.data.item.id,
+        response.data.item.type,
+        response.data.item.name,
+        response.data.item.description,
+        response.data.item.priceM,
+        response.data.item.priceL,
+        response.data.item.imagePath,
+        response.data.item.deleted,
+        response.data.item.toppingList
+      );
+      //金額のリアルタイム表示の初期値
+      this.realTimePrice = this.currentItem.priceM;
+      //トッピングMの金額
+      this.toppingPriceM = this.currentItem.toppingList[0].priceM;
+      //トッピングLの金額
+      this.toppingPriceL = this.currentItem.toppingList[0].priceL;
+      
+    　　　// データが取得されたらローディング中のフラグをfalseにする
+    　　　this.isLoading = false;
+    } catch (error) {
+      this.$router.push("/404");
+    }
   }
   /**
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.

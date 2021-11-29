@@ -14,6 +14,9 @@
           <span>トップ画面を表示する</span>
         </button>
       </div>
+      <div class="thank-you">
+        <img src="/img_aloha/p3969.gif">
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +52,10 @@ export default class OrderFinished extends Vue {
 }
 
 .order-finished-btn {
+  text-align: center;
+}
+
+.thank-you {
   text-align: center;
 }
 </style>
