@@ -47,58 +47,78 @@
     <div class="top-item-wrapper">
       <div class="container">
         <div class="heading">
-          <h2>ラクラクアロハ、４つの特徴！</h2>
+          <div class="subTitle">Special Menu</div>
         </div>
 
         <div class="top-items">
           <div class="top-item">
-            <p class="pickUp">ハワイアン料理</p>
+            <a href="/itemList">
+              <p class="pickUp">Hawaiian Food</p>
+            </a>
             <div class="top-item-icon">
-              <img src="img/1.jpg" />
+              <a href="/itemList">
+                <img src="img/1.jpg" />
+              </a>
             </div>
-            <p class="text-contents">
-              アロハテーブルやウルフギャング、田中オブ東京などのハワイの有名店で修行を積んだ一流シェフによる本格的なハワイアン料理が家にいてもお手軽に楽しむことができます。
-            </p>
+            <a href="/itemList">
+              <p class="text-contents">
+                アロハテーブルやウルフギャング、田中オブ東京などのハワイの有名店で修行を積んだ一流シェフによる本格的なハワイアン料理が家にいてもお手軽に楽しむことができます。
+              </p>
+            </a>
           </div>
           <div class="top-item">
-            <p class="pickUp">スイーツも充実</p>
+            <a href="/itemList">
+              <p class="pickUp">Sweets</p>
+            </a>
             <div class="top-item-icon">
-              <img src="img/2.jpg" />
+              <a href="/itemList">
+                <img src="img/2.jpg" />
+              </a>
             </div>
-            <p class="text-contents">
-              アイランドビンテージコーヒーやボガーツカフェのアサイボウルはもちろんのこと、最近流行りのバナンのソフトクリーム、エッグスンシングスのふわふわパンケーキなど有名店のスイーツも充実しています。
-            </p>
+            <a href="/itemList">
+              <p class="text-contents">
+                アイランドビンテージコーヒーやボガーツカフェのアサイボウルはもちろんのこと、最近流行りのバナンのソフトクリーム、エッグスンシングスのふわふわパンケーキなど有名店のスイーツも充実しています。
+              </p>
+            </a>
           </div>
           <div class="top-item">
-            <p class="pickUp">アルコールも豊富</p>
+            <a href="/itemList">
+              <p class="pickUp">Drink</p>
+            </a>
             <div class="top-item-icon">
-              <img src="img/14.jpg" />
+              <a href="/itemList">
+                <img src="img/14.jpg" />
+              </a>
             </div>
-            <p class="text-contents">
-              ハワイといえばビーチでマイタイ！コナブリューイングのハワイアンコナビールなどハワイでしか飲めないアルコールも豊富にあります。
-            </p>
+            <a href="/itemList">
+              <p class="text-contents">
+                ハワイといえばビーチでマイタイ！コナブリューイングのハワイアンコナビールなどハワイでしか飲めないアルコールも豊富にあります。
+              </p>
+            </a>
           </div>
           <div class="top-item">
-            <p class="pickUp">ホテル創作料理</p>
+            <a href="/itemList">
+              <p class="pickUp">Creative Cuisine</p>
+            </a>
             <div class="top-item-icon">
-              <img src="img/13.jpg" />
+              <a href="/itemList">
+                <img src="img/13.jpg" />
+              </a>
             </div>
-            <p class="text-contents">
-              シェラトンワイキキ、ロイヤルハワイアン、モアナサーフライダー、アウラニに入っているレストランの創作料理も「ラクラクアロハ」なら気軽に注文できます。
-            </p>
+            <a href="/itemList">
+              <p class="text-contents">
+                シェラトンワイキキ、ロイヤルハワイアン、モアナサーフライダー、アウラニに入っているレストランの創作料理も「ラクラクアロハ」なら気軽に注文できます。
+              </p>
+            </a>
           </div>
         </div>
       </div>
     </div>
 
     <div class="message-wrapper">
-      <div class="container">
-        <div class="heading">
-          <h2>さぁ、今すぐALOHAの旅に出よう！</h2>
-          <a href="/itemList" class="btn signup">Let's go on an Aloha trip!</a>
-        </div>
-        <span class="btn message">ALOHAの旅に出る！</span>
-      </div>
+      <a href="/registerUser" class="btn2 btn2-malformation"
+        >会員登録はこちら</a
+      >
     </div>
   </div>
 </template>
@@ -114,6 +134,65 @@ export default class Top extends Vue {}
 @import url("https://fonts.googleapis.com/css2?family=Rampart+One&family=Yellowtail&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Rampart+One&family=Yellowtail&display=swap");
 @import "https://use.fontawesome.com/releases/v5.13.0/css/all.css";
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Yellowtail&display=swap");
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+.pickUp {
+  font-size: 30px;
+  color: black;
+  font-family: "Rampart One", cursive;
+  font-family: "Yellowtail", cursive;
+}
+
+.btn2,
+a.btn2,
+button.btn2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+  margin: 50px;
+}
+
+a.btn2-malformation {
+  font-size: 2rem;
+  padding: 3rem 4rem;
+
+  color: #fff;
+  border-radius: 100% 80px / 80px 100%;
+  background-color: #eb6100;
+}
+
+a.btn2-malformation:hover {
+  color: #fff;
+  border-radius: 60% 80% / 100% 80%;
+}
 
 .googleMap {
   padding: 50px;
@@ -154,10 +233,11 @@ html {
   box-sizing: border-box;
   font-size: 62.5%;
 }
-.pickUp {
-  font-size: 25px;
-  color: red;
-}
+
+/* 
+＝＝＝＝＝＝＝＝＝
+ボタンの設定
+＝＝＝＝＝＝＝＝＝ */
 
 .btn,
 a.btn,
@@ -187,6 +267,7 @@ a.btn-custom01 {
   margin-bottom: 0.5rem;
   padding: 0;
   border-radius: 0.75rem;
+  margin-top: 3rem;
 }
 
 a.btn-custom01:before {
@@ -308,6 +389,12 @@ a.btn-custom01:active:after {
   color: white;
   text-align: center;
 }
+.message-wrapper {
+  padding: 0px 0 100px 0;
+  background-size: cover; /* 画像の縦横比を崩すことなく、画像ができるだけ大きくなるよう拡大縮小 */
+  color: white;
+  text-align: center;
+}
 
 .top-wrapper h1 {
   opacity: 0.9; /* 文字の透明度を指定 */
@@ -387,8 +474,7 @@ a.btn-custom01:active:after {
   width: 250px;
   color: red;
   font-size: 25px;
-
-  background-color: turquoise;
+  background-color: rgb(164, 233, 226);
 }
 
 .top-item-icon img {
