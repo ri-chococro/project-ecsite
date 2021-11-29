@@ -7,7 +7,8 @@ export class OrderTopping {
     public _id: number, //ID
     public _toppingId: number, //トッピングID
     public _orderItemId: number, //注文商品ID
-    public _Topping: Topping //トッピング
+    public _topping: Topping //トッピング
+
   ) {}
 
   public get id(): number {
@@ -34,11 +35,11 @@ export class OrderTopping {
     this._orderItemId = orderItemId;
   }
 
-  public get Topping(): Topping {
-    return this._Topping;
+  public get topping(): Topping {
+    return this._topping;
   }
 
-  public set Topping(Topping: Topping) {
-    this._Topping = Topping;
+  public set topping(topping: Topping) {
+    this._topping = topping;
   }
 }

@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "*",
+    path: "/",
     component: () => import("../views/Top.vue"),
   },
   {
@@ -33,6 +33,10 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/OrderFinished.vue"),
   },
   {
+    path: "/myPage",
+    component: () => import("../views/MyPage.vue"),
+  },
+  {
     path: "/orderConfirm",
     component: () => import("../views/OrderConfirm.vue"),
   },
@@ -43,6 +47,11 @@ const routes: Array<RouteConfig> = [
   {
     path: "/top",
     component: () => import("../views/Top.vue"),
+  },
+  // 存在しないパスに遷移すると404ページへ
+  {
+    path: "*",
+    component: () => import("../views/404.vue"),
   },
 ];
 

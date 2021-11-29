@@ -14,6 +14,9 @@
           <span>トップ画面を表示する</span>
         </button>
       </div>
+      <div class="thank-you">
+        <img src="/img_aloha/p3969.gif">
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +29,14 @@ import { Component, Vue } from "vue-property-decorator";
  */
 @Component
 export default class OrderFinished extends Vue {
+  created(): void {
+    // ログインしていなければログイン画面へ遷移
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+      return;
+    }
+  }
+
   /**
    * トップ画面へ戻る
    */
@@ -41,6 +52,10 @@ export default class OrderFinished extends Vue {
 }
 
 .order-finished-btn {
+  text-align: center;
+}
+
+.thank-you {
   text-align: center;
 }
 </style>

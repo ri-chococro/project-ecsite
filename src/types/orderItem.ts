@@ -24,14 +24,14 @@ export class OrderItem {
     if (this.size === "M") {
       const itemSubTotal = this.item.priceM * this.quantity;
       const toppingSubTotal =
-        this.orderToppingList[0].Topping.priceM *
+        this.orderToppingList[0].topping.priceM *
         this.orderToppingList.length *
         this.quantity;
       return itemSubTotal + toppingSubTotal;
     } else {
       const itemSubTotal = this.item.priceL * this.quantity;
       const toppingSubTotal =
-        this.orderToppingList[0].Topping.priceL *
+        this.orderToppingList[0].topping.priceL *
         this.orderToppingList.length *
         this.quantity;
       return itemSubTotal + toppingSubTotal;
@@ -42,11 +42,11 @@ export class OrderItem {
    *
    * @returns 商品単価
    */
-  get itemPrice(): string {
+  get itemPrice(): number {
     if (this.size === "M") {
-      return this.item.priceM.toLocaleString();
+      return this.item.priceM * this.quantity;
     } else {
-      return this.item.priceL.toLocaleString();
+      return this.item.priceL * this.quantity;
     }
   }
   /**
@@ -54,11 +54,11 @@ export class OrderItem {
    *
    * @returns トッピング単価
    */
-  get toppingPrice(): string {
+  get toppingPrice(): number {
     if (this.size === "M") {
-      return this.item.toppingList[0].priceM.toLocaleString();
+      return this.orderToppingList[0].topping.priceM * this.quantity;
     } else {
-      return this.item.toppingList[0].priceL.toLocaleString();
+      return this.orderToppingList[0].topping.priceL * this.quantity;
     }
   }
 

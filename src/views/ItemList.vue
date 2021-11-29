@@ -1,43 +1,73 @@
 <template>
-  <div class="contaner">
-    <!-- search form -->
-    <div class="search-wrapper">
-      <div class="container">
-        
-        <form method="post" class="search-form">
-          {{ searchNameMessage }}
-          <input
-            type="text"
-            name="name"
-            class="search-name-input"
-            v-model="searchName"
-          />
-          <button
-            class="btn search-btn"
-            type="button"
-            v-on:click="onSearchClick"
-          >
-
-            <span>検索</span>
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- item list -->
-    <div class="item-wrapper">
-      <div class="container">
-        <div class="items">
-          <div class="item" v-for="item of itemList" v-bind:key="item.id">
-            <div class="item-icon">
-              <img v-bind:src="item.imagePath" />
+  <div class="item-list">
+    <div class="contaner">
+      <!-- search form -->
+      <div class="search-wrapper">
+        <div class="container">
+          <form class="search-form">
+            <div class="searchError">
+              {{ searchNameMessage }}
             </div>
-            <router-link :to="'/itemDetail/' + item.id">{{
-              item.name
-            }}</router-link>
-            <br />
-            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
+            <label for="SearchText" class="hide-label">キーワード検索</label>
+            <input
+              id="SearchText"
+              type="search"
+              v-model="searchName"
+              placeholder="検索キーワードを入力"
+              autocomplete="on"
+              list="hawaii"
+            />
+            <datalist id="hawaii">
+              <div v-for="item of itemList" v-bind:key="item.id">
+                <option v-bind:value="item.name"></option>
+              </div>
+            </datalist>
+            <button
+              class="btn search-btn"
+              type="button"
+              v-on:click="onSearchClick"
+            >
+              <span>検索</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- item list -->
+      <div class="item-wrapper">
+        <div class="container">
+          <!-- sort order -->
+          <div class="sort-order">
+            <form>
+              <label for="sortOrderKinds">並び替え</label>
+              <select
+                v-model="sortOrderKinds"
+                class="browser-default"
+                v-on:change="changeSortOrder(sortOrderKinds)"
+              >
+                <option>安い順</option>
+                <option>高い順</option>
+                <option>おすすめ順</option>
+              </select>
+            </form>
+          </div>
+          <!-- end sort order -->
+          <div class="items">
+            <div class="item" v-for="item of itemList" v-bind:key="item.id">
+              <div class="item-icon">
+                <router-link :to="'/itemDetail/' + item.id">
+                  <img v-bind:src="item.imagePath"
+                /></router-link>
+              </div>
+              <router-link :to="'/itemDetail/' + item.id">{{
+                item.name
+              }}</router-link>
+              <br />
+              <span class="price">Ｍ</span
+              >{{ item.priceM.toLocaleString() }}円(税抜)<br />
+              <span class="price">Ｌ</span
+              >{{ item.priceL.toLocaleString() }}円(税抜)<br />
+            </div>
           </div>
         </div>
       </div>
@@ -56,6 +86,8 @@ export default class ItemList extends Vue {
   public searchName = "";
   //検索エラーメッセージ
   public searchNameMessage = "";
+  //絞り込み種類
+  private sortOrderKinds = "安い順";
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから従業員一覧を取得する.
@@ -87,12 +119,24 @@ export default class ItemList extends Vue {
       this.searchNameMessage = "1件もありませんでしたので、全件表示します";
       this.itemList = this["$store"].getters.getAllItems;
       this.searchName = "";
+    } else {
+      this.searchNameMessage = "";
     }
+  }
+
+  /**
+   * 並び替えを行う.
+   */
+  changeSortOrder(value: string): void {
+    this.$store.commit("sortOrderByPrice", value);
   }
 }
 </script>
 
 <style scoped>
+.searchError {
+  color: #ff4500;
+}
 .search-wrapper {
   padding: 20px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
   margin-top: -40px;
@@ -132,6 +176,7 @@ export default class ItemList extends Vue {
   appearance: auto;
   -webkit-rtl-ordering: logical;
   cursor: text;
+  /* text-transform: uppercase; */
 }
 
 .search-btn {
@@ -156,7 +201,7 @@ export default class ItemList extends Vue {
 }
 
 .item-wrapper {
-  padding-top: 130px; /* 上はヘッダや検索フォームが来るのでその分空ける */
+  padding-top: 10px; /* 上はヘッダや検索フォームが来るのでその分空ける */
   padding-bottom: 80px;
   background-color: #f7f7f7;
   text-align: center;
@@ -186,5 +231,10 @@ export default class ItemList extends Vue {
 .price {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
+}
+.sort-order {
+  padding-top: 150px;
+  width: 180px;
+  text-align: left;
 }
 </style>

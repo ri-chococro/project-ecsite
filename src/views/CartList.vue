@@ -28,9 +28,9 @@
                 </td>
                 <td>
                   <span class="price">&nbsp;{{ currentCartItem.size }}</span
-                  >&nbsp;&nbsp;{{ currentCartItem.itemPrice }}円 &nbsp;&nbsp;{{
-                    currentCartItem.quantity
-                  }}個
+                  >&nbsp;&nbsp;{{
+                    currentCartItem.itemPrice.toLocaleString()
+                  }}円 &nbsp;&nbsp;{{ currentCartItem.quantity }}個
                 </td>
                 <td>
                   <ul
@@ -38,14 +38,14 @@
                     v-bind:key="topping.id"
                   >
                     <li>
-                      {{ topping.Topping.name
-                      }}{{ currentCartItem.toppingPrice }}円
+                      {{ topping.topping.name
+                      }}{{ currentCartItem.toppingPrice.toLocaleString() }}円
                     </li>
                   </ul>
                 </td>
                 <td>
                   <div class="text-center">
-                    {{ currentCartItem.calcSubTotalPrice }}円
+                    {{ currentCartItem.calcSubTotalPrice.toLocaleString() }}円
                   </div>
                 </td>
                 <td>
@@ -150,6 +150,7 @@ export default class CartList extends Vue {
    */
   onGoOrder(): void {
     if (this.$store.getters.getLoginStatus === false) {
+      this.$store.commit("fromCartListFlagOn");
       this.$router.push("/login");
     } else {
       this.$router.push("/orderConfirm");
