@@ -81,7 +81,7 @@
             <div class="input-field col s12">
               <select
                 class="browser-default"
-                v-model="quantity"
+                v-model.number="quantity"
                 v-on:change="realTimeCalcPrice"
               >
                 <option value="" disabled selected>選択して下さい</option>
@@ -256,7 +256,7 @@ export default class ItemDetail extends Vue {
       );
     }
     console.log(this.orderToppings);
-    
+
     // トッピングをID昇順に並び替える（合算するときに同じものと判断するため）
     this.orderToppings.sort(function (a, b) {
       return a.toppingId < b.toppingId ? -1 : 1;
@@ -265,11 +265,18 @@ export default class ItemDetail extends Vue {
 
     // ID、 トッピング、サイズが全て同じのときは既にあるカート内のアイテムに合算する
     let judgeExist = [];
+    let currentItemId = [];
+    for (let toppings of this.orderToppings) {
+      currentItemId.push(toppings.toppingId);
+    }
     for (let currentCartItem of currentCartItems) {
+      let cartToppingId=[]
+      for (let cartTopping of currentCartItem.orderToppingList) {
+        cartToppingId.push(cartTopping.toppingId);
+      }
       if (
         currentCartItem.itemId === this.currentItem.id &&
-        JSON.stringify(currentCartItem.orderToppingList) ===
-          JSON.stringify(this.orderToppings) &&
+        JSON.stringify(cartToppingId) === JSON.stringify(currentItemId) &&
         currentCartItem.size === this.size
       ) {
         judgeExist.push(true);

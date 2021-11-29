@@ -81,6 +81,7 @@
           :total-price="this.totalPrice"
           :order-items="this.currentCartItems"
         ></OrderComponent>
+        
       </div>
       <!-- end container -->
     </div>
