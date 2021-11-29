@@ -4,7 +4,7 @@
       <div class="header">
         <div class="header-left">
           <router-link to="/top">
-            <img class="logo" src="img_aloha/header_logo.png" />
+            <img class="logo" src="/img_aloha/header_logo.png" />
           </router-link>
         </div>
         <div class="header-right">
