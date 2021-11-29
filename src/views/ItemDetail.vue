@@ -8,7 +8,7 @@
       <div class="back" v-on:click="$router.back()">
         <i class="fas fa-arrow-left back-icon"></i>戻る
       </div>
-      <h1 class="page-title item-name">{{ currentItem.name }}</h1>
+      <h1 class="page-title item-name">{{ currentItem.name }} 🌺</h1>
       <div class="row">
         <div class="row item-detail">
           <div class="item-icon">
@@ -326,6 +326,7 @@ export default class ItemDetail extends Vue {
 
 .container {
   position: relative;
+  text-align: center;
 }
 
 .back {
@@ -350,6 +351,12 @@ export default class ItemDetail extends Vue {
 
 .item-name {
   font-family: "Mochiy Pop P One", sans-serif;
+  padding: 1rem 1.5rem;
+  color: #fff;
+  border-radius: 10px;
+  background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+  display: inline-block;
+  text-align: center;
 }
 
 .item-detail {
@@ -379,10 +386,10 @@ export default class ItemDetail extends Vue {
   text-align: left;
 }
 .item-size {
-  /* text-align: center; */
   font-size: 15px;
   margin-bottom: 20px;
   padding: 0 200px 0 200px;
+  text-align: left;
 }
 
 /* サイズをオレンジ〇で囲む */
@@ -395,6 +402,7 @@ export default class ItemDetail extends Vue {
 .item-toppings {
   font-size: 15px;
   padding: 0 200px 0 200px;
+  text-align: left;
 }
 
 .item-topping {
