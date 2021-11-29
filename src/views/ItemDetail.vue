@@ -196,7 +196,6 @@ export default class ItemDetail extends Vue {
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
       );
-      console.dir("response" + JSON.stringify(response));
       this.currentItem = new Item(
         response.data.item.id,
         response.data.item.type,
@@ -214,9 +213,9 @@ export default class ItemDetail extends Vue {
       this.toppingPriceM = this.currentItem.toppingList[0].priceM;
       //トッピングLの金額
       this.toppingPriceL = this.currentItem.toppingList[0].priceL;
-      
-    　　　// データが取得されたらローディング中のフラグをfalseにする
-    　　　this.isLoading = false;
+
+      // データが取得されたらローディング中のフラグをfalseにする
+      this.isLoading = false;
     } catch (error) {
       this.$router.push("/404");
     }
@@ -225,9 +224,8 @@ export default class ItemDetail extends Vue {
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
    */
   onClickAddCart(): void {
-    this.checkToppings = [];
-    this.orderToppings = [];
     // 選択したトッピングIDのIDを取得する
+    this.checkToppings = [];
     if (this.toppingIds.length === 0) {
       this.checkToppings.push(new Topping(-1, "0", "トッピングなし", 0, 0));
     } else {
@@ -239,20 +237,14 @@ export default class ItemDetail extends Vue {
         }
       }
     }
-    console.log(this.checkToppings);
-    // for (let toppingId of this.toppingIds) {
-    //   this.checkToppings=this.currentItem.toppingList.filter(
-    //     (topping) => topping.id === toppingId
-    //   );
-    // }
 
     //取得したトッピング情報をOrderTopping型に変換する
+    this.orderToppings = [];
     for (let checkTopping of this.checkToppings) {
       this.orderToppings.push(
         new OrderTopping(-1, checkTopping.id, this.currentItem.id, checkTopping)
       );
     }
-    console.log(this.orderToppings);
 
     //ストアのミューテーションを呼び出す
     this["$store"].commit(
@@ -277,9 +269,6 @@ export default class ItemDetail extends Vue {
         this.orderToppings
       )
     );
-    const currentItem = this.$store.getters.getItemsInCart;
-    console.log(currentItem);
-    console.log(`${this.quantity}${this.size}${this.toppingIds}`);
     this["$router"].push("/cartList");
   }
 }

@@ -106,7 +106,7 @@ export default class CartList extends Vue {
     console.log("createdが呼ばれた");
     // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
-    console.log(this.currentCartItems);
+    console.dir(JSON.stringify(this.currentCartItems));
     // カート内に商品ない場合フラグを立てる
     if (this.currentCartItems.length === 0) {
       this.noItem = true;
