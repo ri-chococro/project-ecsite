@@ -4,10 +4,9 @@ import VueRouter, { RouteConfig } from "vue-router";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // ルートパスに遷移すると商品一覧ページへ
   {
     path: "/",
-    component: () => import("../views/ItemList.vue"),
+    component: () => import("../views/Top.vue"),
   },
   {
     path: "/itemList",
@@ -44,6 +43,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/cartList",
     component: () => import("../views/CartList.vue"),
+  },
+  {
+    path: "/top",
+    component: () => import("../views/Top.vue"),
   },
   // 存在しないパスに遷移すると404ページへ
   {
