@@ -13,7 +13,7 @@ export default {};
 
 <style>
 footer img {
-  width: 140px;
+  width: 200px;
 }
 
 footer p {
@@ -22,7 +22,7 @@ footer p {
 }
 
 footer {
-  padding-top: 30px;
-  padding-bottom: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 </style>
