@@ -256,30 +256,58 @@ export default class ItemDetail extends Vue {
       );
     }
     console.log(this.orderToppings);
+    
+    // トッピングをID昇順に並び替える（合算するときに同じものと判断するため）
+    this.orderToppings.sort(function (a, b) {
+      return a.toppingId < b.toppingId ? -1 : 1;
+    });
+    const currentCartItems = this["$store"].getters.getItemsInCart;
 
-    //ストアのミューテーションを呼び出す
-    this["$store"].commit(
-      "addItemInCart",
-      new OrderItem(
-        -1,
-        this.currentItem.id,
-        -1,
-        this.quantity,
-        this.size,
-        new Item(
+    // ID、 トッピング、サイズが全て同じのときは既にあるカート内のアイテムに合算する
+    let judgeExist = [];
+    for (let currentCartItem of currentCartItems) {
+      if (
+        currentCartItem.itemId === this.currentItem.id &&
+        JSON.stringify(currentCartItem.orderToppingList) ===
+          JSON.stringify(this.orderToppings) &&
+        currentCartItem.size === this.size
+      ) {
+        judgeExist.push(true);
+      } else {
+        judgeExist.push(false);
+      }
+    }
+    if (judgeExist.indexOf(true) !== -1) {
+      this["$store"].commit("addCartItem", {
+        index: judgeExist.indexOf(true),
+        quantity: Number(this.quantity),
+      });
+    } else {
+      //ストアのミューテーションを呼び出す
+      this["$store"].commit(
+        "addItemInCart",
+        new OrderItem(
+          -1,
           this.currentItem.id,
-          this.currentItem.type,
-          this.currentItem.name,
-          this.currentItem.description,
-          this.currentItem.priceM,
-          this.currentItem.priceL,
-          this.currentItem.imagePath,
-          this.currentItem.deleted,
-          this.currentItem.toppingList
-        ),
-        this.orderToppings
-      )
-    );
+          -1,
+          this.quantity,
+          this.size,
+          new Item(
+            this.currentItem.id,
+            this.currentItem.type,
+            this.currentItem.name,
+            this.currentItem.description,
+            this.currentItem.priceM,
+            this.currentItem.priceL,
+            this.currentItem.imagePath,
+            this.currentItem.deleted,
+            this.currentItem.toppingList
+          ),
+          this.orderToppings
+        )
+      );
+    }
+
     const currentItem = this.$store.getters.getItemsInCart;
     console.log(currentItem);
     console.log(`${this.quantity}${this.size}${this.toppingIds}`);
