@@ -307,7 +307,7 @@ export default class MyPage extends Vue {
 <style scoped>
 .profile-wrapper {
   text-align: center;
-  background-image: url("/img_aloha/tropical_pattern.png");
+  background-image: url("/imggggg/img_aloha/");
   background-size: 250px;
 }
 .container {

@@ -4,8 +4,11 @@ import { Item } from "../types/item";
 import axios from "axios";
 import { OrderItem } from "@/types/orderItem";
 
+import { Topping } from "@/types/topping";
 // 使うためには「npm install vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
+import { OrderTopping } from "@/types/orderTopping";
+
 
 Vue.use(Vuex);
 
@@ -190,69 +193,108 @@ export default new Vuex.Store({
 
     /**
      * カート内商品一覧取得して返す.
+     * @remarks
+     * リロード時のJavaScriptコンパイル時にクラス内のgetter/setterが読み込めなくなるため、
+     * クラス内のフィールド変数を直接読み込み、インスタンス化したカートリストを新しい配列に格納し返す
+     *
      * @param state - state(itemsInCart)を利用するための引数
      * @returns カート内商品一覧
      */
     getItemsInCart(state) {
-      return state.itemsInCart;
-      // const returnItemsInCart = new Array<OrderItem>();
-      // //
-      // for (const itemInCart of state.itemsInCart) {
-      //   // itemの中のトッピングリスト
-      //   const itemInCartToppingList = new Array<Topping>();
-      //   for (const cartToppingList of itemInCart.item.toppingList) {
-      //     itemInCartToppingList.push(
-      //       new Topping(
-      //         cartToppingList.id,
-      //         cartToppingList.type,
-      //         cartToppingList.name,
-      //         cartToppingList.priceM,
-      //         cartToppingList.priceL
-      //       )
-      //     );
-      //   }
-      //   // OrderToppingList
-      //   const itemInCartOrdertoppingList = new Array<OrderTopping>();
-      //   for (const cartOrderToppingList of itemInCart.orderToppingList) {
-      //     itemInCartOrdertoppingList.push(
-      //       new OrderTopping(
-      //         cartOrderToppingList.id,
-      //         cartOrderToppingList.toppingId,
-      //         cartOrderToppingList.orderItemId,
-      //         new Topping(
-      //           cartOrderToppingList.Topping.id,
-      //           cartOrderToppingList.Topping.type,
-      //           cartOrderToppingList.Topping.name,
-      //           cartOrderToppingList.Topping.priceM,
-      //           cartOrderToppingList.Topping.priceL
-      //         )
-      //       )
-      //     );
-      //   }
-      //   //
-      //   returnItemsInCart.push(
-      //     new OrderItem(
-      //       itemInCart.id,
-      //       itemInCart.itemId,
-      //       itemInCart.orderId,
-      //       itemInCart.quantity,
-      //       itemInCart.size,
-      //       new Item(
-      //         itemInCart.item.id,
-      //         itemInCart.item.type,
-      //         itemInCart.item.name,
-      //         itemInCart.item.description,
-      //         itemInCart.item.priceM,
-      //         itemInCart.item.priceL,
-      //         itemInCart.item.imagePath,
-      //         itemInCart.item.deleted,
-      //         itemInCartToppingList
-      //       ),
-      //       itemInCartOrdertoppingList
-      //     )
-      //   );
-      // }
-      // return returnItemsInCart;
+      // 呼び出し元に返すための新しい配列（OrderItem型）
+      const returnItemsInCart: Array<OrderItem> = [];
+      // stateのカートリストをfor文でまわし、インスタンス化する
+      for (const itemInCart of state.itemsInCart) {
+        // OrderItemの中のitemの中のtoppingListを新しい配列に格納する
+        const itemInCartToppingList: Array<Topping> = [];
+        for (const cartToppingList of itemInCart._item._toppingList) {
+          itemInCartToppingList.push(
+            new Topping(
+              cartToppingList.id,
+              cartToppingList.type,
+              cartToppingList.name,
+              cartToppingList.priceM,
+              cartToppingList.priceL
+            )
+          );
+        }
+
+        // OrderItemの中のorderToppingListを新しい配列に格納する
+        const itemInCartOrdertoppingList = new Array<OrderTopping>();
+        // orderTopingListの中のtoppingを変数に代入する
+        for (const cartOrderToppingList of itemInCart._orderToppingList) {
+          let topping = new Topping(-1, "0", "トッピングなし", 0, 0);
+          // トッピングなしの場合
+          if (cartOrderToppingList._topping._id === -1) {
+            topping = new Topping(-1, "0", "トッピングなし", 0, 0);
+            //トッピングありの場合
+          } else {
+            topping = new Topping(
+              cartOrderToppingList._topping.id,
+              cartOrderToppingList._topping.type,
+              cartOrderToppingList._topping.name,
+              cartOrderToppingList._topping.priceM,
+              cartOrderToppingList._topping.priceL
+            );
+          }
+
+          // let topping = new Topping(-1, "0", "トッピングなし", 0, 0);
+          // if (cartOrderToppingList._topping) {
+          //   topping = new Topping(
+          //     cartOrderToppingList._topping._id,
+          //     cartOrderToppingList._topping._type,
+          //     cartOrderToppingList._topping._name,
+          //     cartOrderToppingList._topping._priceM,
+          //     cartOrderToppingList._topping._priceL
+          //   );
+          // }
+
+          // もしcartOrderToppingList._toppingが存在しなければ
+          // →OrderToppingのToppingにnew Topping(-1, "0", "トッピングなし", 0, 0)をいれる
+          // もしcartOrderToppingList._toppingが存在していれば
+          // →OrderToppingのToppingに以下を入れる
+          //           new Topping(
+          //   cartOrderToppingList._topping.id,
+          //   cartOrderToppingList._topping.type,
+          //   cartOrderToppingList._topping.name,
+          //   cartOrderToppingList._topping.priceM,
+          //   cartOrderToppingList._topping.priceL
+          // )
+
+          itemInCartOrdertoppingList.push(
+            new OrderTopping(
+              cartOrderToppingList._id,
+              cartOrderToppingList._toppingId,
+              cartOrderToppingList._orderItemId,
+              topping
+            )
+          );
+        }
+
+        // カート商品一覧を格納して返す
+        returnItemsInCart.push(
+          new OrderItem(
+            itemInCart._id,
+            itemInCart._itemId,
+            itemInCart._orderId,
+            itemInCart._quantity,
+            itemInCart._size,
+            new Item(
+              itemInCart._item._id,
+              itemInCart._item._type,
+              itemInCart._item._name,
+              itemInCart._item._description,
+              itemInCart._item._priceM,
+              itemInCart._item._priceL,
+              itemInCart._item._imagePath,
+              itemInCart._item._deleted,
+              itemInCartToppingList
+            ),
+            itemInCartOrdertoppingList
+          )
+        );
+      }
+      return returnItemsInCart;
     },
     /**
      * ログイン状態を返す.
@@ -299,7 +341,9 @@ export default new Vuex.Store({
       // ストレージのキーを指定
       key: "vuex",
       // isLoginフラグのみセッションストレージに格納しブラウザ更新しても残るようにしている(ログイン時:true / ログアウト時:false)
-      paths: ["isLogin", "user"],
+
+      paths: ["isLogin", "itemsInCart"],
+
       // ストレージの種類
       storage: window.sessionStorage,
     }),
