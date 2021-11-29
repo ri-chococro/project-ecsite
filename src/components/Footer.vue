@@ -1,7 +1,9 @@
 <template>
   <footer>
     <div class="container">
-      <img src="/img_aloha/header_logo.png" />
+      <router-link to="/top">
+        <img src="/img_aloha/header_logo.png" />
+      </router-link>
       <p>アロハな気分をあなたにお届け！</p>
     </div>
   </footer>
