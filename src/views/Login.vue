@@ -39,7 +39,9 @@
             <div class="row">
               <div class="input-field col s6 m6 l6">
                 <p class="margin medium-small">
-                  <router-link to="/registerUser">管理者登録はこちら</router-link>
+                  <router-link to="/registerUser"
+                    >管理者登録はこちら</router-link
+                  >
                 </p>
               </div>
             </div>
@@ -126,6 +128,11 @@ export default class Login extends Vue {
 </script>
 
 <style scoped>
+.container {
+  color: red;
+  background-color: skyblue;
+  width: 44%;
+}
 .login-page {
   width: 600px;
 }

@@ -5,7 +5,6 @@
     </div>
     <div class="container">
       <div class="row register-page">
-        <div class="error">{{ registerOfError }}</div>
         <div class="row">
           <div class="error">{{ nameOfError }}</div>
           <div class="input-field col s6">
@@ -97,6 +96,7 @@
             <label for="confirmation_password">確認用パスワード</label>
           </div>
         </div>
+        <div class="error">{{ registerOfError }}</div>
         <div class="row register-admin-btn">
           <button
             class="btn"
@@ -333,7 +333,10 @@ export default class RegisterUser extends Vue {
 </script>
 
 <style scoped>
-
+.error {
+  margin-bottom: 20px;
+  text-align: center;
+}
 .title {
   text-align: center;
   font-family: "Rampart One", cursive;
@@ -346,9 +349,7 @@ export default class RegisterUser extends Vue {
 }
 .container {
   width: 750px;
-  background-color:white
-  ;
-  
+  background-color: white;
 }
 #registerUser {
   margin-right: 100px;
