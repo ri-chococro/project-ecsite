@@ -8,6 +8,7 @@ export class OrderTopping {
     public _toppingId: number, //トッピングID
     public _orderItemId: number, //注文商品ID
     public _topping: Topping //トッピング
+
   ) {}
 
   public get id(): number {
