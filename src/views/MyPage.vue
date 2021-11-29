@@ -2,8 +2,8 @@
   <div class="profile-wrapper">
     <div class="container">
       <div class="icon-name">
-        <img src="img_aloha/no-profile.png" class="profile-img" />
-        <div class="name">{{ loginUser.name }} 様</div>
+        <img src="/img_aloha/no-profile.png" class="profile-img" />
+        <div class="name">{{ loginUser.name }}</div>
       </div>
       <div>
         <div class="title">登録情報</div>
