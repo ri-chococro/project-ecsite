@@ -1,111 +1,112 @@
 <template>
   <div class="container">
-    <div class="top-wrapper">
-      <div class="container">
-        <h1 class="page-title">{{ currentItem.name }}</h1>
-        <div class="row">
-          <div class="row item-detail">
-            <div class="item-icon">
-              <img v-bind:src="currentItem.imagePath" />
+    <!-- ローディング中であればスケルトンローディングを表示 -->
+    <div v-if="isLoading">
+      <SkeletonLoader />
+    </div>
+    <div v-if="!isLoading" class="container">
+      <h1 class="page-title">{{ currentItem.name }}</h1>
+      <div class="row">
+        <div class="row item-detail">
+          <div class="item-icon">
+            <img v-bind:src="currentItem.imagePath" />
+          </div>
+          <div class="item-intro">
+            {{ currentItem.description }}
+          </div>
+        </div>
+        <div class="row item-size">
+          <div class="item-hedding">サイズ</div>
+          <div>
+            <label>
+              <input
+                id="size-m"
+                name="size"
+                type="radio"
+                value="M"
+                v-model="size"
+                v-on:change="realTimeCalcPrice"
+              />
+              <span>
+                &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
+                  currentItem.priceM.toLocaleString()
+                }}円(税抜)</span
+              >
+            </label>
+            <label>
+              <input
+                id="size-l"
+                name="size"
+                type="radio"
+                value="L"
+                v-model="size"
+                v-on:change="realTimeCalcPrice"
+              />
+              <span>
+                &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
+                  currentItem.priceL.toLocaleString()
+                }}円(税抜)</span
+              >
+            </label>
+          </div>
+        </div>
+        <div class="row item-toppings">
+          <div class="item-hedding">
+            トッピング： &nbsp;1つにつき<span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;
+            {{ toppingPriceM.toLocaleString() }}円(税抜)
+            <span>&nbsp;Ｌ</span>&nbsp;&nbsp;
+            {{ toppingPriceL.toLocaleString() }}円(税抜)
+          </div>
+          <span
+            v-for="topping of currentItem.toppingList"
+            v-bind:key="topping.id"
+          >
+            <label class="item-topping">
+              <input
+                type="checkbox"
+                v-model="toppingIds"
+                v-bind:value="topping.id"
+                v-on:change="realTimeCalcPrice"
+              />
+              <span>{{ topping.name }}</span>
+            </label>
+          </span>
+        </div>
+        <div class="row item-quantity">
+          <div class="item-hedding item-hedding-quantity">数量</div>
+          <div class="item-quantity-selectbox">
+            <div class="input-field col s12">
+              <select
+                class="browser-default"
+                v-model="quantity"
+                v-on:change="realTimeCalcPrice"
+              >
+                <option value="" disabled selected>選択して下さい</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
             </div>
-            <div class="item-intro">
-              {{ currentItem.description }}
-            </div>
           </div>
-          <div class="row item-size">
-            <div class="item-hedding">サイズ</div>
-            <div>
-              <label>
-                <input
-                  id="size-m"
-                  name="size"
-                  type="radio"
-                  value="M"
-                  v-model="size"
-                  v-on:change="realTimeCalcPrice"
-                />
-                <span>
-                  &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
-                    currentItem.priceM.toLocaleString()
-                  }}円(税抜)</span
-                >
-              </label>
-              <label>
-                <input
-                  id="size-l"
-                  name="size"
-                  type="radio"
-                  value="L"
-                  v-model="size"
-                  v-on:change="realTimeCalcPrice"
-                />
-                <span>
-                  &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
-                    currentItem.priceL.toLocaleString()
-                  }}円(税抜)</span
-                >
-              </label>
-            </div>
-          </div>
-          <div class="row item-toppings">
-            <div class="item-hedding">
-              トッピング：
-              &nbsp;1つにつき<span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;
-              {{ toppingPriceM.toLocaleString() }}円(税抜)
-              <span>&nbsp;Ｌ</span>&nbsp;&nbsp;
-              {{ toppingPriceL.toLocaleString() }}円(税抜)
-            </div>
-            <span
-              v-for="topping of currentItem.toppingList"
-              v-bind:key="topping.id"
-            >
-              <label class="item-topping">
-                <input
-                  type="checkbox"
-                  v-model="toppingIds"
-                  v-bind:value="topping.id"
-                  v-on:change="realTimeCalcPrice"
-                />
-                <span>{{ topping.name }}</span>
-              </label>
-            </span>
-          </div>
-          <div class="row item-quantity">
-            <div class="item-hedding item-hedding-quantity">数量</div>
-            <div class="item-quantity-selectbox">
-              <div class="input-field col s12">
-                <select
-                  class="browser-default"
-                  v-model="quantity"
-                  v-on:change="realTimeCalcPrice"
-                >
-                  <option value="" disabled selected>選択して下さい</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row item-total-price">
-            <span
-              >この商品金額：{{ realTimePrice.toLocaleString() }}円(税抜)</span
-            >
-          </div>
-          <div class="row item-cart-btn">
-            <button class="btn" type="button" v-on:click="onClickAddCart">
-              <span>カートに入れる</span>
-            </button>
-          </div>
+        </div>
+        <div class="row item-total-price">
+          <span
+            >この商品金額：{{ realTimePrice.toLocaleString() }}円(税抜)</span
+          >
+        </div>
+        <div class="row item-cart-btn">
+          <button class="btn" type="button" v-on:click="onClickAddCart">
+            <span>カートに入れる</span>
+          </button>
         </div>
       </div>
       <!-- end container -->
@@ -120,7 +121,13 @@ import { OrderTopping } from "@/types/orderTopping";
 import { Topping } from "@/types/topping";
 import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import SkeletonLoader from "../components/SkeletonLoader.vue";
+
+@Component({
+  components: {
+    SkeletonLoader,
+  },
+})
 export default class ItemDetail extends Vue {
   //Itemオブジェクト
   private currentItem = new Item(
@@ -152,6 +159,8 @@ export default class ItemDetail extends Vue {
   private toppingPriceM = 0;
   //トッピングLの金額
   private toppingPriceL = 0;
+  // ローディング中かどうかのフラグ
+  private isLoading = true;
 
   /**
    * 金額をリアルタイムで表示する.
@@ -177,31 +186,39 @@ export default class ItemDetail extends Vue {
    * Vuexストアで受け取ったリクエストパラメータのIDから１件の商品情報を取得する.
    */
   async created(): Promise<void> {
+    // データ取得前にローディング中のフラグをtrueにする
+    this.isLoading = true;
+
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const itemId = parseInt(this["$route"].params.id);
 
-    const response = await axios.get(
-      `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
-    );
-    console.dir("response" + JSON.stringify(response));
-    this.currentItem = new Item(
-      response.data.item.id,
-      response.data.item.type,
-      response.data.item.name,
-      response.data.item.description,
-      response.data.item.priceM,
-      response.data.item.priceL,
-      response.data.item.imagePath,
-      response.data.item.deleted,
-      response.data.item.toppingList
-    );
+    try {
+      const response = await axios.get(
+        `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
+      );
+      console.dir("response" + JSON.stringify(response));
+      this.currentItem = new Item(
+        response.data.item.id,
+        response.data.item.type,
+        response.data.item.name,
+        response.data.item.description,
+        response.data.item.priceM,
+        response.data.item.priceL,
+        response.data.item.imagePath,
+        response.data.item.deleted,
+        response.data.item.toppingList
+      );
+      //金額のリアルタイム表示の初期値
+      this.realTimePrice = this.currentItem.priceM;
+      //トッピングMの金額
+      this.toppingPriceM = this.currentItem.toppingList[0].priceM;
+      //トッピングLの金額
+      this.toppingPriceL = this.currentItem.toppingList[0].priceL; // データが取得されたらローディング中のフラグをfalseにする
 
-    //金額のリアルタイム表示の初期値
-    this.realTimePrice = this.currentItem.priceM;
-    //トッピングMの金額
-    this.toppingPriceM = this.currentItem.toppingList[0].priceM;
-    //トッピングLの金額
-    this.toppingPriceL = this.currentItem.toppingList[0].priceL;
+      this.isLoading = false;
+    } catch (error) {
+      this.$router.push("/404");
+    }
   }
   /**
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.

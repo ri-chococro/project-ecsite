@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header">
         <div class="header-left">
-          <router-link to="/itemList">
+          <router-link to="/top">
             <img class="logo" src="img_aloha/header_logo.png" />
           </router-link>
         </div>
@@ -20,7 +20,7 @@
             <i class="fas fa-sign-in-alt"></i>ログアウト
           </router-link>
           <router-link to="/myPage" v-if="isLogin"
-            ><img src="img_aloha/no-profile.png" class="profile-img"
+            ><img src="/img_aloha/no-profile.png" class="profile-img"
           /></router-link>
         </div>
       </div>

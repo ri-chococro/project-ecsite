@@ -51,9 +51,29 @@
             </tbody>
           </table>
         </div>
+        <div class="coupon-form">
+          <label for="coupon">クーポンコード入力欄</label>
+          <span
+            ><input type="text" name="coupon" v-model="inputCouponCode" />
+            <button type="button" v-on:click="couponDiscount(inputCouponCode)">
+              適用
+            </button>
+            {{ couponError }}</span
+          >
+        </div>
 
         <div class="row cart-total-price">
           <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
+          <div v-if="hasCoupon">
+            <div>
+              {{ currentCoupon.couponType }}クーポン割引：-{{
+                currentCoupon.discountPrice
+              }}円
+            </div>
+            <button type="button" v-on:click="cancelCoupon()">
+              クーポン取り消し
+            </button>
+          </div>
           <div>ご注文金額合計：{{ totalPrice.toLocaleString() }}円 (税込)</div>
         </div>
 
@@ -71,6 +91,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { OrderItem } from "@/types/orderItem";
+import { Coupon } from "@/types/coupon";
 import OrderComponent from "../components/OrderComponent.vue";
 
 @Component({
@@ -81,10 +102,24 @@ import OrderComponent from "../components/OrderComponent.vue";
 export default class OrderConfirm extends Vue {
   // カート内の商品
   private currentCartItems: Array<OrderItem> = [];
-  // 商品小計（税抜）
+  // 商品合計（税込）
   private totalPrice = 0;
   // 消費税
   private taxPrice = 0;
+  // クーポンを格納する配列
+  private coupons = [
+    new Coupon("thankyou", 500, "感謝セール"),
+    new Coupon("1225", 300, "クリスマス"),
+    new Coupon("Aloha2021", 600, "ハワイキャンペーン"),
+  ];
+  // 入力されたクーポンコード
+  private inputCouponCode = "";
+  // 選択したクーポン
+  private currentCoupon: Coupon = new Coupon("", 0, "");
+  // クーポン有無フラグ
+  private hasCoupon = false;
+  // クーポンエラー
+  private couponError = "";
 
   /**
    * Vuexストア内ゲッター経由でstateからカート内商品を取得.
@@ -94,6 +129,12 @@ export default class OrderConfirm extends Vue {
    * 商品小計、消費税を計算して変数に格納する。
    */
   created(): void {
+    // ログインしていなければログイン画面へ遷移
+    if (this.$store.getters.getLoginStatus === false) {
+      this.$router.push("/login");
+      return;
+    }
+
     // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
     console.log(this.currentCartItems);
@@ -104,7 +145,59 @@ export default class OrderConfirm extends Vue {
     // 消費税の計算
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
+    // 合計金額の計算
     this.totalPrice += this.taxPrice;
+  }
+  /**
+   * クーポン適用ボタン押下時の処理.
+   * @remarks
+   * エラーチェックを行い、問題なければクーポンに応じた金額を合計金額から値引く
+   *
+   * @param code - 入力されたクーポンコード
+   */
+  couponDiscount(code: string): void {
+    // 既にクーポンが使われている時にエラーを出す
+    if (this.hasCoupon === true) {
+      this.couponError = "既にクーポンが使われています";
+      return;
+    }
+
+    // 入力されたクーポンコードと登録されたクーポンの突合
+    for (let coupon of this.coupons) {
+      // クーポンコードが入力されていないとき
+      if (code === "") {
+        this.hasCoupon = false;
+        this.couponError = "クーポンコードを入力してください";
+        // 登録されていないクーポンコードが入力されたとき
+      } else if (coupon.code !== code) {
+        this.hasCoupon = false;
+        this.couponError = "クーポンコードが存在しません";
+        // 正しいクーポンコードが入力されたとき
+      } else if (coupon.code === code) {
+        this.hasCoupon = true;
+        this.couponError = "";
+        this.currentCoupon = new Coupon(
+          coupon.code,
+          coupon.discountPrice,
+          coupon.couponType
+        );
+        // 値引きを行う
+        this.totalPrice -= this.currentCoupon.discountPrice;
+        return;
+      }
+    }
+  }
+  /**
+   * クーポン取り消しボタン押下時の処理.
+   * @remarks
+   * 値引き分の金額を戻す
+   */
+  cancelCoupon(): void {
+    this.hasCoupon = false;
+    this.couponError = "";
+    this.inputCouponCode = "";
+    this.totalPrice += this.currentCoupon.discountPrice;
+    this.currentCoupon = new Coupon("", 0, "");
   }
 }
 </script>
@@ -149,5 +242,8 @@ export default class OrderConfirm extends Vue {
 
 .order-confirm-payment-method-radio {
   margin-right: 10px;
+}
+.coupon-form {
+  width: 300px;
 }
 </style>
