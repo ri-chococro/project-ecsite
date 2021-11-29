@@ -1,5 +1,8 @@
 <template>
   <div class="register-user">
+    <div class="title">
+      <h1>-Registration-</h1>
+    </div>
     <div class="container">
       <div class="row register-page">
         <div class="error">{{ registerOfError }}</div>
@@ -251,7 +254,7 @@ export default class RegisterUser extends Vue {
       this.passwordOfError =
         "パスワードは8文字以上16文字以内で設定してください";
       hasError = true;
-    } 
+    }
     // パスワードに数字、小文字英字、大文字英字を含ませる
     else if (passwordPattern.test(this.password) === false) {
       this.passwordOfError =
@@ -330,6 +333,23 @@ export default class RegisterUser extends Vue {
 </script>
 
 <style scoped>
+
+.title {
+  text-align: center;
+  font-family: "Rampart One", cursive;
+  font-family: "Yellowtail", cursive;
+  font-size: 100px;
+}
+.register-user {
+  background-image: url("/imggggg/1151514.jpg");
+  background-size: 100%;
+}
+.container {
+  width: 750px;
+  background-color:white
+  ;
+  
+}
 #registerUser {
   margin-right: 100px;
 }
