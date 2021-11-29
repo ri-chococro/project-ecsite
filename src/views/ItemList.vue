@@ -39,6 +39,7 @@
         <img src="/img_aloha/2216833.png" class="island" />
         <img src="/img_aloha/umigame.png" class="umigame" />
         <div class="container">
+          <h1 class="menu-title">Menu <span>🌺</span></h1>
           <!-- sort order -->
           <div class="sort-order">
             <form>
@@ -81,6 +82,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Item } from "../types/item";
+
 @Component
 export default class ItemList extends Vue {
   //商品一覧
@@ -137,15 +139,16 @@ export default class ItemList extends Vue {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Rampart+One&family=Yellowtail&display=swap");
+
 .searchError {
   color: #ff4500;
 }
 .search-wrapper {
-  padding: 20px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
+  padding: 60px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
   margin-top: -40px;
-  /* text-align: center; */
   position: fixed; /* スクロールしても表示されるように位置を固定 */
-  height: 150px;
+  height: 200px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 1; /* 上に表示されるようにする(数が多いほど上に来る。例えば-1にすると裏側に行き見えなくなります) */
@@ -210,11 +213,46 @@ export default class ItemList extends Vue {
   position: relative;
 }
 
+.menu-title {
+  font-family: "Anton", sans-serif;
+  font-family: "Rampart One", cursive;
+  font-family: "Yellowtail", cursive;
+  position: relative;
+  top: 180px;
+  margin: 0;
+  display: inline-block;
+  padding: 0 65px;
+  text-align: center;
+}
+
+.menu-title:before,
+.menu-title:after {
+  position: absolute;
+  top: calc(50% - 3px);
+  width: 50px;
+  height: 6px;
+  content: '';
+  border-top: solid 2px #000;
+  border-bottom: solid 2px #000;
+}
+
+.menu-title:before {
+  left: 0;
+}
+
+.menu-title:after {
+  right: 0;
+}
+
+.menu-title span {
+  font-size: 50px;
+}
+
 .ukiwa {
   width: 200px;
   height: 200px;
   position: absolute;
-  top: 150px;
+  top: 170px;
   right: 15px;
 }
 
@@ -230,7 +268,7 @@ export default class ItemList extends Vue {
   width: 180px;
   height: 180px;
   position: absolute;
-  top: 500px;
+  top: 520px;
   right: 90px;
 }
 
@@ -252,6 +290,11 @@ export default class ItemList extends Vue {
   width: 250px;
   height: 250px;
   padding: 0 0 15px 0;
+  transition: 0.3s ease-in-out;
+}
+
+.item-icon:hover img {
+  opacity: 0.8;
 }
 
 /* サイズをオレンジ〇で囲む */

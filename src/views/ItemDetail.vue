@@ -8,7 +8,7 @@
       <div class="back" v-on:click="$router.back()">
         <i class="fas fa-arrow-left back-icon"></i>戻る
       </div>
-      <h1 class="page-title item-name">{{ currentItem.name }}</h1>
+      <h1 class="page-title item-name">{{ currentItem.name }} 🌺</h1>
       <div class="row">
         <div class="row item-detail">
           <div class="item-icon">
@@ -81,7 +81,7 @@
             <div class="input-field col s12">
               <select
                 class="browser-default"
-                v-model="quantity"
+                v-model.number="quantity"
                 v-on:change="realTimeCalcPrice"
               >
                 <option value="" disabled selected>選択して下さい</option>
@@ -199,7 +199,6 @@ export default class ItemDetail extends Vue {
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
       );
-      console.dir("response" + JSON.stringify(response));
       this.currentItem = new Item(
         response.data.item.id,
         response.data.item.type,
@@ -228,9 +227,8 @@ export default class ItemDetail extends Vue {
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
    */
   onClickAddCart(): void {
-    this.checkToppings = [];
-    this.orderToppings = [];
     // 選択したトッピングIDのIDを取得する
+    this.checkToppings = [];
     if (this.toppingIds.length === 0) {
       this.checkToppings.push(new Topping(-1, "0", "トッピングなし", 0, 0));
     } else {
@@ -242,21 +240,15 @@ export default class ItemDetail extends Vue {
         }
       }
     }
-    console.log(this.checkToppings);
-    // for (let toppingId of this.toppingIds) {
-    //   this.checkToppings=this.currentItem.toppingList.filter(
-    //     (topping) => topping.id === toppingId
-    //   );
-    // }
 
     //取得したトッピング情報をOrderTopping型に変換する
+    this.orderToppings = [];
     for (let checkTopping of this.checkToppings) {
       this.orderToppings.push(
         new OrderTopping(-1, checkTopping.id, this.currentItem.id, checkTopping)
       );
     }
-    console.log(this.orderToppings);
-    
+
     // トッピングをID昇順に並び替える（合算するときに同じものと判断するため）
     this.orderToppings.sort(function (a, b) {
       return a.toppingId < b.toppingId ? -1 : 1;
@@ -265,11 +257,18 @@ export default class ItemDetail extends Vue {
 
     // ID、 トッピング、サイズが全て同じのときは既にあるカート内のアイテムに合算する
     let judgeExist = [];
+    let currentItemId = [];
+    for (let toppings of this.orderToppings) {
+      currentItemId.push(toppings.toppingId);
+    }
     for (let currentCartItem of currentCartItems) {
+      let cartToppingId=[]
+      for (let cartTopping of currentCartItem.orderToppingList) {
+        cartToppingId.push(cartTopping.toppingId);
+      }
       if (
         currentCartItem.itemId === this.currentItem.id &&
-        JSON.stringify(currentCartItem.orderToppingList) ===
-          JSON.stringify(this.orderToppings) &&
+        JSON.stringify(cartToppingId) === JSON.stringify(currentItemId) &&
         currentCartItem.size === this.size
       ) {
         judgeExist.push(true);
@@ -308,9 +307,6 @@ export default class ItemDetail extends Vue {
       );
     }
 
-    const currentItem = this.$store.getters.getItemsInCart;
-    console.log(currentItem);
-    console.log(`${this.quantity}${this.size}${this.toppingIds}`);
     this["$router"].push("/cartList");
   }
 }
@@ -326,6 +322,7 @@ export default class ItemDetail extends Vue {
 
 .container {
   position: relative;
+  text-align: center;
 }
 
 .back {
@@ -334,6 +331,7 @@ export default class ItemDetail extends Vue {
   font-size: 1.15rem;
   position: absolute;
   left: 200px;
+  margin-top: 20px;
 }
 .back:hover {
   cursor: pointer;
@@ -345,11 +343,17 @@ export default class ItemDetail extends Vue {
 }
 
 .page-title {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .item-name {
   font-family: "Mochiy Pop P One", sans-serif;
+  padding: 1rem 1.5rem;
+  color: #fff;
+  border-radius: 10px;
+  background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+  display: inline-block;
+  text-align: center;
 }
 
 .item-detail {
@@ -379,10 +383,10 @@ export default class ItemDetail extends Vue {
   text-align: left;
 }
 .item-size {
-  /* text-align: center; */
   font-size: 15px;
   margin-bottom: 20px;
   padding: 0 200px 0 200px;
+  text-align: left;
 }
 
 /* サイズをオレンジ〇で囲む */
@@ -395,6 +399,7 @@ export default class ItemDetail extends Vue {
 .item-toppings {
   font-size: 15px;
   padding: 0 200px 0 200px;
+  text-align: left;
 }
 
 .item-topping {
