@@ -1,11 +1,14 @@
 <template>
-  <div class="container">
+  <div class="detail-wrapper">
     <!-- ローディング中であればスケルトンローディングを表示 -->
-    <div v-if="isLoading">
+    <div v-if="isLoading" class="container">
       <SkeletonLoader />
     </div>
     <div v-if="!isLoading" class="container">
-      <h1 class="page-title">{{ currentItem.name }}</h1>
+      <div class="back" v-on:click="$router.back()">
+        <i class="fas fa-arrow-left back-icon"></i>戻る
+      </div>
+      <h1 class="page-title item-name">{{ currentItem.name }}</h1>
       <div class="row">
         <div class="row item-detail">
           <div class="item-icon">
@@ -246,35 +249,98 @@ export default class ItemDetail extends Vue {
       );
     }
 
-    //ストアのミューテーションを呼び出す
-    this["$store"].commit(
-      "addItemInCart",
-      new OrderItem(
-        -1,
-        this.currentItem.id,
-        -1,
-        this.quantity,
-        this.size,
-        new Item(
+    // トッピングをID昇順に並び替える（合算するときに同じものと判断するため）
+    this.orderToppings.sort(function (a, b) {
+      return a.toppingId < b.toppingId ? -1 : 1;
+    });
+    const currentCartItems = this["$store"].getters.getItemsInCart;
+
+    // ID、 トッピング、サイズが全て同じのときは既にあるカート内のアイテムに合算する
+    let judgeExist = [];
+    for (let currentCartItem of currentCartItems) {
+      if (
+        currentCartItem.itemId === this.currentItem.id &&
+        JSON.stringify(currentCartItem.orderToppingList) ===
+          JSON.stringify(this.orderToppings) &&
+        currentCartItem.size === this.size
+      ) {
+        judgeExist.push(true);
+      } else {
+        judgeExist.push(false);
+      }
+    }
+    if (judgeExist.indexOf(true) !== -1) {
+      this["$store"].commit("addCartItem", {
+        index: judgeExist.indexOf(true),
+        quantity: Number(this.quantity),
+      });
+    } else {
+      //ストアのミューテーションを呼び出す
+      this["$store"].commit(
+        "addItemInCart",
+        new OrderItem(
+          -1,
           this.currentItem.id,
-          this.currentItem.type,
-          this.currentItem.name,
-          this.currentItem.description,
-          this.currentItem.priceM,
-          this.currentItem.priceL,
-          this.currentItem.imagePath,
-          this.currentItem.deleted,
-          this.currentItem.toppingList
-        ),
-        this.orderToppings
-      )
-    );
+          -1,
+          this.quantity,
+          this.size,
+          new Item(
+            this.currentItem.id,
+            this.currentItem.type,
+            this.currentItem.name,
+            this.currentItem.description,
+            this.currentItem.priceM,
+            this.currentItem.priceL,
+            this.currentItem.imagePath,
+            this.currentItem.deleted,
+            this.currentItem.toppingList
+          ),
+          this.orderToppings
+        )
+      );
+    }
+
     this["$router"].push("/cartList");
   }
 }
 </script>
 
 <style scoped>
+.detail-wrapper {
+  background-image: url("/img_aloha/p901.jpg"), url("/img_aloha/p902.jpg");
+  background-repeat: no-repeat, no-repeat;
+  background-position: left top, right top;
+  background-size: 300px 100%, 300px 100%;
+}
+
+.container {
+  position: relative;
+}
+
+.back {
+  border-bottom: 1px solid #000;
+  display: inline;
+  font-size: 1.15rem;
+  position: absolute;
+  left: 200px;
+}
+.back:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.back-icon {
+  margin-right: 5px;
+}
+
+.page-title {
+  margin-top: 10px;
+}
+
+.item-name {
+  font-family: "Mochiy Pop P One", sans-serif;
+}
+
 .item-detail {
   display: flex;
   /* 中央揃え */
