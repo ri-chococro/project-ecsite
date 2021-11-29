@@ -145,11 +145,10 @@ export default class ItemList extends Vue {
   color: #ff4500;
 }
 .search-wrapper {
-  padding: 20px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
+  padding: 60px 0 20px 0; /*上はヘッダが来るのでその分180px分空ける*/
   margin-top: -40px;
-  /* text-align: center; */
   position: fixed; /* スクロールしても表示されるように位置を固定 */
-  height: 150px;
+  height: 200px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 1; /* 上に表示されるようにする(数が多いほど上に来る。例えば-1にすると裏側に行き見えなくなります) */
@@ -219,7 +218,7 @@ export default class ItemList extends Vue {
   font-family: "Rampart One", cursive;
   font-family: "Yellowtail", cursive;
   position: relative;
-  top: 150px;
+  top: 180px;
   margin: 0;
   display: inline-block;
   padding: 0 65px;
@@ -253,7 +252,7 @@ export default class ItemList extends Vue {
   width: 200px;
   height: 200px;
   position: absolute;
-  top: 150px;
+  top: 170px;
   right: 15px;
 }
 
@@ -269,7 +268,7 @@ export default class ItemList extends Vue {
   width: 180px;
   height: 180px;
   position: absolute;
-  top: 500px;
+  top: 520px;
   right: 90px;
 }
 

@@ -335,6 +335,7 @@ export default class ItemDetail extends Vue {
   font-size: 1.15rem;
   position: absolute;
   left: 200px;
+  margin-top: 20px;
 }
 .back:hover {
   cursor: pointer;
@@ -346,7 +347,7 @@ export default class ItemDetail extends Vue {
 }
 
 .page-title {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .item-name {
