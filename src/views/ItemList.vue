@@ -35,6 +35,9 @@
 
       <!-- item list -->
       <div class="item-wrapper">
+        <img src="/img_aloha/ukiwa1.png" class="ukiwa" />
+        <img src="/img_aloha/yotto.png" class="yotto" />
+        <img src="/img_aloha/2216833.png" class="island" />
         <div class="container">
           <!-- sort order -->
           <div class="sort-order">
@@ -203,8 +206,35 @@ export default class ItemList extends Vue {
 .item-wrapper {
   padding-top: 10px; /* 上はヘッダや検索フォームが来るのでその分空ける */
   padding-bottom: 80px;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
+  background-image: url("/img_aloha/lightblue_00115.jpg");
+  background-size: cover;
   text-align: center;
+  position: relative;
+}
+
+.ukiwa {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 150px;
+  right: 15px;
+}
+
+.yotto {
+  width: 130px;
+  height: 130px;
+  position: absolute;
+  top: 350px;
+  left: 15px;
+}
+
+.island {
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  top: 750px;
+  right: 90px;
 }
 
 .items {

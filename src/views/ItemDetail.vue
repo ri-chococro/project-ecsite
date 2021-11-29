@@ -1,11 +1,14 @@
 <template>
-  <div class="container">
+  <div class="detail-wrapper">
     <!-- ローディング中であればスケルトンローディングを表示 -->
-    <div v-if="isLoading">
+    <div v-if="isLoading" class="container">
       <SkeletonLoader />
     </div>
     <div v-if="!isLoading" class="container">
-      <h1 class="page-title">{{ currentItem.name }}</h1>
+      <div class="back" v-on:click="$router.back()">
+        <i class="fas fa-arrow-left back-icon"></i>戻る
+      </div>
+      <h1 class="page-title item-name">{{ currentItem.name }}</h1>
       <div class="row">
         <div class="row item-detail">
           <div class="item-icon">
@@ -213,8 +216,9 @@ export default class ItemDetail extends Vue {
       //トッピングMの金額
       this.toppingPriceM = this.currentItem.toppingList[0].priceM;
       //トッピングLの金額
-      this.toppingPriceL = this.currentItem.toppingList[0].priceL; // データが取得されたらローディング中のフラグをfalseにする
+      this.toppingPriceL = this.currentItem.toppingList[0].priceL;
 
+      // データが取得されたらローディング中のフラグをfalseにする
       this.isLoading = false;
     } catch (error) {
       this.$router.push("/404");
@@ -285,6 +289,41 @@ export default class ItemDetail extends Vue {
 </script>
 
 <style scoped>
+.detail-wrapper {
+  background-image: url("/img_aloha/p901.jpg"), url("/img_aloha/p902.jpg");
+  background-repeat: no-repeat, no-repeat;
+  background-position: left top, right top;
+  background-size: 300px 100%, 300px 100%;
+}
+
+.container {
+  position: relative;
+}
+
+.back {
+  border-bottom: 1px solid #000;
+  display: inline;
+  font-size: 1.15rem;
+  position: absolute;
+  left: 200px;
+}
+.back:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.back-icon {
+  margin-right: 5px;
+}
+
+.page-title {
+  margin-top: 10px;
+}
+
+.item-name {
+  font-family: "Mochiy Pop P One", sans-serif;
+}
+
 .item-detail {
   display: flex;
   /* 中央揃え */
