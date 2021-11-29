@@ -255,7 +255,7 @@ export default class ItemDetail extends Vue {
         new OrderTopping(-1, checkTopping.id, this.currentItem.id, checkTopping)
       );
     }
-    console.log(this.orderToppings);
+
 
     // トッピングをID昇順に並び替える（合算するときに同じものと判断するため）
     this.orderToppings.sort(function (a, b) {
