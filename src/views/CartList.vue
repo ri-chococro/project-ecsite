@@ -189,7 +189,6 @@ export default class CartList extends Vue {
   color: white;
   text-align: center;
   width: 1100px;
-  font-family: "Meiryo";
   opacity: 0.8;
 }
 
