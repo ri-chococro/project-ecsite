@@ -199,7 +199,6 @@ export default class ItemDetail extends Vue {
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/item/${itemId}`
       );
-      console.dir("response" + JSON.stringify(response));
       this.currentItem = new Item(
         response.data.item.id,
         response.data.item.type,
@@ -228,9 +227,8 @@ export default class ItemDetail extends Vue {
    * 選択した商品情報とトッピング情報をOrderItemオブジェクトに追加する.
    */
   onClickAddCart(): void {
-    this.checkToppings = [];
-    this.orderToppings = [];
     // 選択したトッピングIDのIDを取得する
+    this.checkToppings = [];
     if (this.toppingIds.length === 0) {
       this.checkToppings.push(new Topping(-1, "0", "トッピングなし", 0, 0));
     } else {
@@ -242,21 +240,15 @@ export default class ItemDetail extends Vue {
         }
       }
     }
-    console.log(this.checkToppings);
-    // for (let toppingId of this.toppingIds) {
-    //   this.checkToppings=this.currentItem.toppingList.filter(
-    //     (topping) => topping.id === toppingId
-    //   );
-    // }
 
     //取得したトッピング情報をOrderTopping型に変換する
+    this.orderToppings = [];
     for (let checkTopping of this.checkToppings) {
       this.orderToppings.push(
         new OrderTopping(-1, checkTopping.id, this.currentItem.id, checkTopping)
       );
     }
-    console.log(this.orderToppings);
-    
+
     // トッピングをID昇順に並び替える（合算するときに同じものと判断するため）
     this.orderToppings.sort(function (a, b) {
       return a.toppingId < b.toppingId ? -1 : 1;
@@ -308,9 +300,6 @@ export default class ItemDetail extends Vue {
       );
     }
 
-    const currentItem = this.$store.getters.getItemsInCart;
-    console.log(currentItem);
-    console.log(`${this.quantity}${this.size}${this.toppingIds}`);
     this["$router"].push("/cartList");
   }
 }
