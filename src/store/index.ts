@@ -342,7 +342,7 @@ export default new Vuex.Store({
       key: "vuex",
       // isLoginフラグのみセッションストレージに格納しブラウザ更新しても残るようにしている(ログイン時:true / ログアウト時:false)
 
-      paths: ["isLogin", "itemsInCart"],
+      paths: ["isLogin", "itemsInCart", "user"],
 
       // ストレージの種類
       storage: window.sessionStorage,
