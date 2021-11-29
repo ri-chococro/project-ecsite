@@ -2,13 +2,10 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Item } from "../types/item";
 import axios from "axios";
-import { User } from "@/types/user";
 import { OrderItem } from "@/types/orderItem";
-// import { Topping } from "@/types/topping";
 
 // 使うためには「npm install vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
-// import { OrderTopping } from "@/types/orderTopping";
 
 Vue.use(Vuex);
 
@@ -20,7 +17,7 @@ export default new Vuex.Store({
     //商品情報
     items: new Array<Item>(),
     // ログインユーザ情報
-    user: new User(0, "", "", "", "", "", ""),
+    user: {},
     // カート内商品一覧
     itemsInCart: new Array<OrderItem>(),
     // ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
@@ -35,7 +32,6 @@ export default new Vuex.Store({
      * @param payload - WebAPIから取得した商品情報
      */
     showItemList(state, payload) {
-      console.log("totalItemCount:" + payload.totalItemCount);
       // payloadの中(WebAPIから取得したJSON)のitemsをstateのitemsに代入する
       state.totalItemCount = payload.totalItemCount;
       //Itmeオブジェクトに変換する
@@ -66,15 +62,7 @@ export default new Vuex.Store({
      * @param payload - ユーザ情報
      */
     setLoginUser(state, payload) {
-      state.user = new User(
-        payload.id,
-        payload.name,
-        payload.email,
-        payload.password,
-        payload.zipcode,
-        payload.address,
-        payload.telephone
-      );
+      state.user = payload;
     },
     /**
 
@@ -166,7 +154,6 @@ export default new Vuex.Store({
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/item/items/aloha`
       );
-      console.dir("response" + JSON.stringify(response));
       const payload = response.data;
       context.commit("showItemList", payload);
     },
@@ -312,7 +299,7 @@ export default new Vuex.Store({
       // ストレージのキーを指定
       key: "vuex",
       // isLoginフラグのみセッションストレージに格納しブラウザ更新しても残るようにしている(ログイン時:true / ログアウト時:false)
-      paths: ["isLogin"],
+      paths: ["isLogin", "user"],
       // ストレージの種類
       storage: window.sessionStorage,
     }),
