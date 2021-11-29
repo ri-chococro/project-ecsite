@@ -119,6 +119,7 @@ export default class CartList extends Vue {
     const tax = 0.1;
     this.taxPrice = Math.floor(this.totalPrice * tax);
     this.totalPrice += this.taxPrice;
+
   }
 
   /**
