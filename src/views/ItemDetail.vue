@@ -215,8 +215,8 @@ export default class ItemDetail extends Vue {
       //トッピングLの金額
       this.toppingPriceL = this.currentItem.toppingList[0].priceL;
       
-    　　　// データが取得されたらローディング中のフラグをfalseにする
-    　　　this.isLoading = false;
+      // データが取得されたらローディング中のフラグをfalseにする
+      this.isLoading = false;
     } catch (error) {
       this.$router.push("/404");
     }
