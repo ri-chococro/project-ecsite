@@ -2,8 +2,13 @@
   <div class="cart-list">
     <div class="top-wrapper">
       <div class="container">
-        <h1 class="page-title">ショッピングカート</h1>
+        <h1 class="page-title">
+          <div id="title">ショッピングカート</div>
+        </h1>
         <div v-if="noItem" class="error-message">カートに商品がありません</div>
+        <div v-if="noItem">
+          <img src="img/hawaii8.jpg" class="noCart" />
+        </div>
         <!-- table -->
         <div v-if="!noItem" class="row">
           <table class="striped">
@@ -160,6 +165,33 @@ export default class CartList extends Vue {
 </script>
 
 <style scoped>
+.striped {
+  background-color: white;
+  color: black;
+  opacity: 0.8;
+}
+.cart-list {
+  padding: 0px 0 100px 0;
+  background-image: url(/img/hawaii6.jpeg/); /* 背景画像設定 */
+  background-size: cover; /* 画像の縦横比を崩すことなく、画像ができるだけ大きくなるよう拡大縮小 */
+  color: white;
+  text-align: center;
+}
+#title {
+  font-family: "Meiryo";
+  color: white;
+  font-weight: 600;
+}
+.noCart {
+  padding: 0px 0 100px 0;
+  background-size: cover; /* 画像の縦横比を崩すことなく、画像ができるだけ大きくなるよう拡大縮小 */
+  color: white;
+  text-align: center;
+  width: 1100px;
+  font-family: "Meiryo";
+  opacity: 0.8;
+}
+
 .cart-table-th {
   text-align: center;
 }
@@ -179,6 +211,10 @@ export default class CartList extends Vue {
 .cart-total-price {
   font-size: 35px;
   text-align: center;
+  background-color: white;
+  color: black;
+  font-family: "Meiryo";
+  opacity: 0.8;
 }
 
 .order-confirm-btn {
