@@ -46,7 +46,7 @@ export default class Header extends Vue {
 
 <style scoped>
 header {
-  height: 65px;
+  height: 100px;
   width: 100%;
   background-color: rgba(255, 255, 255);
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
@@ -60,8 +60,8 @@ header {
 }
 
 .logo {
-  width: 200px;
-  margin-top: 15px;
+  width: 230px;
+  margin-top: 0;
 }
 
 .header-right {
@@ -69,20 +69,17 @@ header {
 }
 
 .header-right a {
-  line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
+  line-height: 100px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
   color: gray;
+  font-size: 1.1rem;
   display: block; /* a要素をブロック要素に変更(borderまでがクリックできるようになる) */
   transition: all 0.5s; /* アニメーションの設定 all=変化の対象 0.5s=変化にかかる時間 hoverと組み合わせることが多い */
 }
 
 .header-right a:hover {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.5
-  ); /* マウスが乗せられた際の色と透明度を設定 */
+  color: #000;
+  text-decoration: underline;
 }
 
 /* fontawesome(カートアイコン＆ログインアイコンの設定) */
@@ -91,9 +88,9 @@ header {
 }
 
 .profile-img {
-  width: 40px;
-  height: 40px;
-  margin-top: 10px;
+  width: 50px;
+  height: 50px;
+  margin-top: 20px;
 }
 
 /* スマートフォン用のメニューアイコン */
