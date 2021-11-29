@@ -36,8 +36,8 @@
       <!-- item list -->
       <div class="item-wrapper">
         <img src="/img_aloha/ukiwa1.png" class="ukiwa" />
-        <img src="/img_aloha/yotto.png" class="yotto" />
         <img src="/img_aloha/2216833.png" class="island" />
+        <img src="/img_aloha/umigame.png" class="umigame" />
         <div class="container">
           <!-- sort order -->
           <div class="sort-order">
@@ -162,7 +162,6 @@ export default class ItemList extends Vue {
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
-  /* display: block; */
   width: 30%;
   color: #555;
   background-color: #fff;
@@ -179,7 +178,6 @@ export default class ItemList extends Vue {
   appearance: auto;
   -webkit-rtl-ordering: logical;
   cursor: text;
-  /* text-transform: uppercase; */
 }
 
 .search-btn {
@@ -206,7 +204,6 @@ export default class ItemList extends Vue {
 .item-wrapper {
   padding-top: 10px; /* 上はヘッダや検索フォームが来るのでその分空ける */
   padding-bottom: 80px;
-  /* background-color: #f7f7f7; */
   background-image: url("/img_aloha/lightblue_00115.jpg");
   background-size: cover;
   text-align: center;
@@ -221,9 +218,9 @@ export default class ItemList extends Vue {
   right: 15px;
 }
 
-.yotto {
-  width: 130px;
-  height: 130px;
+.umigame {
+  width: 250px;
+  height: 250px;
   position: absolute;
   top: 350px;
   left: 15px;
@@ -233,7 +230,7 @@ export default class ItemList extends Vue {
   width: 180px;
   height: 180px;
   position: absolute;
-  top: 750px;
+  top: 500px;
   right: 90px;
 }
 
