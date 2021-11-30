@@ -445,7 +445,6 @@ export default class OrderComponent extends Vue {
           card_cvv: this.cvv,
         }
       );
-      console.log(response);
 
       if (response.data.status === "error") {
         this.creditCardError = "クレジットカード情報が不正です";
@@ -576,7 +575,6 @@ export default class OrderComponent extends Vue {
       this.distinationAddress =
         response.data.items[0].pref + response.data.items[0].address;
     } catch (error) {
-      console.log(error);
       this.zipcodeErrorMessage = "存在しない郵便番号です";
     }
   }
