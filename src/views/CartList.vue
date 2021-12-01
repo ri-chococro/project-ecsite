@@ -108,7 +108,6 @@ export default class CartList extends Vue {
    *
    */
   created(): void {
-    console.log("createdが呼ばれた");
     // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
     console.dir(JSON.stringify(this.currentCartItems));

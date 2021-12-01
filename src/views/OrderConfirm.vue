@@ -138,7 +138,6 @@ export default class OrderConfirm extends Vue {
 
     // Vuexストアのゲッター経由でカート内の商品を取得
     this.currentCartItems = this.$store.getters.getItemsInCart;
-    console.log(this.currentCartItems);
     // OrderItemクラス内のメソッドを利用し、商品小計を取得
     for (let currentCartItem of this.currentCartItems) {
       this.totalPrice += currentCartItem.calcSubTotalPrice;

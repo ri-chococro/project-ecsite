@@ -262,7 +262,6 @@ export default class RegisterUser extends Vue {
       hasError = true;
     }
 
-    console.log(typeof this.password.length);
     if (this.confirmationPassword === "") {
       this.confirmationOfError = "確認用パスワードが入力されていません";
       hasError = true;
